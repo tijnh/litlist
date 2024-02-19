@@ -1,0 +1,140 @@
+:root {
+  --sb-darkblue: #004C99;
+  --sb-blue: #0089C7;
+  --sb-lightblue: #80C7D9;
+  --sb-yellow: #FFCC00;
+  --sb-pink: #E2007A;
+  --sb-red: #C10E1A;
+  --sb-orange: #CF661C;
+  --sb-aqua: #0099A9;
+  --sb-white: #ffffff;
+  --sb-black: #000000;
+  --ll-btn-primary: #004C99;
+  --ll-btn-primary-hover: #0054a8;
+  --ll-btn-primary-active: #005ab5;
+  --ll-checkbox-unchecked: #949494;
+}
+
+body {
+  background-color: var(--sb-white);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar {
+  background-color: var(--sb-white);
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.search-container {
+  background-color: var(--sb-darkblue);
+  height: 80px;
+}
+
+.searchfield {
+  height: 3rem;
+  border-radius: 24px;
+}
+
+/* Buttons */
+.ll-btn {
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none !important;
+}
+
+.ll-btn-primary {
+  background-color: var(--ll-btn-primary);
+  color: var(--sb-white);
+}
+
+.ll-btn-primary:hover {
+  background-color: var(--ll-btn-primary-hover);
+}
+
+.ll-btn-primary:active {
+  background-color: var(--ll-btn-primary-active);
+  ;
+}
+
+
+/* Card */
+.ll-card {
+  background-color: var(--sb-white);
+}
+
+.ll-card-img img {
+  max-height: 75px;
+  max-width: 50px;
+}
+
+.ll-card-middle {
+  line-height: 1.2;
+  padding-right: 25px;
+}
+
+.ll-card-title {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.ll-card a:hover {
+  text-decoration: underline;
+}
+
+.ll-card-details {
+  font-size: 0.8rem;
+}
+
+.ll-card-blurb {
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.accordion-button,
+.accordion-button:focus,
+.accordion-button:active,
+.accordion-button:hover {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+.offcanvas {
+  width: 100vw !important;
+  max-width: 399px;
+}
+
+.filter-icon {
+  margin-right: 1rem;
+}
+
+/* Remove arrows from number input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.checkbox-unchecked {
+  color: var(--ll-checkbox-unchecked);
+}
+
+.checkbox-checked {
+  color: var(--sb-darkblue);
+  font-weight: 600;
+}
