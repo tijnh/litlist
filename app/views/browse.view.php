@@ -164,9 +164,9 @@
             <!-- Middle-->
             <div class="col-8 ll-card-middle">
               <a href="#" class="ll-card-title"><?= esc($book["title"]) ?></a>
-              <p class="ll-card-details text-secondary mb-2">Hier komen authors<?php //esc(trim(implode(", ", $book["authors"]))) ?></p>
+              <p class="ll-card-details text-secondary mb-2"><?= esc(implode(", ", $book["authors"])) ?></p>
               <p class="ll-card-blurb m-0 mb-3"><?= esc($book["blurb"]) ?></p>
-              <p class="ll-card-details text-secondary"><i>Hier komen themes<?php //esc(trim(implode(", ", $book["themes"]))) ?></i></p>
+              <p class="ll-card-details text-secondary"><i><?= !empty($book["themes"]) ? esc(implode(", ", $book["themes"])) : "" ?></i></p>
             </div>
 
             <!-- Right -->

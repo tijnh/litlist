@@ -12,10 +12,13 @@ class Browse
     // $data['username'] = empty($_SESSION['USER']) ? 'User' : $_SESSION['USER']->email;
     $bookModel = new BookModel;
     $books = $bookModel->findAll();
+
     foreach ($books as $i => $book) {
       $books[$i]["authors"] = $this->getAuthors($book);
       $books[$i]["themes"] = $this->getThemes($book);
     }
+
+    
 
       $data["books"] = $this->cleanBookData($books);
       $data["pageTitle"] = "Zoeken";
@@ -29,11 +32,11 @@ class Browse
       $arr = [];
 
       $bookAuthorModel = new BookAuthorModel;
-      $authors = $bookAuthorModel->where(["book_id" => $book["book_id"]]);
+      $authors = $bookAuthorModel->findWhere(["book_id" => $book["book_id"]]);
 
       foreach ($authors as $author) {
         $authorModel = new AuthorModel;
-        $author = $authorModel->first(["author_id" => $author["author_id"]]);
+        $author = $authorModel->findFirst(["author_id" => $author["author_id"]]);
         $authorName = ucfirst($author["first_name"]) . " " . strtolower($author["infix"]) . " " . ucfirst($author["last_name"]);
 
         array_push($arr, $authorName);
@@ -47,13 +50,13 @@ class Browse
       $arr = [];
 
       $bookThemeModel = new BookThemeModel;
-      $themes = $bookThemeModel->where(["book_id" => $book["book_id"]]);
+      $themes = $bookThemeModel->findWhere(["book_id" => $book["book_id"]]);
       
       if($themes) {
 
         foreach ($themes as $theme) {
           $themeModel = new ThemeModel;
-          $theme = $themeModel->first(["theme_id" => $theme["theme_id"]]);
+          $theme = $themeModel->findFirst(["theme_id" => $theme["theme_id"]]);
           array_push($arr, $theme["theme"]);
         }
       }
@@ -77,13 +80,11 @@ class Browse
       );
 
         foreach ($book["authors"] as $author) {
-          $author = str_replace("  "," ", $author);
-          $cleanBookData[$book["book_id"]]["authors"][] = $author;
+          $cleanBookData[$book["book_id"]]["authors"][] = trim(str_replace("  ", " ", $author));
           
         }
         foreach ($book["themes"] as $theme) {
-          $theme = strtolower($theme);
-          $cleanBookData[$book["book_id"]]["themes"][] = $theme;
+          $cleanBookData[$book["book_id"]]["themes"][] = strtolower(trim($theme));
           
         }
       

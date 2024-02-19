@@ -20,7 +20,7 @@ Trait Model
 		return $this->query($query);
 	}
 
-	public function where($data, $data_not = [])
+	public function findWhere($data, $data_not = [])
 	{
 		$keys = array_keys($data);
 		$keys_not = array_keys($data_not);
@@ -42,7 +42,7 @@ Trait Model
 		return $this->query($query, $data);
 	}
 
-	public function first($data, $data_not = [])
+	public function findFirst($data, $data_not = [])
 	{
 		$keys = array_keys($data);
 		$keys_not = array_keys($data_not);
