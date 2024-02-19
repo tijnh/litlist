@@ -1,3 +1,10 @@
+<?php
+
+require "common/header.view.php";
+require "common/navbar.view.php";
+
+?>
+
 <!-- Search form -->
 <form action="search.php" method="post" class="w-100">
   <div class="container-fluid p-3 search-container d-flex justify-content-center">
@@ -241,3 +248,9 @@
     }
   }
 </script>
+
+<?php
+
+require "common/footer.view.php";
+
+?>
