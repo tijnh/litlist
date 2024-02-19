@@ -9,30 +9,31 @@ class Login
 
 	public function index()
 	{
-		$data = [];
+		redirect('home');
+		// $data = [];
 		
-		if($_SERVER['REQUEST_METHOD'] == "POST")
-		{
-			$user = new User;
-			$arr['email'] = $_POST['email'];
+		// if($_SERVER['REQUEST_METHOD'] == "POST")
+		// {
+		// 	$user = new User;
+		// 	$arr['email'] = $_POST['email'];
 
-			$row = $user->first($arr);
+		// 	$row = $user->first($arr);
 			
-			if($row)
-			{
-				if($row->password === $_POST['password'])
-				{
-					$_SESSION['USER'] = $row;
-					redirect('home');
-				}
-			}
+		// 	if($row)
+		// 	{
+		// 		if($row->password === $_POST['password'])
+		// 		{
+		// 			$_SESSION['USER'] = $row;
+		// 			redirect('home');
+		// 		}
+		// 	}
 
-			$user->errors['email'] = "Wrong email or password";
+		// 	$user->errors['email'] = "Wrong email or password";
 
-			$data['errors'] = $user->errors;
-		}
+		// 	$data['errors'] = $user->errors;
+		// }
 
-		$this->view('login',$data);
+		// $this->view('login',$data);
 	}
 
 }

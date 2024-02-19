@@ -9,22 +9,23 @@ class Signup
 
 	public function index()
 	{
-		$data = [];
+		redirect('home');
+		// $data = [];
 		
-		if($_SERVER['REQUEST_METHOD'] == "POST")
-		{
-			$user = new User;
-			if($user->validate($_POST))
-			{
-				$user->insert($_POST);
-				redirect('login');
-			}
+		// if($_SERVER['REQUEST_METHOD'] == "POST")
+		// {
+		// 	$user = new User;
+		// 	if($user->validate($_POST))
+		// 	{
+		// 		$user->insert($_POST);
+		// 		redirect('login');
+		// 	}
 
-			$data['errors'] = $user->errors;			
-		}
+		// 	$data['errors'] = $user->errors;			
+		// }
 
 
-		$this->view('signup',$data);
+		// $this->view('signup',$data);
 	}
 
 }
