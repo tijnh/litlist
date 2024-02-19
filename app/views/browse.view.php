@@ -5,7 +5,7 @@
   <div class="container-fluid p-3 search-container d-flex justify-content-center">
 
     <!-- q input -->
-    <input class="searchfield w-100 px-4 form-control mr-sm-2 border-0" name="q" type="search" placeholder="Zoek op titel of auteur" <?php echo isset($userQuery["q"]) ? "value='" . htmlspecialchars($userQuery["q"]) . "'" : ""; ?> autocomplete="off">
+    <input class="searchfield w-100 px-4 form-control mr-sm-2 border-0" name="q" type="search" placeholder="Zoek op titel of auteur" <?= isset($userQuery["q"]) ? "value='" . esc($userQuery["q"]) . "'" : ""; ?> autocomplete="off">
 
   </div>
 
@@ -33,11 +33,11 @@
               <div class="row g-1">
                 <div class="col-3">
                   <!-- min_year input -->
-                  <input name="min_year" type="number" class="form-control" <?php echo isset($userQuery["min_year"]) ? "value='" . htmlspecialchars($userQuery["min_year"]) . "'" : ""; ?> min="0" placeholder="van">
+                  <input name="min_year" type="number" class="form-control" <?= isset($userQuery["min_year"]) ? "value='" . esc($userQuery["min_year"]) . "'" : ""; ?> min="0" placeholder="van">
                 </div>
                 <div class="col-3">
                   <!-- max_year input -->
-                  <input name="max_year" type="number" class="form-control" <?php echo isset($userQuery["max_year"]) ? "value='" . htmlspecialchars($userQuery["max_year"]) . "'" : ""; ?> min="0" placeholder="tot">
+                  <input name="max_year" type="number" class="form-control" <?= isset($userQuery["max_year"]) ? "value='" . esc($userQuery["max_year"]) . "'" : ""; ?> min="0" placeholder="tot">
                 </div>
               </div>
 
@@ -58,11 +58,11 @@
               <div class="row g-1">
                 <div class="col-3">
                   <!-- min_pages input -->
-                  <input name="min_pages" type="number" class="form-control" <?php echo isset($userQuery["min_pages"]) ? "value='" . htmlspecialchars($userQuery["min_pages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
+                  <input name="min_pages" type="number" class="form-control" <?= isset($userQuery["min_pages"]) ? "value='" . esc($userQuery["min_pages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
                 </div>
                 <div class="col-3">
                   <!-- max_pages input -->
-                  <input name="max_pages" type="number" class="form-control" <?php echo isset($userQuery["max_pages"]) ? "value='" . htmlspecialchars($userQuery["max_pages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
+                  <input name="max_pages" type="number" class="form-control" <?= isset($userQuery["max_pages"]) ? "value='" . esc($userQuery["max_pages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
                 </div>
               </div>
 
@@ -84,9 +84,9 @@
               <?php foreach ($filters["reading_level"] as $level) : ?>
 
                 <div class="form-check">
-                  <input type="checkbox" name="reading_level[]" id="checkboxReadingLevel<?php echo htmlspecialchars($level) ?>" class="form-check-input reading-level-checkbox" value="<?php echo htmlspecialchars($level) ?>" <?php if (isset($userQuery["reading_level"]) && in_array($level, $userQuery["reading_level"])) : ?> checked <?php endif ?>>
-                  <label class="form-check-label" for="checkboxReadingLevel<?php echo htmlspecialchars($level) ?>">
-                    <?php echo htmlspecialchars($level) ?>
+                  <input type="checkbox" name="reading_level[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userQuery["reading_level"]) && in_array($level, $userQuery["reading_level"])) : ?> checked <?php endif ?>>
+                  <label class="form-check-label" for="checkboxReadingLevel<?= esc($level) ?>">
+                    <?= esc($level) ?>
                   </label>
                 </div>
 
@@ -143,7 +143,7 @@
   <!-- Filter button -->
   <div class="row justify-content-center p-3 ">
     <div class="col-12">
-      <button type="button" id="filter-button" class="ll-btn ll-btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?php echo count($books) ?> boeken</button>
+      <button type="button" id="filter-button" class="ll-btn ll-btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?= count($books) ?> boeken</button>
     </div>
   </div>
 
@@ -185,64 +185,7 @@
 
 </div>
 
-<script>
-  const audiobookCheckboxes = document.querySelectorAll(".audiobook-checkbox");
-  const readingLevelCheckboxes = document.querySelectorAll(".reading-level-checkbox");
-
-  addCheckBoxStyling(audiobookCheckboxes, ".audiobook-checkbox");
-  addCheckBoxStyling(readingLevelCheckboxes, ".reading-level-checkbox");
-
-  function addCheckBoxStyling(checkboxes, cssClass) {
-    markCheckedBoxes(cssClass);
-
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
-        markCheckedBoxes(cssClass);
-      });
-    })
-  }
-
-  function markCheckedBoxes(cssClass) {
-    let boxes = document.querySelectorAll(cssClass);
-
-    if (allBoxesUnchecked(boxes)) {
-      boxes.forEach((box) => {
-        findLableForControl(box).classList.remove("checkbox-unchecked");
-        findLableForControl(box).classList.remove("checkbox-checked");
-      });
-
-    } else {
-      boxes.forEach((box) => {
-        if (box.checked) {
-          findLableForControl(box).classList.remove("checkbox-unchecked");
-          findLableForControl(box).classList.add("checkbox-checked");
-        } else {
-          findLableForControl(box).classList.remove("checkbox-checked");
-          findLableForControl(box).classList.add("checkbox-unchecked");
-        }
-      });
-
-    }
-  }
-
-  function allBoxesUnchecked(boxes) {
-    for (let box of boxes) {
-      if (box.checked) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function findLableForControl(el) {
-    var idVal = el.id;
-    labels = document.getElementsByTagName('label');
-    for (var i = 0; i < labels.length; i++) {
-      if (labels[i].htmlFor == idVal)
-        return labels[i];
-    }
-  }
-</script>
+<script src="<?=ROOT?>/assets/js/filters.js"></script>
 
 <?php
 
