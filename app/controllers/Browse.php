@@ -9,17 +9,14 @@ class Browse
 
   public function index()
   {
+    $data["pageTitle"] = "Zoeken";
     // $data['username'] = empty($_SESSION['USER']) ? 'User' : $_SESSION['USER']->email;
     $bookModel = new BookModel;
-    $books = $bookModel->findAll("book_id", "ASC");
-
     
-    $data["pageTitle"] = "Zoeken";
+    $books = $bookModel->findAll("book_id", "ASC");
     $data["books"] = $this->cleanBookData($books);
-    $data["filters"]["min_year"] = $bookModel->findMin("publication_year");
-    $data["filters"]["max_year"] = $bookModel->findMax("publication_year");
     $data["filters"]["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
-    show($data["filters"]);
+    
     $this->view('browse', $data);
   }
 
