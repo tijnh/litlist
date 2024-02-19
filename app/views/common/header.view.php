@@ -12,3 +12,5 @@
 </head>
 
 <body>
+
+ <?php require "navbar.view.php"; ?>
