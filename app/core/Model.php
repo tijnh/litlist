@@ -19,7 +19,18 @@ Trait Model
 
 		return $this->query($query);
 	}
+	
+	public function findDistinct($column, $order_type)
+	{
+		$query = "SELECT DISTINCT $column FROM $this->table ORDER BY $column $order_type LIMIT $this->limit OFFSET $this->offset";
+		$results = $this->query($query);
 
+		// Flatten the multidimensional array
+		$distinctValues = array_column($results, $column);
+
+		return $distinctValues;
+	}
+	
 	public function findWhere($data, $data_not = [])
 	{
 		$keys = array_keys($data);
@@ -44,24 +55,8 @@ Trait Model
 
 	public function findFirst($data, $data_not = [])
 	{
-		$keys = array_keys($data);
-		$keys_not = array_keys($data_not);
-		$query = "SELECT * FROM $this->table WHERE ";
-
-		foreach ($keys as $key) {
-			$query .= $key . " = :". $key . " && ";
-		}
-
-		foreach ($keys_not as $key) {
-			$query .= $key . " != :". $key . " && ";
-		}
+		$result = $this->findWhere($data, $data_not);
 		
-		$query = trim($query," && ");
-
-		$query .= " LIMIT $this->limit OFFSET $this->offset";
-		$data = array_merge($data, $data_not);
-		
-		$result = $this->query($query, $data);
 		if($result)
 			return $result[0];
 

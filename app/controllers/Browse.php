@@ -18,49 +18,53 @@ class Browse
       $books[$i]["themes"] = $this->getThemes($book);
     }
 
-    
 
-      $data["books"] = $this->cleanBookData($books);
-      $data["pageTitle"] = "Zoeken";
 
-      
-      $this->view('browse', $data);
+    $data["pageTitle"] = "Zoeken";
+    $data["books"] = $this->cleanBookData($books);
+    $data["filters"]["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
+
+
+    $this->view('browse', $data);
+  }
+
+  private function getAuthors(array $book)
+  {
+
+    $arr = [];
+
+    $bookAuthorModel = new BookAuthorModel;
+    $authorModel = new AuthorModel;
+
+    $authors = $bookAuthorModel->findWhere(["book_id" => $book["book_id"]]);
+
+    foreach ($authors as $author) {
+      $author = $authorModel->findFirst(["author_id" => $author["author_id"]]);
+      $authorName = ucfirst($author["first_name"]) . " " . strtolower($author["infix"]) . " " . ucfirst($author["last_name"]);
+      array_push($arr, $authorName);
     }
 
-  private function getAuthors(array $book) {
-
-      $arr = [];
-
-      $bookAuthorModel = new BookAuthorModel;
-      $authors = $bookAuthorModel->findWhere(["book_id" => $book["book_id"]]);
-
-      foreach ($authors as $author) {
-        $authorModel = new AuthorModel;
-        $author = $authorModel->findFirst(["author_id" => $author["author_id"]]);
-        $authorName = ucfirst($author["first_name"]) . " " . strtolower($author["infix"]) . " " . ucfirst($author["last_name"]);
-
-        array_push($arr, $authorName);
-      }
-    
     return $arr;
   }
-  
-  private function getThemes(array $book) {
 
-      $arr = [];
+  private function getThemes(array $book)
+  {
 
-      $bookThemeModel = new BookThemeModel;
-      $themes = $bookThemeModel->findWhere(["book_id" => $book["book_id"]]);
-      
-      if($themes) {
+    $arr = [];
 
-        foreach ($themes as $theme) {
-          $themeModel = new ThemeModel;
-          $theme = $themeModel->findFirst(["theme_id" => $theme["theme_id"]]);
-          array_push($arr, $theme["theme"]);
-        }
+    $bookThemeModel = new BookThemeModel;
+    $themeModel = new ThemeModel;
+
+    $themes = $bookThemeModel->findWhere(["book_id" => $book["book_id"]]);
+
+    if ($themes) {
+
+      foreach ($themes as $theme) {
+        $theme = $themeModel->findFirst(["theme_id" => $theme["theme_id"]]);
+        array_push($arr, $theme["theme"]);
       }
-    
+    }
+
     return $arr;
   }
   private function cleanBookData(array $books)
@@ -68,7 +72,7 @@ class Browse
     $cleanBookData = array();
 
     foreach ($books as $book) {
-      
+
       $cleanBookData[$book["book_id"]] = array(
         "book_id" => $book["book_id"],
         "title" => trim(ucfirst($book["title"])),
@@ -79,15 +83,12 @@ class Browse
         "image_link" => !empty($book["image_link"]) ? $book["image_link"] : PLACEHOLDERCOVER,
       );
 
-        foreach ($book["authors"] as $author) {
-          $cleanBookData[$book["book_id"]]["authors"][] = trim(str_replace("  ", " ", $author));
-          
-        }
-        foreach ($book["themes"] as $theme) {
-          $cleanBookData[$book["book_id"]]["themes"][] = strtolower(trim($theme));
-          
-        }
-      
+      foreach ($book["authors"] as $author) {
+        $cleanBookData[$book["book_id"]]["authors"][] = trim(str_replace("  ", " ", $author));
+      }
+      foreach ($book["themes"] as $theme) {
+        $cleanBookData[$book["book_id"]]["themes"][] = strtolower(trim($theme));
+      }
     }
 
     return $cleanBookData;
