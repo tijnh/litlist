@@ -1,25 +1,57 @@
-<?php 
+<?php
 
 /**
  * Main Model trait
  */
-Trait Model
+trait Model
 {
 	use Database;
 
 	protected $limit = MAXLIMIT;
 	protected $offset = 0;
-	protected $order_type = "desc";
 	public $errors = [];
 
-	public function findAll()
+	public function findAll($order_column, $order_type)
 	{
-	 
-		$query = "SELECT * FROM $this->table ORDER BY $this->order_column $this->order_type LIMIT $this->limit OFFSET $this->offset";
+
+		$query = "SELECT * FROM $this->table ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
 
 		return $this->query($query);
 	}
+
+
+	public function findFirst($order_column, $order_type)
+	{
+		$result = $this->findAll($order_column, $order_type);
+
+		if ($result)
+			return $result[0];
+
+		return false;
+	}
+
+	public function findMin($column)
+	{
+		$query = "SELECT MIN($column) FROM $this->table";
+		$result = $this->query($query);
+		
+		if ($result)
+			return $result[0]["MIN($column)"];
+
+		return false;
+	}
 	
+	public function findMax($column)
+	{
+		$query = "SELECT MAX($column) FROM $this->table";
+		$result = $this->query($query);
+
+		if ($result)
+			return $result[0]["MAX($column)"];
+
+		return false;
+	}
+
 	public function findDistinct($column, $order_type)
 	{
 		$query = "SELECT DISTINCT $column FROM $this->table ORDER BY $column $order_type LIMIT $this->limit OFFSET $this->offset";
@@ -30,34 +62,35 @@ Trait Model
 
 		return $distinctValues;
 	}
-	
-	public function findWhere($data, $data_not = [])
+
+
+	public function findWhere($data, $data_not = [], $order_column, $order_type)
 	{
 		$keys = array_keys($data);
 		$keys_not = array_keys($data_not);
 		$query = "SELECT * FROM $this->table WHERE ";
 
 		foreach ($keys as $key) {
-			$query .= $key . " = :". $key . " && ";
+			$query .= $key . " = :" . $key . " && ";
 		}
 
 		foreach ($keys_not as $key) {
-			$query .= $key . " != :". $key . " && ";
+			$query .= $key . " != :" . $key . " && ";
 		}
-		
-		$query = trim($query," && ");
 
-		$query .= " ORDER BY $this->order_column $this->order_type LIMIT $this->limit OFFSET $this->offset";
+		$query = trim($query, " && ");
+
+		$query .= " ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
 		$data = array_merge($data, $data_not);
 
 		return $this->query($query, $data);
 	}
 
-	public function findFirst($data, $data_not = [])
+	public function findFirstWhere($data, $data_not = [], $order_column, $order_type)
 	{
-		$result = $this->findWhere($data, $data_not);
-		
-		if($result)
+		$result = $this->findWhere($data, $data_not, $order_column, $order_type);
+
+		if ($result)
 			return $result[0];
 
 		return false;
@@ -65,14 +98,12 @@ Trait Model
 
 	public function insert($data)
 	{
-		
+
 		/** remove unwanted data **/
-		if(!empty($this->allowedColumns))
-		{
+		if (!empty($this->allowedColumns)) {
 			foreach ($data as $key => $value) {
-				
-				if(!in_array($key, $this->allowedColumns))
-				{
+
+				if (!in_array($key, $this->allowedColumns)) {
 					unset($data[$key]);
 				}
 			}
@@ -80,7 +111,7 @@ Trait Model
 
 		$keys = array_keys($data);
 
-		$query = "INSERT INTO $this->table (".implode(",", $keys).") VALUES (:".implode(",:", $keys).")";
+		$query = "INSERT INTO $this->table (" . implode(",", $keys) . ") VALUES (:" . implode(",:", $keys) . ")";
 		$this->query($query, $data);
 
 		return false;
@@ -90,12 +121,10 @@ Trait Model
 	{
 
 		/** remove unwanted data **/
-		if(!empty($this->allowedColumns))
-		{
+		if (!empty($this->allowedColumns)) {
 			foreach ($data as $key => $value) {
-				
-				if(!in_array($key, $this->allowedColumns))
-				{
+
+				if (!in_array($key, $this->allowedColumns)) {
 					unset($data[$key]);
 				}
 			}
@@ -105,10 +134,10 @@ Trait Model
 		$query = "UPDATE $this->table SET ";
 
 		foreach ($keys as $key) {
-			$query .= $key . " = :". $key . ", ";
+			$query .= $key . " = :" . $key . ", ";
 		}
 
-		$query = trim($query,", ");
+		$query = trim($query, ", ");
 
 		$query .= " WHERE $id_column = :$id_column ";
 
@@ -116,7 +145,6 @@ Trait Model
 
 		$this->query($query, $data);
 		return false;
-
 	}
 
 	public function delete($id, $id_column = 'id')
@@ -127,8 +155,5 @@ Trait Model
 		$this->query($query, $data);
 
 		return false;
-
 	}
-
-	
 }

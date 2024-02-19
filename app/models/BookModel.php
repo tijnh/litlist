@@ -6,14 +6,13 @@ class BookModel
 	use Model;
 
 	protected $table = 'books';
-  protected $order_column = "book_id";
 
 	// protected $allowedColumns = [
 
 	// 	'title',
 	// ];
 
-	public function findAll($order_column = "book_id", $order_type = "ASC")
+	public function findAll($order_column, $order_type)
 	{
 
 		$query = "SELECT
