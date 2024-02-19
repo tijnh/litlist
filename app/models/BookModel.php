@@ -1,6 +1,6 @@
 <?php
 
-class Book
+class BookModel
 {
 	
 	use Model;

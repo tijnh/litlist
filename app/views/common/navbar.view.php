@@ -12,7 +12,7 @@
         <div class="offcanvas-header">
           <div class="offcanvas-title" id="offcanvasNavbarLabel">
             <a class="navbar-brand" href="<?= ROOT ?>">
-              <img src="<?= LOGO ?> alt=" Logo" height="24" class="d-inline-block align-text-top">
+              <img src="<?= LOGO ?>" alt="Logo" height="24" class="d-inline-block align-text-top">
               LitList
             </a>
           </div>
