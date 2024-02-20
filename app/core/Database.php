@@ -20,7 +20,7 @@ Trait Database
 		if($check)
 		{
 			$result = $stm->fetchAll(PDO::FETCH_ASSOC);
-			if(is_array($result) && count($result))
+			if(is_array($result) AND count($result))
 			{
 				return $result;
 			}
@@ -39,7 +39,7 @@ Trait Database
 		if($check)
 		{
 			$result = $stm->fetchAll(PDO::FETCH_ASSOC);
-			if(is_array($result) && count($result))
+			if(is_array($result) AND count($result))
 			{
 				return $result[0];
 			}

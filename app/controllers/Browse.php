@@ -12,8 +12,13 @@ class Browse
     $data["pageTitle"] = "Zoeken";
     // $data['username'] = empty($_SESSION['USER']) ? 'User' : $_SESSION['USER']->email;
     $bookModel = new BookModel;
+
+
+    $filters["min_year"] = 2000;
+    $filters["max_year"] = 2005;
+    $filters["reading_level"] = [3, 4];
     
-    $books = $bookModel->findAll("book_id", "ASC");
+    $books = $bookModel->filter($filters, "book_id", "ASC");
     $data["books"] = $this->cleanBookData($books);
     $data["filters"]["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
     

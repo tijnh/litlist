@@ -71,14 +71,14 @@ trait Model
 		$query = "SELECT * FROM $this->table WHERE ";
 
 		foreach ($keys as $key) {
-			$query .= $key . " = :" . $key . " && ";
+			$query .= $key . " = :" . $key . " AND ";
 		}
 
 		foreach ($keys_not as $key) {
-			$query .= $key . " != :" . $key . " && ";
+			$query .= $key . " != :" . $key . " AND ";
 		}
 
-		$query = trim($query, " && ");
+		$query = trim($query, " AND ");
 
 		$query .= " ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
 		$data = array_merge($data, $data_not);

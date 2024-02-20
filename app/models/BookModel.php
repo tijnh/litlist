@@ -39,10 +39,10 @@ class BookModel
 		return $this->query($query);
 	}
 	
-	public function findWhere($data, $data_not = [], $order_column = "book_id", $order_type = "ASC")
+	public function filter($filters, $order_column = "book_id", $order_type = "ASC")
 	{
-		$keys = array_keys($data);
-		$keys_not = array_keys($data_not);
+    $data = [];
+
 		$query = "SELECT
       books.book_id,
       books.title,
@@ -63,20 +63,39 @@ class BookModel
       LEFT JOIN themes ON books_themes.theme_id = themes.theme_id
     WHERE ";
 
+    if (isset($filters["min_year"])) {
+      $query .= "books.publication_year >= :min_year AND ";
+      $data["min_year"] = $filters["min_year"];
+    }
+    
+    if (isset($filters["max_year"])) {
+      $query .= "books.publication_year <= :max_year AND ";
+      $data["max_year"] = $filters["max_year"];
+    }
+    
+    if (isset($filters["min_pages"])) {
+      $query .= "books.pages >= :min_pages AND ";
+      $data["min_pages"] = $filters["min_pages"];
+    }
 
-		foreach ($keys as $key) {
-			$query .= $key . " = :" . $key . " && ";
-		}
-
-		foreach ($keys_not as $key) {
-			$query .= $key . " != :" . $key . " && ";
-		}
-
-		$query = trim($query, " && ");
+    if (isset($filters["max_pages"])) {
+      $query .= "books.pages <= :max_pages AND ";
+      $data["max_pages"] = $filters["max_pages"];
+    }
+    
+    if (isset($filters["reading_level"])) {
+      $query .= "(";
+      foreach($filters["reading_level"] as $lvl) {
+        $query .= "books.reading_level = :level$lvl OR ";
+        $data["level$lvl"] = $lvl;
+      }
+      $query = trim($query, " OR ");
+      $query .=  ")";
+    }
+    
+    $query = trim($query, " AND ");
 
 		$query .= " ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
-		$data = array_merge($data, $data_not);
-
 		return $this->query($query, $data);
 	}
 	
