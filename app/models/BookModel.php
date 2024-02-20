@@ -36,7 +36,12 @@ class BookModel
     ORDER BY
 			$orderColumn $orderType";
 
-    return $this->query($query);
+    $result = $this->query($query);
+    
+    if ($result)
+      return $result;
+
+    return [];
   }
 
   public function findWhere($filters, $orderColumn = "book_id", $orderType = "ASC")

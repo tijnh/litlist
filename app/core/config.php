@@ -1,8 +1,8 @@
-<?php 
+<?php
 
-if($_SERVER['SERVER_NAME'] == 'localhost')
+if ($_SERVER['SERVER_NAME'] == 'localhost') 
 {
-	/** database config **/
+	/** database config for development **/
 	define('DBNAME', 'litlist');
 	define('DBHOST', 'localhost');
 	define('DBUSER', 'root');
@@ -11,19 +11,18 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 	
 	define('ROOT', 'http://localhost/litlist/public');
 
-}else
+} 
+else 
 {
-	/** database config **/
+	/** database config for segbroek**/
 	define('DBNAME', 'wae_litlist');
 	define('DBHOST', 'localhost');
 	define('DBUSER', 'wae_admin');
 	define('DBPASS', 'll0Kbbgxnc');
 	define('DBDRIVER', '');
-
-	define('ROOT', 'https://www.yourwebsite.com');
-
+	
+	define('ROOT', 'http://inf.segbroek.nl/~wae/public/');
 }
-
 
 /** true means show errors **/
 define('DEBUG', true);

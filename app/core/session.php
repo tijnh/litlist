@@ -3,13 +3,7 @@
 ini_set("session.use_only_cookies", 1);
 ini_set("session.use_strict_mode", 1);
 
-session_set_cookie_params([
-  "lifetime" => 0, // session killed when browser closes
-  "domain" => DBHOST,
-  "path" => "/", // all pages of site
-  "secure" => true, // only use httpS
-  "httponly" => true
-]);
+set_session_cookie_params();
 
 session_start();
 
@@ -20,6 +14,11 @@ if (!isset($_SESSION["last_regeneration"])) {
   if (time() - $_SESSION["last_regeneration"] >= $interval) {
     regenerate_session_id();
   }
+}
+
+function set_session_cookie_params($lifetime = 0, $domain = DBHOST, $path = "/", $secure = true, $httponly = true)
+{
+  session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
 }
 
 
