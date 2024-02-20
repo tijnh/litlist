@@ -32,12 +32,12 @@
 
               <div class="row g-1">
                 <div class="col-3">
-                  <!-- min_year input -->
-                  <input name="min_year" type="number" class="form-control" <?= isset($userFilters["min_year"]) ? "value='" . esc($userFilters["min_year"]) . "'" : ""; ?> min="0" placeholder="van">
+                  <!-- minYear input -->
+                  <input name="minYear" type="number" class="form-control" <?= isset($userFilters["minYear"]) ? "value='" . esc($userFilters["minYear"]) . "'" : ""; ?> min="0" placeholder="van">
                 </div>
                 <div class="col-3">
-                  <!-- max_year input -->
-                  <input name="max_year" type="number" class="form-control" <?= isset($userFilters["max_year"]) ? "value='" . esc($userFilters["max_year"]) . "'" : ""; ?> min="0" placeholder="tot">
+                  <!-- maxYear input -->
+                  <input name="maxYear" type="number" class="form-control" <?= isset($userFilters["maxYear"]) ? "value='" . esc($userFilters["maxYear"]) . "'" : ""; ?> min="0" placeholder="tot">
                 </div>
               </div>
 
@@ -57,12 +57,12 @@
 
               <div class="row g-1">
                 <div class="col-3">
-                  <!-- min_pages input -->
-                  <input name="min_pages" type="number" class="form-control" <?= isset($userFilters["min_pages"]) ? "value='" . esc($userFilters["min_pages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
+                  <!-- minPages input -->
+                  <input name="minPages" type="number" class="form-control" <?= isset($userFilters["minPages"]) ? "value='" . esc($userFilters["minPages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
                 </div>
                 <div class="col-3">
-                  <!-- max_pages input -->
-                  <input name="max_pages" type="number" class="form-control" <?= isset($userFilters["max_pages"]) ? "value='" . esc($userFilters["max_pages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
+                  <!-- maxPages input -->
+                  <input name="maxPages" type="number" class="form-control" <?= isset($userFilters["maxPages"]) ? "value='" . esc($userFilters["maxPages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
                 </div>
               </div>
 
