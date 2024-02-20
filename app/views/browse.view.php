@@ -81,10 +81,10 @@
             <div class="accordion-body">
 
               <!-- Checkboxes -->
-              <?php foreach ($filterMenu["reading_level"] as $level) : ?>
+              <?php foreach ($filterMenu["readingLevels"] as $level) : ?>
 
                 <div class="form-check">
-                  <input type="checkbox" name="reading_level[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userFilters["reading_level"]) AND in_array($level, $userFilters["reading_level"])) : ?> checked <?php endif ?>>
+                  <input type="checkbox" name="readingLevels[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userFilters["readingLevels"]) AND in_array($level, $userFilters["readingLevels"])) : ?> checked <?php endif ?>>
                   <label class="form-check-label" for="checkboxReadingLevel<?= esc($level) ?>">
                     <?= esc($level) ?>
                   </label>
@@ -135,8 +135,6 @@
   </div>
 </form>
 
-
-
 <!-- Book results -->
 <div class="container-lg">
 
@@ -158,7 +156,7 @@
 
             <!-- Left -->
             <div class="col-2 ll-card-img">
-              <a href="#"><img src="<?= esc($book["image_link"]) ?>" alt="Book cover"></a>
+              <a href="#"><img src="<?= esc($book["imageLink"]) ?>" alt="Book cover"></a>
             </div>
 
             <!-- Middle-->
@@ -173,7 +171,7 @@
             <div class="col-2">
               <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-calendar"></i> <?= esc($book["year"]) ?></div>
               <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-book"></i> <?= esc($book["pages"]) ?></div>
-              <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-star"></i> <?= esc($book["reading_level"]) ?></div>
+              <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-star"></i> <?= esc($book["readingLevel"]) ?></div>
               <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-headphones"></i> ?</div>
             </div>
 

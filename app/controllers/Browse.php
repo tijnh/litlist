@@ -43,7 +43,7 @@ class Browse
   }
 
   private function getFilterMenu($bookModel) {
-    $filterMenu["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
+    $filterMenu["readingLevels"] = $bookModel->findDistinct("reading_level", "ASC");
     return $filterMenu;
   }
 
@@ -66,13 +66,13 @@ class Browse
       if (!isset($cleanBookData[$book["book_id"]])) {
 
         $cleanBookData[$book["book_id"]] = array(
-          "book_id" => $book["book_id"],
+          "bookId" => $book["book_id"],
           "title" => trim(ucfirst($book["title"])),
           "blurb" => mb_strimwidth(trim(ucfirst($book["blurb"])), 0, BLURBLENGTH, "..."),
           "pages" => $book["pages"],
           "year" => $book["publication_year"],
-          "reading_level" => $book["reading_level"],
-          "image_link" => !empty($book["image_link"]) ? $book["image_link"] : PLACEHOLDERCOVER,
+          "readingLevel" => $book["reading_level"],
+          "imageLink" => !empty($book["image_link"]) ? $book["image_link"] : PLACEHOLDERCOVER,
           "authors" => array(),
           "themes" => array()
         );

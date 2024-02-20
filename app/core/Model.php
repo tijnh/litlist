@@ -11,18 +11,18 @@ trait Model
 	protected $offset = 0;
 	public $errors = [];
 
-	public function findAll($order_column, $order_type)
+	public function findAll($orderColumn, $orderType)
 	{
 
-		$query = "SELECT * FROM $this->table ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
+		$query = "SELECT * FROM $this->table ORDER BY $orderColumn $orderType LIMIT $this->limit OFFSET $this->offset";
 
 		return $this->query($query);
 	}
 
 
-	public function findFirst($order_column, $order_type)
+	public function findFirst($orderColumn, $orderType)
 	{
-		$result = $this->findAll($order_column, $order_type);
+		$result = $this->findAll($orderColumn, $orderType);
 
 		if ($result)
 			return $result[0];
@@ -52,9 +52,9 @@ trait Model
 		return false;
 	}
 
-	public function findDistinct($column, $order_type)
+	public function findDistinct($column, $orderType)
 	{
-		$query = "SELECT DISTINCT $column FROM $this->table ORDER BY $column $order_type LIMIT $this->limit OFFSET $this->offset";
+		$query = "SELECT DISTINCT $column FROM $this->table ORDER BY $column $orderType LIMIT $this->limit OFFSET $this->offset";
 		$results = $this->query($query);
 
 		// Flatten the multidimensional array

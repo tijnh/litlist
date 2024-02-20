@@ -12,7 +12,7 @@ class BookModel
   // 	'title',
   // ];
 
-  public function findAll($order_column = "book_id", $order_type = "ASC")
+  public function findAll($orderColumn = "book_id", $orderType = "ASC")
   {
 
     $query = "SELECT
@@ -34,12 +34,12 @@ class BookModel
       LEFT JOIN books_themes ON books.book_id = books_themes.book_id
       LEFT JOIN themes ON books_themes.theme_id = themes.theme_id
     ORDER BY
-			$order_column $order_type";
+			$orderColumn $orderType";
 
     return $this->query($query);
   }
 
-  public function findWhere($filters, $order_column = "book_id", $order_type = "ASC")
+  public function findWhere($filters, $orderColumn = "book_id", $orderType = "ASC")
   {
     $parameters = [];
 
@@ -73,33 +73,33 @@ class BookModel
       $parameters["searchterm"] = "%" . $filters["searchterm"] . "%";
     }
     
-    if (isset($filters["min_year"])) {
-      $query .= "books.publication_year >= :min_year";
+    if (isset($filters["minYear"])) {
+      $query .= "books.publication_year >= :minYear";
       $query .= " AND ";
-      $parameters["min_year"] = $filters["min_year"];
+      $parameters["minYear"] = $filters["minYear"];
     }
     
-    if (isset($filters["max_year"])) {
-      $query .= "books.publication_year <= :max_year";
+    if (isset($filters["maxYear"])) {
+      $query .= "books.publication_year <= :maxYear";
       $query .= " AND ";
-      $parameters["max_year"] = $filters["max_year"];
+      $parameters["maxYear"] = $filters["maxYear"];
     }
     
-    if (isset($filters["min_pages"])) {
-      $query .= "books.pages >= :min_pages";
+    if (isset($filters["minPages"])) {
+      $query .= "books.pages >= :minPages";
       $query .= " AND ";
-      $parameters["min_pages"] = $filters["min_pages"];
+      $parameters["minPages"] = $filters["minPages"];
     }
     
-    if (isset($filters["max_pages"])) {
-      $query .= "books.pages <= :max_pages";
+    if (isset($filters["maxPages"])) {
+      $query .= "books.pages <= :maxPages";
       $query .= " AND ";
-      $parameters["max_pages"] = $filters["max_pages"];
+      $parameters["maxPages"] = $filters["maxPages"];
     }
     
-    if (isset($filters["reading_level"])) {
+    if (isset($filters["readingLevels"])) {
       $query .= "(";
-      foreach ($filters["reading_level"] as $lvl) {
+      foreach ($filters["readingLevels"] as $lvl) {
         $query .= "books.reading_level = :level$lvl";
         $parameters["level$lvl"] = $lvl;
         $query .= " OR ";
@@ -110,7 +110,7 @@ class BookModel
 
     $query = trim($query, " AND ");
 
-    $query .= " ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
+    $query .= " ORDER BY $orderColumn $orderType LIMIT $this->limit OFFSET $this->offset";
     $result =  $this->query($query, $parameters);
 
     if ($result)
