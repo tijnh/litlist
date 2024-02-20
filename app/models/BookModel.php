@@ -12,7 +12,7 @@ class BookModel
   // 	'title',
   // ];
 
-  public function findAll($order_column, $order_type)
+  public function findAll($order_column = "book_id", $order_type = "ASC")
   {
 
     $query = "SELECT
@@ -116,6 +116,6 @@ class BookModel
     if ($result)
       return $result;
 
-    return false;
+    return [];
   }
 }

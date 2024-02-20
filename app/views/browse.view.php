@@ -1,11 +1,11 @@
 <?php require "common/header.view.php"; ?>
 
 <!-- Search form -->
-<form action="search.php" method="post" class="w-100">
+<form method="post" class="w-100">
   <div class="container-fluid p-3 search-container d-flex justify-content-center">
 
-    <!-- q input -->
-    <input class="searchfield w-100 px-4 form-control mr-sm-2 border-0" name="q" type="search" placeholder="Zoek op titel of auteur" <?= isset($userQuery["q"]) ? "value='" . esc($userQuery["q"]) . "'" : ""; ?> autocomplete="off">
+    <!-- searchterm input -->
+    <input class="searchfield w-100 px-4 form-control mr-sm-2 border-0" name="searchterm" type="search" placeholder="Zoek op titel of auteur" <?= isset($userFilters["searchterm"]) ? "value='" . esc($userFilters["searchterm"]) . "'" : ""; ?> autocomplete="off">
 
   </div>
 
@@ -33,11 +33,11 @@
               <div class="row g-1">
                 <div class="col-3">
                   <!-- min_year input -->
-                  <input name="min_year" type="number" class="form-control" <?= isset($userQuery["min_year"]) ? "value='" . esc($userQuery["min_year"]) . "'" : ""; ?> min="0" placeholder="van">
+                  <input name="min_year" type="number" class="form-control" <?= isset($userFilters["min_year"]) ? "value='" . esc($userFilters["min_year"]) . "'" : ""; ?> min="0" placeholder="van">
                 </div>
                 <div class="col-3">
                   <!-- max_year input -->
-                  <input name="max_year" type="number" class="form-control" <?= isset($userQuery["max_year"]) ? "value='" . esc($userQuery["max_year"]) . "'" : ""; ?> min="0" placeholder="tot">
+                  <input name="max_year" type="number" class="form-control" <?= isset($userFilters["max_year"]) ? "value='" . esc($userFilters["max_year"]) . "'" : ""; ?> min="0" placeholder="tot">
                 </div>
               </div>
 
@@ -58,11 +58,11 @@
               <div class="row g-1">
                 <div class="col-3">
                   <!-- min_pages input -->
-                  <input name="min_pages" type="number" class="form-control" <?= isset($userQuery["min_pages"]) ? "value='" . esc($userQuery["min_pages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
+                  <input name="min_pages" type="number" class="form-control" <?= isset($userFilters["min_pages"]) ? "value='" . esc($userFilters["min_pages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
                 </div>
                 <div class="col-3">
                   <!-- max_pages input -->
-                  <input name="max_pages" type="number" class="form-control" <?= isset($userQuery["max_pages"]) ? "value='" . esc($userQuery["max_pages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
+                  <input name="max_pages" type="number" class="form-control" <?= isset($userFilters["max_pages"]) ? "value='" . esc($userFilters["max_pages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
                 </div>
               </div>
 
@@ -81,10 +81,10 @@
             <div class="accordion-body">
 
               <!-- Checkboxes -->
-              <?php foreach ($filtermenu["reading_level"] as $level) : ?>
+              <?php foreach ($filterMenu["reading_level"] as $level) : ?>
 
                 <div class="form-check">
-                  <input type="checkbox" name="reading_level[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userQuery["reading_level"]) AND in_array($level, $userQuery["reading_level"])) : ?> checked <?php endif ?>>
+                  <input type="checkbox" name="reading_level[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userFilters["reading_level"]) AND in_array($level, $userFilters["reading_level"])) : ?> checked <?php endif ?>>
                   <label class="form-check-label" for="checkboxReadingLevel<?= esc($level) ?>">
                     <?= esc($level) ?>
                   </label>

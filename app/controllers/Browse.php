@@ -9,31 +9,54 @@ class Browse
 
   public function index()
   {
-    $data["pageTitle"] = "Zoeken";
     // $data['username'] = empty($_SESSION['USER']) ? 'User' : $_SESSION['USER']->email;
     $bookModel = new BookModel;
 
+    if ($_SERVER["REQUEST_METHOD"] === "POST") 
+    {
 
-    $filters["searchterm"] = "";
-    $filters["min_year"] = 2000;
-    $filters["max_year"] = 2010;
-    $filters["min_pages"] = 0;
-    $filters["max_pages"] = 400;
-    $filters["reading_level"] = [1,2,3];
-    
+      $userFilters = $this->getUserFilters();
 
-    $books = $bookModel->findWhere($filters, "book_id", "ASC");
-    if ($books) {
-      $data["books"] = $this->cleanBookData($books);
-    } else {
-      $data["books"] = [];
+      if (!empty($userFilters)) 
+      {
+        $books = $bookModel->findWhere($userFilters);
+        $data["userFilters"] = $userFilters;
+      } 
+      else 
+      {
+        $books = $bookModel->findAll();
+      }
+    } 
+
+    else 
+    {
+      $books = $bookModel->findAll();
     }
-    $data["filtermenu"]["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
+
     
+    $data["pageTitle"] = "Zoeken";
+    $data["books"] = $this->cleanBookData($books);
+    $data["filterMenu"] = $this->getFilterMenu($bookModel);
+
+
     $this->view('browse', $data);
   }
 
+  private function getFilterMenu($bookModel) {
+    $filterMenu["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
+    return $filterMenu;
+  }
 
+  private function getUserFilters()
+  {
+    $userFilters = [];
+    foreach ($_POST as $key => $value) {
+      if (!empty($value)) {
+        $userFilters[$key] = $value;
+      }
+    }
+    return $userFilters;
+  }
   private function cleanBookData(array $books)
   {
     $cleanBookData = array();
@@ -54,7 +77,7 @@ class Browse
           "themes" => array()
         );
       }
-			// Add the theme to the themes array for the current book
+      // Add the theme to the themes array for the current book
       if (!in_array($book["theme"], $cleanBookData[$book["book_id"]]["themes"])) {
         $cleanBookData[$book["book_id"]]["themes"][] = strtolower(trim($book["theme"]));
       }
