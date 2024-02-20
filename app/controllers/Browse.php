@@ -14,6 +14,7 @@ class Browse
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") 
     {
+
       $userFilters = $this->getUserFilters();
 
       if (!empty($userFilters)) 
@@ -49,7 +50,8 @@ class Browse
   private function getUserFilters()
   {
     $userFilters = [];
-      if (!empty($vlue)) {
+    foreach ($_POST as $key => $value) {
+      if (!empty($value)) {
         $userFilters[$key] = $value;
       }
     }
