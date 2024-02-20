@@ -14,10 +14,10 @@ if($_SERVER['SERVER_NAME'] == 'localhost')
 }else
 {
 	/** database config **/
-	define('DBNAME', 'my_db');
+	define('DBNAME', 'wae_litlist');
 	define('DBHOST', 'localhost');
-	define('DBUSER', 'root');
-	define('DBPASS', '');
+	define('DBUSER', 'wae_admin');
+	define('DBPASS', 'll0Kbbgxnc');
 	define('DBDRIVER', '');
 
 	define('ROOT', 'https://www.yourwebsite.com');
