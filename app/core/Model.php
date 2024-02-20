@@ -63,39 +63,6 @@ trait Model
 		return $distinctValues;
 	}
 
-
-	public function findWhere($data, $data_not = [], $order_column, $order_type)
-	{
-		$keys = array_keys($data);
-		$keys_not = array_keys($data_not);
-		$query = "SELECT * FROM $this->table WHERE ";
-
-		foreach ($keys as $key) {
-			$query .= $key . " = :" . $key . " AND ";
-		}
-
-		foreach ($keys_not as $key) {
-			$query .= $key . " != :" . $key . " AND ";
-		}
-
-		$query = trim($query, " AND ");
-
-		$query .= " ORDER BY $order_column $order_type LIMIT $this->limit OFFSET $this->offset";
-		$data = array_merge($data, $data_not);
-
-		return $this->query($query, $data);
-	}
-
-	public function findFirstWhere($data, $data_not = [], $order_column, $order_type)
-	{
-		$result = $this->findWhere($data, $data_not, $order_column, $order_type);
-
-		if ($result)
-			return $result[0];
-
-		return false;
-	}
-
 	public function insert($data)
 	{
 

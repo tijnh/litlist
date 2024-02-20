@@ -14,13 +14,21 @@ class Browse
     $bookModel = new BookModel;
 
 
+    $filters["searchterm"] = "";
     $filters["min_year"] = 2000;
-    $filters["max_year"] = 2005;
-    $filters["reading_level"] = [3, 4];
+    $filters["max_year"] = 2010;
+    $filters["min_pages"] = 0;
+    $filters["max_pages"] = 400;
+    $filters["reading_level"] = [1,2,3];
     
-    $books = $bookModel->filter($filters, "book_id", "ASC");
-    $data["books"] = $this->cleanBookData($books);
-    $data["filters"]["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
+
+    $books = $bookModel->findWhere($filters, "book_id", "ASC");
+    if ($books) {
+      $data["books"] = $this->cleanBookData($books);
+    } else {
+      $data["books"] = [];
+    }
+    $data["filtermenu"]["reading_level"] = $bookModel->findDistinct("reading_level", "ASC");
     
     $this->view('browse', $data);
   }

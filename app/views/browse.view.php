@@ -81,7 +81,7 @@
             <div class="accordion-body">
 
               <!-- Checkboxes -->
-              <?php foreach ($filters["reading_level"] as $level) : ?>
+              <?php foreach ($filtermenu["reading_level"] as $level) : ?>
 
                 <div class="form-check">
                   <input type="checkbox" name="reading_level[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userQuery["reading_level"]) AND in_array($level, $userQuery["reading_level"])) : ?> checked <?php endif ?>>
