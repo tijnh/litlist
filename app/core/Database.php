@@ -13,10 +13,7 @@ Trait Database
 		} catch (PDOException $e) {
 			// Output or log the error message
 			echo "Connection failed: " . $e->getMessage();
-			// You might want to handle the error differently depending on your application's needs
-			// For example, you might want to throw the exception or return false
-			// throw $e;
-			// return false;
+			return false;
 		}
 	}
 

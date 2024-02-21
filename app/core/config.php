@@ -1,5 +1,8 @@
 <?php
 
+// For import.php
+$_SERVER['SERVER_NAME'] = 'localhost';
+
 if ($_SERVER['SERVER_NAME'] == 'localhost') 
 {
 	/** database config for development **/
