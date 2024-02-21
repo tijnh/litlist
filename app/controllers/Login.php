@@ -9,6 +9,7 @@ class Login
 
 	public function index()
 	{
+		
 		redirect('home');
 		// $data = [];
 		

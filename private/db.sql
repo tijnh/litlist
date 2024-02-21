@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2024 at 09:01 AM
+-- Generation Time: Feb 21, 2024 at 12:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 SET
@@ -59,46 +59,6 @@ VALUES
   (6, 'René', '', 'Appel'),
   (5, 'Robert', '', 'Anker'),
   (7, 'Simone', '', 'Atangana Bekono');
-
--- --------------------------------------------------------
---
--- Table structure for table `authors_books`
---
-CREATE TABLE `authors_books` (
-  `author_id` int(11) NOT NULL,
-  `book_id` int(11) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
---
--- Dumping data for table `authors_books`
---
-INSERT INTO
-  `authors_books` (`author_id`, `book_id`)
-VALUES
-  (1, 2),
-  (1, 3),
-  (1, 4),
-  (2, 2),
-  (2, 5),
-  (3, 6),
-  (4, 7),
-  (5, 8),
-  (5, 9),
-  (6, 10),
-  (6, 11),
-  (7, 12),
-  (9, 14),
-  (9, 15),
-  (9, 16),
-  (9, 17),
-  (10, 18),
-  (11, 19),
-  (11, 20),
-  (11, 21),
-  (12, 22),
-  (12, 23),
-  (13, 24),
-  (13, 25);
 
 -- --------------------------------------------------------
 --
@@ -168,7 +128,7 @@ VALUES
     '2000',
     '',
     '',
-    ''
+    'https://media.s-bol.com/Y56L8DN7XpRO/voxgg5L/748x1200.jpg'
   ),
   (
     5,
@@ -180,7 +140,7 @@ VALUES
     '1999',
     '',
     '',
-    ''
+    'https://media.s-bol.com/39mK383vXNEn/527x840.jpg'
   ),
   (
     6,
@@ -192,7 +152,7 @@ VALUES
     '2012',
     '',
     '',
-    ''
+    'https://media.s-bol.com/58YNJok5ANwx/536x840.jpg'
   ),
   (
     7,
@@ -413,68 +373,58 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `genres`
+-- Table structure for table `books_authors`
 --
-CREATE TABLE `genres` (
-  `genre_id` int(11) NOT NULL,
-  `genre` varchar(40) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
--- --------------------------------------------------------
---
--- Table structure for table `genres_books`
---
-CREATE TABLE `genres_books` (
-  `genre_id` int(11) NOT NULL,
+CREATE TABLE `books_authors` (
+  `author_id` int(11) NOT NULL,
   `book_id` int(11) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
--- --------------------------------------------------------
 --
--- Table structure for table `themes`
---
-CREATE TABLE `themes` (
-  `theme_id` int(11) NOT NULL,
-  `theme` varchar(50) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
---
--- Dumping data for table `themes`
+-- Dumping data for table `books_authors`
 --
 INSERT INTO
-  `themes` (`theme_id`, `theme`)
+  `books_authors` (`author_id`, `book_id`)
 VALUES
-  (3, 'andere plaatsen andere tijden'),
-  (16, 'berust op werkelijkheid'),
-  (13, 'de adolescent'),
-  (4, 'eenzaamheid'),
-  (14, 'familie'),
-  (15, 'kunst en kunstenaar'),
-  (2, 'liefde'),
-  (5, 'misdaad'),
-  (6, 'oorlog'),
-  (10, 'op zoek naar je wortels'),
-  (11, 'ouders en kinderen'),
-  (7, 'psychische gestoordheid'),
-  (1, 'rebellie'),
-  (12, 'school'),
-  (9, 'vrouwenstrijd'),
-  (8, 'ziekte en dood');
+  (1, 2),
+  (1, 3),
+  (1, 4),
+  (2, 2),
+  (2, 5),
+  (3, 6),
+  (4, 7),
+  (5, 8),
+  (5, 9),
+  (6, 10),
+  (6, 11),
+  (7, 12),
+  (9, 14),
+  (9, 15),
+  (9, 16),
+  (9, 17),
+  (10, 18),
+  (11, 19),
+  (11, 20),
+  (11, 21),
+  (12, 22),
+  (12, 23),
+  (13, 24),
+  (13, 25);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `themes_books`
+-- Table structure for table `books_themes`
 --
-CREATE TABLE `themes_books` (
+CREATE TABLE `books_themes` (
   `theme_id` int(11) NOT NULL,
   `book_id` int(11) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 --
--- Dumping data for table `themes_books`
+-- Dumping data for table `books_themes`
 --
 INSERT INTO
-  `themes_books` (`theme_id`, `book_id`)
+  `books_themes` (`theme_id`, `book_id`)
 VALUES
   (1, 2),
   (1, 7),
@@ -523,6 +473,56 @@ VALUES
   (16, 12),
   (16, 20);
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `genres`
+--
+CREATE TABLE `genres` (
+  `genre_id` int(11) NOT NULL,
+  `genre` varchar(40) NOT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `genres_books`
+--
+CREATE TABLE `genres_books` (
+  `genre_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `themes`
+--
+CREATE TABLE `themes` (
+  `theme_id` int(11) NOT NULL,
+  `theme` varchar(50) NOT NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+--
+-- Dumping data for table `themes`
+--
+INSERT INTO
+  `themes` (`theme_id`, `theme`)
+VALUES
+  (3, 'andere plaatsen andere tijden'),
+  (16, 'berust op werkelijkheid'),
+  (13, 'de adolescent'),
+  (4, 'eenzaamheid'),
+  (14, 'familie'),
+  (15, 'kunst en kunstenaar'),
+  (2, 'liefde'),
+  (5, 'misdaad'),
+  (6, 'oorlog'),
+  (10, 'op zoek naar je wortels'),
+  (11, 'ouders en kinderen'),
+  (7, 'psychische gestoordheid'),
+  (1, 'rebellie'),
+  (12, 'school'),
+  (9, 'vrouwenstrijd'),
+  (8, 'ziekte en dood');
+
 --
 -- Indexes for dumped tables
 --
@@ -537,22 +537,32 @@ ADD
   UNIQUE KEY `first_name` (`first_name`, `infix`, `last_name`);
 
 --
--- Indexes for table `authors_books`
---
-ALTER TABLE
-  `authors_books`
-ADD
-  UNIQUE KEY `author_id` (`author_id`, `book_id`),
-ADD
-  KEY `book_id` (`book_id`);
-
---
 -- Indexes for table `books`
 --
 ALTER TABLE
   `books`
 ADD
   PRIMARY KEY (`book_id`);
+
+--
+-- Indexes for table `books_authors`
+--
+ALTER TABLE
+  `books_authors`
+ADD
+  UNIQUE KEY `author_id` (`author_id`, `book_id`),
+ADD
+  KEY `book_id` (`book_id`);
+
+--
+-- Indexes for table `books_themes`
+--
+ALTER TABLE
+  `books_themes`
+ADD
+  UNIQUE KEY `theme_id` (`theme_id`, `book_id`),
+ADD
+  KEY `book_id` (`book_id`);
 
 --
 -- Indexes for table `genres`
@@ -583,16 +593,6 @@ ADD
   PRIMARY KEY (`theme_id`),
 ADD
   UNIQUE KEY `theme` (`theme`);
-
---
--- Indexes for table `themes_books`
---
-ALTER TABLE
-  `themes_books`
-ADD
-  UNIQUE KEY `theme_id` (`theme_id`, `book_id`),
-ADD
-  KEY `book_id` (`book_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -636,14 +636,24 @@ MODIFY
 -- Constraints for dumped tables
 --
 --
--- Constraints for table `authors_books`
+-- Constraints for table `books_authors`
 --
 ALTER TABLE
-  `authors_books`
+  `books_authors`
 ADD
-  CONSTRAINT `authors_books_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`author_id`) ON DELETE CASCADE,
+  CONSTRAINT `books_authors_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`author_id`) ON DELETE CASCADE,
 ADD
-  CONSTRAINT `authors_books_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE;
+  CONSTRAINT `books_authors_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `books_themes`
+--
+ALTER TABLE
+  `books_themes`
+ADD
+  CONSTRAINT `books_themes_ibfk_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`theme_id`) ON DELETE CASCADE,
+ADD
+  CONSTRAINT `books_themes_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `genres_books`
@@ -654,16 +664,6 @@ ADD
   CONSTRAINT `genres_books_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`genre_id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `genres_books_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `themes_books`
---
-ALTER TABLE
-  `themes_books`
-ADD
-  CONSTRAINT `themes_books_ibfk_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`theme_id`) ON DELETE CASCADE,
-ADD
-  CONSTRAINT `themes_books_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE;
 
 COMMIT;
 
