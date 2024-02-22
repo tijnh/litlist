@@ -43,7 +43,7 @@ class Import
 
     // loop over every row in csv. Each row is a book.
     while ($bookRow = fgetcsv($file, $length, $separator)) {
-      
+
       $numBooks += 1;
 
       // Create array with info for this book. 
@@ -59,14 +59,14 @@ class Import
         $errors[] = $this->log_error("TitleNotFoundError", "row {$rowNum}");
         continue;
       }
-      
+
       // Set invalid values to "NULL"
       $book = $this->setInvalidValuesToNull($book, $intCols, $strCols);
-      
+
       // Separate themes string (e.g. "liefde", "Andere-plaatsen") to an array,
       // like: [0] => liefde, [1] andere plaatsen
       $book["themes"] = $this->formatThemes($book["themes"]);
-      
+
       // Remove unnecessary whitespace everywhere
       $book = $this->trimArrayItems($book);
 
@@ -77,7 +77,7 @@ class Import
       if ($this->getBookId($book)) {
         $errors[] = $this->log_error("DublicateBookError", $book["title"]);
         continue;
-      } 
+      }
 
       // Try to insert book into database, log error and stop if it fails
       try {
@@ -86,10 +86,31 @@ class Import
         $errors[] = $this->log_error("InsertError", $book["title"]);
         continue;
       }
-      
+
       // Get book id that has been assigned by database
       $book["book_id"] = $this->getBookId($book);
+
+      // Insert themes into database
+      foreach ($book["themes"] as $theme) {
       
+        // If theme already in database, log error and stop this theme
+        if ($this->getThemeId($theme)) {
+          $errors[] = $this->log_error("DublicateThemeError", $theme);
+          continue;
+        }
+
+        // Try to insert theme into database, log error and stop if it fails
+        try {
+          $this->insertIntoThemesTable($theme);
+        } catch (PDOException) {
+          $errors[] = $this->log_error("InsertError", $theme);
+          continue;
+        }
+
+        // Get theme id that has been assigned by database
+        $theme_id = $this->getThemeId($theme);
+        echo $theme_id . "\n";
+      }
     }
 
     $numErrors = count($errors);
@@ -98,8 +119,22 @@ class Import
     echo "---\nREPORT\n---\n";
     echo "BooksTotal: $numBooks\n";
     echo "BooksFailed: $numErrors\n";
-    foreach($errors as $error) {
+    foreach ($errors as $error) {
       echo $error . "\n";
+    }
+  }
+
+  function getThemeId($theme)
+  {
+    $query = "SELECT theme_id FROM themes WHERE theme = \"$theme\";";
+
+
+    $result = $this->query($query);
+
+    if ($result) {
+      return $result[0]["theme_id"];
+    } else {
+      return false;
     }
   }
 
@@ -107,14 +142,14 @@ class Import
   {
     $query = "SELECT book_id FROM books WHERE title = \"{$book['title']}\"";
 
-    if($book["publication_year"] === "NULL") {
-     $query .= " AND publication_year IS NULL";
+    if ($book["publication_year"] === "NULL") {
+      $query .= " AND publication_year IS NULL";
     } else {
       $query .= " AND publication_year = {$book['publication_year']}";
     }
-    
-    if($book["pages"] === "NULL") {
-     $query .= " AND pages IS NULL";
+
+    if ($book["pages"] === "NULL") {
+      $query .= " AND pages IS NULL";
     } else {
       $query .= " AND pages = {$book['pages']}";
     }
@@ -122,16 +157,25 @@ class Import
     $query .= ";";
 
     $result = $this->query($query);
+
     if ($result) {
       return $result[0]["book_id"];
     } else {
-      return false; 
+      return false;
     }
+  }
+
+  function insertIntoThemesTable($theme)
+  {
+ 
+    $query = "INSERT INTO themes (theme) VALUES (\"$theme\");";
+
+    $this->query($query);
   }
 
   function insertIntoBooksTable($book)
   {
-    // Data to go into 'books' table
+    
     $query = "INSERT INTO books (title, image_link, publication_year, audiobook, pages, blurb, summary, reading_level, review_text, review_link, secondary_literature_text, secondary_literature_link) 
       VALUES (\"{$book['title']}\", \"{$book['image_link']}\", {$book['publication_year']}, \"{$book['audiobook']}\", {$book['pages']}, \"{$book['blurb']}\", \"{$book['summary']}\", {$book['reading_level']}, \"{$book['review_text']}\", \"{$book['review_link']}\", \"{$book['secondary_literature_text']}\", \"{$book['secondary_literature_link']}\");";
 
@@ -249,7 +293,6 @@ class Import
     $msg .= "(\e[36m{$book}\e[0m)";
     return $msg;
   }
-
 }
 
 
