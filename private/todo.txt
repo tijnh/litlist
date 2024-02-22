@@ -1,20 +1,17 @@
 Error handlers for user input
 Wat als image link kapot is
-Wat als er geen blurb, code, author, theme etc is.
+Wat als er geen blurb, code, author, theme, niveau etc is.
 redesign cards
 'geen boeken gevonden' in mooie div
 homepage maken
 link naar blurb clickable maken
 image clickable naar book page
-make book page
 security (tutorial dani krossing, htmlspecialchars bij alle output/input)
 create book page for more info
 search with filters
 remove inline css
 make index.php an entry point??
 data validatio on filters (users could chage HTML to change values)
-same indentation everywhere (2 spaces)
 wat als hele lange titel, auteur, genre enz?
-wat als een boek geen niveau heeft? dan vind je hem niet met filters
 toon welke filters worden gebruikt
-grey out unchecked checkboxes when at least one is checked
+adiobook filter

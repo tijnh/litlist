@@ -1,10 +1,12 @@
 <?php
 
+
+$_SERVER['SERVER_NAME'] = 'localhost';
+
 require 'app/core/config.php';
 require 'app/core/Database.php';
 
-//1. uncomment 'for import' line in config.php
-//2. CLI command: php -r "require 'C:/xampp/htdocs/litlist/private/import.php'; run('private/books.csv');" 
+//CLI command: php -r "require 'C:/xampp/htdocs/litlist/private/import.php';" 
 
 function run($filepath){
   $importModel = new Import;
@@ -24,7 +26,6 @@ class Import {
   
     $cols = ["title", "image_link", "first_name", "last_name", "infix", "publication_year", "audiobook", "pages", "blurb", "summary", "genres", "themes", "reading_level", "recommendation_level", "review_text", "review_link", "secondary_literature_text", "secondary_literature_link"];
     $intCols = ["publication_year", "pages", "reading_level", "recommendation_level"];
-    // Title is not always a string, book might have a number as title
     $strCols = ["image_link", "first_name", "last_name", "infix", "audiobook", "blurb", "summary", "genres", "themes", "review_text", "review_link", "secondary_literature_text", "secondary_literature_link"];
   
   
@@ -72,8 +73,8 @@ class Import {
       $booksTableQuery = "INSERT INTO books (title, image_link, publication_year, audiobook, pages, blurb, summary, reading_level, review_text, review_link, secondary_literature_text, secondary_literature_link) 
       VALUES (\"{$book['title']}\", \"{$book['image_link']}\", {$book['publication_year']}, \"{$book['audiobook']}\", {$book['pages']}, \"{$book['blurb']}\", \"{$book['summary']}\", {$book['reading_level']}, \"{$book['review_text']}\", \"{$book['review_link']}\", \"{$book['secondary_literature_text']}\", \"{$book['secondary_literature_link']}\");";
   
-      $result = $this->query($booksTableQuery);
-      echo $result;
+      // $result = $this->query($booksTableQuery);
+      // echo $result;
     }
   
   
@@ -155,6 +156,7 @@ class Import {
   {
     $str = str_replace("\"", "", $str);
     $str = str_replace("-", " ", $str);
+    $str = strtolower($str);
     $themesArray = explode(",", $str);
     return $themesArray;
   }
@@ -177,3 +179,6 @@ class Import {
     print($msg . "\n");
   }
 }
+
+
+run("private/books.csv");
