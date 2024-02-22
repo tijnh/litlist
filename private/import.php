@@ -33,56 +33,100 @@ class Import
 
     $fileCols = fgetcsv($file, $length, $separator);
 
-    // Find row index for every col e.g. "title is the first column col", so $colIdx["title"] = 0
+    // Find row index for every col e.g. title is the first column, so $colIdx["title"] = 0
     foreach ($cols as $col) {
       $colIdx[$col] = array_search($col, $fileCols);
     }
 
-    $booksTotal = 0;
-    $booksImported = 0;
-    $booksFailed = 0;
-    // loop over every row (= book)
-    while ($bookRow = fgetcsv($file, $length, $separator)) {
-      $booksTotal += 1;
-      // Create array with info for this book. E.g. $book["title] = 'Reis van flessen', $book["image_link"] 'http://www..." etc.
-      $book = [];
+    $numBooks = 0;
+    $errors = [];
 
+    // loop over every row in csv. Each row is a book.
+    while ($bookRow = fgetcsv($file, $length, $separator)) {
+      
+      $numBooks += 1;
+
+      // Create array with info for this book. 
+      // E.g. $book["title] = 'Reis van flessen', $book["image_link"] 'http://www..." 
+      $book = [];
       foreach ($cols as $col) {
         $book[$col] = $bookRow[$colIdx[$col]];
       }
 
-      // If no title, stop and show which book
+      // If no title, log error and stop this book
       if (empty($book["title"])) {
-        $rowNum = $booksTotal + 1;
-        $this->show_error("TitleNotFoundError", "row {$rowNum}");
-        $booksFailed += 1;
+        $rowNum = $numBooks + 1;
+        $errors[] = $this->log_error("TitleNotFoundError", "row {$rowNum}");
         continue;
       }
       
-
-      
+      // Set invalid values to "NULL"
       $book = $this->setInvalidValuesToNull($book, $intCols, $strCols);
       
-      // Clean themes
-      $book["themes"] = $this->themesToArray($book["themes"]);
+      // Separate themes string (e.g. "liefde", "Andere-plaatsen") to an array,
+      // like: [0] => liefde, [1] andere plaatsen
+      $book["themes"] = $this->formatThemes($book["themes"]);
       
+      // Remove unnecessary whitespace everywhere
       $book = $this->trimArrayItems($book);
+
+      // Escape special characters everywhere
       $book = $this->escapeArrayItems($book);
 
+      // If book already in database, log error and stop this book
+      if ($this->getBookId($book)) {
+        $errors[] = $this->log_error("DublicateBookError", $book["title"]);
+        continue;
+      } 
+
+      // Try to insert book into database, log error and stop if it fails
       try {
         $this->insertIntoBooksTable($book);
       } catch (PDOException) {
-        $this->show_error("InsertError", $book["title"]);
-        $booksFailed += 1;
+        $errors[] = $this->log_error("InsertError", $book["title"]);
+        continue;
       }
+      
+      // Get book id that has been assigned by database
+      $book["book_id"] = $this->getBookId($book);
+      
     }
 
+    $numErrors = count($errors);
 
     fclose($file);
     echo "---\nREPORT\n---\n";
-    echo "BooksTotal: $booksTotal\n";
-    echo "BooksFailed: $booksFailed\n";
-    echo "BooksImported: $booksImported\n";
+    echo "BooksTotal: $numBooks\n";
+    echo "BooksFailed: $numErrors\n";
+    foreach($errors as $error) {
+      echo $error . "\n";
+    }
+  }
+
+  function getBookId($book)
+  {
+    $query = "SELECT book_id FROM books WHERE title = \"{$book['title']}\"";
+
+    if($book["publication_year"] === "NULL") {
+     $query .= " AND publication_year IS NULL";
+    } else {
+      $query .= " AND publication_year = {$book['publication_year']}";
+    }
+    
+    if($book["pages"] === "NULL") {
+     $query .= " AND pages IS NULL";
+    } else {
+      $query .= " AND pages = {$book['pages']}";
+    }
+
+    $query .= ";";
+
+    $result = $this->query($query);
+    if ($result) {
+      return $result[0]["book_id"];
+    } else {
+      return false; 
+    }
   }
 
   function insertIntoBooksTable($book)
@@ -161,7 +205,7 @@ class Import
     return $arr;
   }
 
-  function themesToArray($str)
+  function formatThemes($str)
   {
     $str = str_replace("\"", "", $str);
     $str = str_replace("-", " ", $str);
@@ -187,6 +231,25 @@ class Import
     $msg .= "(\e[36m{$book}\e[0m)";
     print($msg . "\n");
   }
+
+  function log_error($errorType, $book, $col = NULL, $oldValue = NULL, $newValue = NULL)
+  {
+    $msg = "\e[33m{$errorType} \e[0m";
+
+    if ($col) {
+      $msg .= "{$col} ";
+    }
+    if ($oldValue) {
+      $msg .= "\e[31m{$oldValue}\e[0m set to ";
+    }
+    if ($newValue) {
+      $msg .= "\e[32m{$newValue} \e[0m";
+    }
+
+    $msg .= "(\e[36m{$book}\e[0m)";
+    return $msg;
+  }
+
 }
 
 

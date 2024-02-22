@@ -12,7 +12,7 @@ class BookModel
   // 	'title',
   // ];
 
-  public function findAll($orderColumn = "book_id", $orderType = "ASC")
+  public function findAll($orderColumn = "books.title", $orderType = "ASC")
   {
 
     $query = "SELECT
@@ -44,7 +44,7 @@ class BookModel
     return [];
   }
 
-  public function findWhere($filters, $orderColumn = "book_id", $orderType = "ASC")
+  public function findWhere($filters, $orderColumn = "books.title", $orderType = "ASC")
   {
     $parameters = [];
 
