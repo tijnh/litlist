@@ -39,7 +39,7 @@ class Import
     }
 
     $numBooks = 0;
-    $errors = [];
+    $bookErrors = [];
 
     // loop over every row in csv. Each row is a book.
     while ($bookRow = fgetcsv($file, $length, $separator)) {
@@ -56,7 +56,7 @@ class Import
       // If no title, log error and stop this book
       if (empty($book["title"])) {
         $rowNum = $numBooks + 1;
-        $errors[] = $this->log_error("TitleNotFoundError", "row {$rowNum}");
+        $bookErrors[] = $this->log_error("TitleNotFoundError", "row {$rowNum}");
         continue;
       }
 
@@ -74,28 +74,28 @@ class Import
       $book = $this->escapeArrayItems($book);
 
       // If book already in database, log error and stop this book
-      if ($this->getBookId($book)) {
-        $errors[] = $this->log_error("DublicateBookError", $book["title"]);
-        continue;
-      }
+      // if ($this->getBookId($book)) {
+      //   $bookErrors[] = $this->log_error("DublicateBookError", $book["title"]);
+      //   continue;
+      // }
 
-      // Try to insert book into database, log error and stop if it fails
-      try {
-        $this->insertIntoBooksTable($book);
-      } catch (PDOException) {
-        $errors[] = $this->log_error("InsertError", $book["title"]);
-        continue;
-      }
+      // // Try to insert book into database, log error and stop if it fails
+      // try {
+      //   $this->insertIntoBooksTable($book);
+      // } catch (PDOException) {
+      //   $bookErrors[] = $this->log_error("InsertError", $book["title"]);
+      //   continue;
+      // }
 
-      // Get book id that has been assigned by database
-      $book["book_id"] = $this->getBookId($book);
+      // // Get book id that has been assigned by database
+      // $book["book_id"] = $this->getBookId($book);
 
       // Insert themes into database
       foreach ($book["themes"] as $theme) {
       
         // If theme already in database, log error and stop this theme
         if ($this->getThemeId($theme)) {
-          $errors[] = $this->log_error("DublicateThemeError", $theme);
+          $bookErrors[] = $this->log_error("DublicateThemeError", $theme);
           continue;
         }
 
@@ -103,7 +103,7 @@ class Import
         try {
           $this->insertIntoThemesTable($theme);
         } catch (PDOException) {
-          $errors[] = $this->log_error("InsertError", $theme);
+          $bookErrors[] = $this->log_error("InsertError", $theme);
           continue;
         }
 
@@ -113,15 +113,15 @@ class Import
       }
     }
 
-    $numErrors = count($errors);
+    $numErrors = count($bookErrors);
 
     fclose($file);
-    echo "---\nREPORT\n---\n";
-    echo "BooksTotal: $numBooks\n";
-    echo "BooksFailed: $numErrors\n";
-    foreach ($errors as $error) {
+    foreach ($bookErrors as $error) {
       echo $error . "\n";
     }
+    echo "---\nREPORT\n---\n";
+    echo "Number of books read: $numBooks\n";
+    echo "Number of book imports failed: $numErrors\n";
   }
 
   function getThemeId($theme)
