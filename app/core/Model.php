@@ -58,9 +58,13 @@ trait Model
 		$results = $this->query($query);
 
 		// Flatten the multidimensional array
-		$distinctValues = array_column($results, $column);
+		if ($results) {
+			$distinctValues = array_column($results, $column);
+			return $distinctValues;
+		} else {
+			return false;
+		}
 
-		return $distinctValues;
 	}
 
 	public function insert($data)

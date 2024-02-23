@@ -133,9 +133,8 @@ class Import
 
       // If book has themes, add them to the database and connect them to the book
       if (isset($book["themes"])) {
-          $this->addAndConnectThemes($book);
-        }
-      
+        $this->addAndConnectThemes($book);
+      }
     }
 
     fclose($file);
@@ -161,7 +160,8 @@ class Import
     // echo "Number of book imports failed: $numErrors\n";
   }
 
-  function addAndConnectThemes($book) {
+  function addAndConnectThemes($book)
+  {
     // Add theme to database if not already in there.
     foreach ($book["themes"] as $theme) {
       if ($this->addThemeToDatabase($theme) === "failed") {
@@ -171,6 +171,7 @@ class Import
       foreach ($book["themes"] as $theme) {
         $this->connectThemeToBook($theme, $book);
       }
+    }
   }
   function connectThemeToBook($theme, $book)
   {

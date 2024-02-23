@@ -1,75 +1,76 @@
 <?php require "common/header.view.php"; ?>
 
-  <!-- Search form -->
-  <form method="post" class="w-100">
-    <div class="container-fluid p-3 search-container d-flex justify-content-center">
+<!-- Search form -->
+<form method="post" class="w-100">
+  <div class="container-fluid p-3 search-container d-flex justify-content-center">
 
-      <!-- searchterm input -->
-      <input class="searchfield w-100 px-4 form-control mr-sm-2 border-0" name="searchterm" type="search" placeholder="Zoek op titel of auteur" <?= isset($userFilters["searchterm"]) ? "value='" . esc($userFilters["searchterm"]) . "'" : ""; ?> autocomplete="off">
+    <!-- searchterm input -->
+    <input class="searchfield w-100 px-4 form-control mr-sm-2 border-0" name="searchterm" type="search" placeholder="Zoek op titel of auteur" <?= isset($userFilters["searchterm"]) ? "value='" . esc($userFilters["searchterm"]) . "'" : ""; ?> autocomplete="off">
 
+  </div>
+
+  <!-- Filter Menu -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="filterMenu" aria-labelledby="filterMenu">
+
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="filterMenu">Zoek met filters</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
-    <!-- Filter Menu -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="filterMenu" aria-labelledby="filterMenu">
+    <div class="offcanvas-body">
+      <div class="accordion" id="accordionPanelsStayOpenExample">
 
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="filterMenu">Zoek met filters</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
+        <!-- Year filter -->
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header border-bottom">
+            <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+              <i class="bi bi-calendar filter-icon"></i> Jaar van verschijnen
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+            <div class="accordion-body">
 
-      <div class="offcanvas-body">
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-
-          <!-- Year filter -->
-          <div class="accordion-item border-0">
-            <h2 class="accordion-header border-bottom">
-              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
-                <i class="bi bi-calendar filter-icon"></i> Jaar van verschijnen
-              </button>
-            </h2>
-            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-              <div class="accordion-body">
-
-                <div class="row g-1">
-                  <div class="col-3">
-                    <!-- minYear input -->
-                    <input name="minYear" type="number" class="form-control" <?= isset($userFilters["minYear"]) ? "value='" . esc($userFilters["minYear"]) . "'" : ""; ?> min="0" placeholder="van">
-                  </div>
-                  <div class="col-3">
-                    <!-- maxYear input -->
-                    <input name="maxYear" type="number" class="form-control" <?= isset($userFilters["maxYear"]) ? "value='" . esc($userFilters["maxYear"]) . "'" : ""; ?> min="0" placeholder="tot">
-                  </div>
+              <div class="row g-1">
+                <div class="col-3">
+                  <!-- minYear input -->
+                  <input name="minYear" type="number" class="form-control" <?= isset($userFilters["minYear"]) ? "value='" . esc($userFilters["minYear"]) . "'" : ""; ?> min="0" placeholder="van">
                 </div>
-
+                <div class="col-3">
+                  <!-- maxYear input -->
+                  <input name="maxYear" type="number" class="form-control" <?= isset($userFilters["maxYear"]) ? "value='" . esc($userFilters["maxYear"]) . "'" : ""; ?> min="0" placeholder="tot">
+                </div>
               </div>
+
             </div>
           </div>
+        </div>
 
-          <!-- Pages filter -->
-          <div class="accordion-item border-0">
-            <h2 class="accordion-header border-bottom">
-              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                <i class="bi bi-book filter-icon"></i> Aantal pagina's
-              </button>
-            </h2>
-            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-              <div class="accordion-body">
+        <!-- Pages filter -->
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header border-bottom">
+            <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+              <i class="bi bi-book filter-icon"></i> Aantal pagina's
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+            <div class="accordion-body">
 
-                <div class="row g-1">
-                  <div class="col-3">
-                    <!-- minPages input -->
-                    <input name="minPages" type="number" class="form-control" <?= isset($userFilters["minPages"]) ? "value='" . esc($userFilters["minPages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
-                  </div>
-                  <div class="col-3">
-                    <!-- maxPages input -->
-                    <input name="maxPages" type="number" class="form-control" <?= isset($userFilters["maxPages"]) ? "value='" . esc($userFilters["maxPages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
-                  </div>
+              <div class="row g-1">
+                <div class="col-3">
+                  <!-- minPages input -->
+                  <input name="minPages" type="number" class="form-control" <?= isset($userFilters["minPages"]) ? "value='" . esc($userFilters["minPages"]) . "'" : ""; ?> placeholder="van" min="0" size="4">
                 </div>
-
+                <div class="col-3">
+                  <!-- maxPages input -->
+                  <input name="maxPages" type="number" class="form-control" <?= isset($userFilters["maxPages"]) ? "value='" . esc($userFilters["maxPages"]) . "'" : ""; ?> placeholder="tot" min="0" size="4">
+                </div>
               </div>
+
             </div>
           </div>
+        </div>
 
+        <?php if (!empty($filterMenu["readingLevels"])) : ?>
           <!-- Reading Level filter -->
           <div class="accordion-item border-0">
             <h2 class="accordion-header border-bottom">
@@ -82,16 +83,18 @@
 
                 <!-- Checkboxes -->
                 <?php foreach ($filterMenu["readingLevels"] as $level) : ?>
-                <div class="form-check">
-                  <input type="checkbox" name="readingLevels[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userFilters["readingLevels"]) and in_array($level, $userFilters["readingLevels"])) : ?> checked <?php endif ?>>
-                  <label class="form-check-label" for="checkboxReadingLevel<?= esc($level) ?>"><?= esc($level) ?></label>
-                </div>
+                  <div class="form-check">
+                    <input type="checkbox" name="readingLevels[]" id="checkboxReadingLevel<?= esc($level) ?>" class="form-check-input reading-level-checkbox" value="<?= esc($level) ?>" <?php if (isset($userFilters["readingLevels"]) and in_array($level, $userFilters["readingLevels"])) : ?> checked <?php endif ?>>
+                    <label class="form-check-label" for="checkboxReadingLevel<?= esc($level) ?>"><?= esc($level) ?></label>
+                  </div>
                 <?php endforeach ?>
 
               </div>
             </div>
           </div>
+        <?php endif ?>
 
+        <?php if (!empty($filterMenu["audiobook"])) : ?>
           <!-- Audiobook filter -->
           <div class="accordion-item border-0">
             <h2 class="accordion-header border-bottom">
@@ -115,21 +118,22 @@
               </div>
             </div>
           </div>
+        <?php endif ?>
 
-        </div> <!-- end of accordion -->
+      </div> <!-- end of accordion -->
 
-        <!-- Submit button -->
-        <div class="row py-4">
-          <div class="col-12 text-center">
-            <button type="submit" class="ll-btn ll-btn-primary w-100">Zoeken</button>
-          </div>
+      <!-- Submit button -->
+      <div class="row py-4">
+        <div class="col-12 text-center">
+          <button type="submit" class="ll-btn ll-btn-primary w-100">Zoeken</button>
         </div>
-
       </div>
 
     </div>
-  </form>
 
-<?php require "browse/booklist.view.php"?>
-    <script src="<?= ROOT ?>/assets/js/filters.js"></script>
-<?php require "common/footer.view.php"?>
+  </div>
+</form>
+
+<?php require "browse/booklist.view.php" ?>
+<script src="<?= ROOT ?>/assets/js/filters.js"></script>
+<?php require "common/footer.view.php" ?>
