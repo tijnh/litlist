@@ -113,7 +113,7 @@ class Import
         continue;
       }
 
-      // Set invalid values to "NULL"
+      // Set invalid values to NULL
       $book = $this->setInvalidValuesToNull($book);
 
       // Separate themes string (e.g. "liefde", "Andere-plaatsen") into an array,
@@ -135,11 +135,16 @@ class Import
       if (isset($book["themes"])) {
         $this->addAndConnectThemes($book);
       }
+
+      // If at least author last name provided, add author to database and connect author to book
+      if (isset($book["last_name"])) {
+        $this->addAndConnectAuthor($book);
+      }
     }
 
     fclose($file);
 
-    $showLogs = false;
+    $showLogs = true;
     if ($showLogs) {
       if (isset($this->log["bookErrors"])) {
         var_dump($this->log["bookErrors"]);
@@ -150,6 +155,12 @@ class Import
       if (isset($this->log["bookThemesErrors"])) {
         var_dump($this->log["bookThemesErrors"]);
       }
+      if (isset($this->log["bookAuthorErrors"])) {
+        var_dump($this->log["bookAuthorErrors"]);
+      }
+      if (isset($this->log["authorErrors"])) {
+        var_dump($this->log["authorErrors"]);
+      }
     }
     echo $numBooks;
     // foreach ($bookErrors as $error) {
@@ -159,6 +170,7 @@ class Import
     // echo "Number of books read: $numBooks\n";
     // echo "Number of book imports failed: $numErrors\n";
   }
+
 
   function addAndConnectThemes($book)
   {
@@ -173,6 +185,30 @@ class Import
       }
     }
   }
+
+  function addAndConnectAuthor($book)
+  {
+    // Add author to database if not already in there.
+    $this->addAuthorToDatabase($book);
+    // Connect author to book in database
+    $this->connectAuthorToBook($book);
+  }
+
+
+
+  function connectAuthorToBook($book)
+  {
+    $authorId = $this->getAuthorId($book);
+    $bookId = $this->getBookId($book);
+
+    $query = "INSERT INTO books_authors (book_id, author_id) VALUES ({$bookId}, {$authorId});";
+
+    try {
+      $this->query($query);
+    } catch (PDOException $e) {
+      $this->log["bookAuthorErrors"][] = $this->logError("InsertError", "BookID: $bookId Author ID: $authorId") . ": " . $e->getMessage();
+    }
+  }
   function connectThemeToBook($theme, $book)
   {
     $themeId = $this->getThemeId($theme);
@@ -183,10 +219,26 @@ class Import
     try {
       $this->query($query);
     } catch (PDOException $e) {
-      $this->log["bookThemesErrors"][] = $this->logError("InsertError", "BookID: $bookId Theme:ID $themeId") . ": " . $e->getMessage();
+      $this->log["bookThemesErrors"][] = $this->logError("InsertError", "BookID: $bookId Theme ID: $themeId") . ": " . $e->getMessage();
     }
   }
 
+  function addAuthorToDatabase($book)
+  {
+    // If author already in database, log error and return
+    if ($this->getAuthorId($book)) {
+      $this->log["authorErrors"][] = $this->logError("DublicateAuthorError", "{$book['first_name']}, {$book['infix']}, {$book['last_name']}");
+    } else {
+      // Try to insert author into database, log error and return "failed" if it fails
+      try {
+        $this->insertIntoAuthorsTable($book);
+      } catch (PDOException $e) {
+        $this->log["authorErrors"][] = $this->logError("InsertError", "{$book['first_name']}, {$book['infix']}, {$book['last_name']}") . ": " . $e->getMessage();
+        return "failed";
+      }
+    }
+
+  }
   function addThemeToDatabase($theme)
   {
     // If theme already in database, log error and return "failed"
@@ -239,6 +291,33 @@ class Import
     return $columnIndexes;
   }
 
+  function getAuthorId($book)
+  {
+    $query = "SELECT author_id FROM authors WHERE last_name = \"{$book['last_name']}\";";
+
+    if ($book["first_name"] === NULL) {
+      $query .= " AND first_name IS NULL";
+    } else {
+      $query .= " AND first_name = {$book['first_name']}";
+    }
+
+    if ($book["infix"] === NULL) {
+      $query .= " AND infix IS NULL";
+    } else {
+      $query .= " AND infix = {$book['infix']}";
+    }
+
+    $query .= ";";
+
+    $result = $this->query($query);
+
+    if ($result) {
+      return $result[0]["author_id"];
+    } else {
+      return false;
+    }
+  }
+
   function getThemeId($theme)
   {
     $query = "SELECT theme_id FROM themes WHERE theme = \"$theme\";";
@@ -257,13 +336,13 @@ class Import
   {
     $query = "SELECT book_id FROM books WHERE title = \"{$book['title']}\"";
 
-    if ($book["publication_year"] === "NULL") {
+    if ($book["publication_year"] === NULL) {
       $query .= " AND publication_year IS NULL";
     } else {
       $query .= " AND publication_year = {$book['publication_year']}";
     }
 
-    if ($book["pages"] === "NULL") {
+    if ($book["pages"] === NULL) {
       $query .= " AND pages IS NULL";
     } else {
       $query .= " AND pages = {$book['pages']}";
@@ -284,6 +363,14 @@ class Import
   {
 
     $query = "INSERT INTO themes (theme) VALUES (\"$theme\");";
+
+    $this->query($query);
+  }
+
+  function insertIntoAuthorsTable($book)
+  {
+
+    $query = "INSERT INTO authors (first_name, infix, last_name) VALUES (\"{$book['first_name']}\", \"{$book['infix']}\", \"{$book['last_name']}\");";
 
     $this->query($query);
   }
@@ -311,24 +398,24 @@ class Import
     // Set empty values to NULL
     foreach ($book as $col => $value) {
       if ($book[$col] === "") {
-        // $this->show_error("EmptyField", $book["title"], $col, "EMPTY", "NULL");
-        $book[$col] = "NULL";
+        // $this->show_error("EmptyField", $book["title"], $col, "EMPTY", NULL);
+        $book[$col] = NULL;
       }
     }
 
     // If INT expected, but not given -> set value to NULL
     foreach ($this->intColumns as $col) {
-      if (!filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== "NULL") {
-        $this->show_error("ValueError", $book["title"], $col, $book[$col], "NULL");
-        $book[$col] = "NULL";
+      if (!filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== NULL) {
+        $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
+        $book[$col] = NULL;
       }
     }
 
     // If STR expected, but INT given -> set value to NULL
     foreach ($this->strColumns as $col) {
-      if (filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== "NULL") {
-        $this->show_error("ValueError", $book["title"], $col, $book[$col], "NULL");
-        $book[$col] = "NULL";
+      if (filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== NULL) {
+        $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
+        $book[$col] = NULL;
       }
     }
 
@@ -375,7 +462,7 @@ class Import
 
   function formatThemes($str)
   {
-    if ($str == "NULL") {
+    if ($str == NULL) {
       return;
     }
     $str = str_replace("\"", "", $str);
