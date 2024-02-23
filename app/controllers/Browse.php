@@ -33,7 +33,6 @@ class Browse
       $books = $bookModel->findAll();
     }
 
-    
     $data["pageTitle"] = "Zoeken";
     $data["books"] = $this->cleanBookData($books);
     $data["filterMenu"] = $this->getFilterMenu($bookModel);

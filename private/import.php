@@ -1,12 +1,14 @@
 <?php
 
+// CLI command: php -r "require 'C:/xampp/htdocs/litlist/private/import.php';" 
+define("FILEPATH", "private/books.csv");
 
 $_SERVER['SERVER_NAME'] = 'localhost';
 
 require 'app/core/config.php';
 require 'app/core/Database.php';
+require 'app/core/functions.php';
 
-//CLI command: php -r "require 'C:/xampp/htdocs/litlist/private/import.php';" 
 
 function run($filepath)
 {
@@ -19,52 +21,103 @@ class Import
 
   use Database;
 
+  private $allColumns = [
+    "title",
+    "image_link",
+    "first_name",
+    "last_name",
+    "infix",
+    "publication_year",
+    "audiobook",
+    "pages",
+    "blurb",
+    "summary",
+    "themes",
+    "reading_level",
+    "recommendation_text",
+    "review_text",
+    "review_link",
+    "secondary_literature_text",
+    "secondary_literature_link"
+  ];
+
+  private $tableColumns = [
+    "books" => [
+      "title",
+      "image_link",
+      "publication_year",
+      "audiobook",
+      "pages",
+      "blurb",
+      "summary",
+      "reading_level",
+      "recommendation_text",
+      "review_text",
+      "review_link",
+      "secondary_literature_text",
+      "secondary_literature_link"
+    ]
+  ];
+
+  private $intColumns =
+  [
+    "publication_year",
+    "pages",
+    "reading_level",
+  ];
+
+  private $strColumns =
+  [
+    "image_link",
+    "first_name",
+    "last_name",
+    "infix",
+    "audiobook",
+    "blurb",
+    "summary",
+    "themes",
+    "recommendation_text",
+    "review_text",
+    "review_link",
+    "secondary_literature_text",
+    "secondary_literature_link"
+  ];
+
+  private $log = [];
+
   public function csvToDb($filepath)
   {
-
     $file = fopen("$filepath", "r");
     $length = 0; // 0 = maximum line length unlimited
     $separator = ";";
 
-    $cols = ["title", "image_link", "first_name", "last_name", "infix", "publication_year", "audiobook", "pages", "blurb", "summary", "genres", "themes", "reading_level", "recommendation_level", "review_text", "review_link", "secondary_literature_text", "secondary_literature_link"];
-    $intCols = ["publication_year", "pages", "reading_level", "recommendation_level"];
-    $strCols = ["image_link", "first_name", "last_name", "infix", "audiobook", "blurb", "summary", "genres", "themes", "review_text", "review_link", "secondary_literature_text", "secondary_literature_link"];
+    $fileHeaders = fgetcsv($file, $length, $separator);
+    $colIndexes = $this->getColumnIndexes($this->allColumns, $fileHeaders);
 
-
-    $fileCols = fgetcsv($file, $length, $separator);
-
-    // Find row index for every col e.g. title is the first column, so $colIdx["title"] = 0
-    foreach ($cols as $col) {
-      $colIdx[$col] = array_search($col, $fileCols);
-    }
 
     $numBooks = 0;
-    $bookErrors = [];
+    $this->log = [];
 
     // loop over every row in csv. Each row is a book.
-    while ($bookRow = fgetcsv($file, $length, $separator)) {
+    while ($row = fgetcsv($file, $length, $separator)) {
 
       $numBooks += 1;
 
       // Create array with info for this book. 
-      // E.g. $book["title] = 'Reis van flessen', $book["image_link"] 'http://www..." 
-      $book = [];
-      foreach ($cols as $col) {
-        $book[$col] = $bookRow[$colIdx[$col]];
-      }
+      $book = $this->rowToArray($row, $colIndexes);
 
       // If no title, log error and stop this book
       if (empty($book["title"])) {
         $rowNum = $numBooks + 1;
-        $bookErrors[] = $this->log_error("TitleNotFoundError", "row {$rowNum}");
+        $this->log["bookErrors"][] = $this->logError("TitleNotFoundError", "row {$rowNum}");
         continue;
       }
 
       // Set invalid values to "NULL"
-      $book = $this->setInvalidValuesToNull($book, $intCols, $strCols);
+      $book = $this->setInvalidValuesToNull($book);
 
-      // Separate themes string (e.g. "liefde", "Andere-plaatsen") to an array,
-      // like: [0] => liefde, [1] andere plaatsen
+      // Separate themes string (e.g. "liefde", "Andere-plaatsen") into an array,
+      // like: [0] => liefde, [1] andere plaatsen   
       $book["themes"] = $this->formatThemes($book["themes"]);
 
       // Remove unnecessary whitespace everywhere
@@ -73,55 +126,116 @@ class Import
       // Escape special characters everywhere
       $book = $this->escapeArrayItems($book);
 
-      // If book already in database, log error and stop this book
-      // if ($this->getBookId($book)) {
-      //   $bookErrors[] = $this->log_error("DublicateBookError", $book["title"]);
-      //   continue;
-      // }
-
-      // // Try to insert book into database, log error and stop if it fails
-      // try {
-      //   $this->insertIntoBooksTable($book);
-      // } catch (PDOException) {
-      //   $bookErrors[] = $this->log_error("InsertError", $book["title"]);
-      //   continue;
-      // }
-
-      // // Get book id that has been assigned by database
-      // $book["book_id"] = $this->getBookId($book);
-
-      // Insert themes into database
-      foreach ($book["themes"] as $theme) {
-      
-        // If theme already in database, log error and stop this theme
-        if ($this->getThemeId($theme)) {
-          $bookErrors[] = $this->log_error("DublicateThemeError", $theme);
-          continue;
-        }
-
-        // Try to insert theme into database, log error and stop if it fails
-        try {
-          $this->insertIntoThemesTable($theme);
-        } catch (PDOException) {
-          $bookErrors[] = $this->log_error("InsertError", $theme);
-          continue;
-        }
-
-        // Get theme id that has been assigned by database
-        $theme_id = $this->getThemeId($theme);
-        echo $theme_id . "\n";
+      // Add book to database if not already in there.
+      if ($this->addBookToDatabase($book) === "failed") {
+        continue;
       }
-    }
 
-    $numErrors = count($bookErrors);
+      // If book has themes, add them to the database and connect them to the book
+      if (isset($book["themes"])) {
+          $this->addAndConnectThemes($book);
+        }
+      
+    }
 
     fclose($file);
-    foreach ($bookErrors as $error) {
-      echo $error . "\n";
+
+    $showLogs = false;
+    if ($showLogs) {
+      if (isset($this->log["bookErrors"])) {
+        var_dump($this->log["bookErrors"]);
+      }
+      if (isset($this->log["themeErrors"])) {
+        var_dump($this->log["themeErrors"]);
+      }
+      if (isset($this->log["bookThemesErrors"])) {
+        var_dump($this->log["bookThemesErrors"]);
+      }
     }
-    echo "---\nREPORT\n---\n";
-    echo "Number of books read: $numBooks\n";
-    echo "Number of book imports failed: $numErrors\n";
+    echo $numBooks;
+    // foreach ($bookErrors as $error) {
+    //   echo $error . "\n";
+    // }
+    // echo "---\nREPORT\n---\n";
+    // echo "Number of books read: $numBooks\n";
+    // echo "Number of book imports failed: $numErrors\n";
+  }
+
+  function addAndConnectThemes($book) {
+    // Add theme to database if not already in there.
+    foreach ($book["themes"] as $theme) {
+      if ($this->addThemeToDatabase($theme) === "failed") {
+        continue;
+      }
+      // Connect theme to book in database
+      foreach ($book["themes"] as $theme) {
+        $this->connectThemeToBook($theme, $book);
+      }
+  }
+  function connectThemeToBook($theme, $book)
+  {
+    $themeId = $this->getThemeId($theme);
+    $bookId = $this->getBookId($book);
+
+    $query = "INSERT INTO books_themes (book_id, theme_id) VALUES ({$bookId}, {$themeId});";
+
+    try {
+      $this->query($query);
+    } catch (PDOException $e) {
+      $this->log["bookThemesErrors"][] = $this->logError("InsertError", "BookID: $bookId Theme:ID $themeId") . ": " . $e->getMessage();
+    }
+  }
+
+  function addThemeToDatabase($theme)
+  {
+    // If theme already in database, log error and return "failed"
+    if ($this->getThemeId($theme)) {
+      $this->log["themeErrors"][] = $this->logError("DublicateThemeError", $theme);
+      return "failed";
+    }
+
+    // Try to insert theme into database, log error and return "failed" if it fails
+    try {
+      $this->insertIntoThemesTable($theme);
+    } catch (PDOException $e) {
+      $this->log["themeErrors"][] = $this->logError("InsertError", $theme) . ": " . $e->getMessage();
+      return "failed";
+    }
+  }
+
+  function addBookToDatabase($book)
+  {
+    // If book already in database, log error and return "failed"
+    if ($this->getBookId($book)) {
+      $this->log["bookErrors"][] = $this->logError("DublicateBookError", $book["title"]);
+      return "failed";
+    }
+
+    // Try to insert book into database, log error and stop if it fails
+    try {
+      $this->insertIntoBooksTable($book);
+    } catch (PDOException $e) {
+      $this->log["bookErrors"][] = $this->logError("InsertError", $book["title"]) . ": " . $e->getMessage();
+      return "failed";
+    }
+  }
+
+  function rowToArray($row, $colIndexes)
+  {
+    foreach ($this->allColumns as $col) {
+      $book[$col] = $row[$colIndexes[$col]];
+    }
+
+    return $book;
+  }
+
+  function getColumnIndexes($columns, $fileHeaders)
+  {
+    // Find row index for every col e.g. title is the first column, so $colIdx["title"] = 0
+    foreach ($columns as $col) {
+      $columnIndexes[$col] = array_search($col, $fileHeaders);
+    }
+    return $columnIndexes;
   }
 
   function getThemeId($theme)
@@ -167,7 +281,7 @@ class Import
 
   function insertIntoThemesTable($theme)
   {
- 
+
     $query = "INSERT INTO themes (theme) VALUES (\"$theme\");";
 
     $this->query($query);
@@ -175,25 +289,34 @@ class Import
 
   function insertIntoBooksTable($book)
   {
-    
-    $query = "INSERT INTO books (title, image_link, publication_year, audiobook, pages, blurb, summary, reading_level, review_text, review_link, secondary_literature_text, secondary_literature_link) 
-      VALUES (\"{$book['title']}\", \"{$book['image_link']}\", {$book['publication_year']}, \"{$book['audiobook']}\", {$book['pages']}, \"{$book['blurb']}\", \"{$book['summary']}\", {$book['reading_level']}, \"{$book['review_text']}\", \"{$book['review_link']}\", \"{$book['secondary_literature_text']}\", \"{$book['secondary_literature_link']}\");";
+
+    $query = "INSERT INTO books (";
+    $query .= implode(", ", $this->tableColumns["books"]);
+    $query .= ") VALUES (";
+
+    foreach ($this->tableColumns["books"] as $col) {
+      $values[] = "\"$book[$col]\"";
+    }
+
+    $query .= implode(", ", $values);
+    $query .= ");";
 
     $this->query($query);
   }
 
-  function setInvalidValuesToNull($book, $intCols, $strCols)
+  function setInvalidValuesToNull($book)
   {
 
     // Set empty values to NULL
     foreach ($book as $col => $value) {
       if ($book[$col] === "") {
+        // $this->show_error("EmptyField", $book["title"], $col, "EMPTY", "NULL");
         $book[$col] = "NULL";
       }
     }
 
     // If INT expected, but not given -> set value to NULL
-    foreach ($intCols as $col) {
+    foreach ($this->intColumns as $col) {
       if (!filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== "NULL") {
         $this->show_error("ValueError", $book["title"], $col, $book[$col], "NULL");
         $book[$col] = "NULL";
@@ -201,7 +324,7 @@ class Import
     }
 
     // If STR expected, but INT given -> set value to NULL
-    foreach ($strCols as $col) {
+    foreach ($this->strColumns as $col) {
       if (filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== "NULL") {
         $this->show_error("ValueError", $book["title"], $col, $book[$col], "NULL");
         $book[$col] = "NULL";
@@ -251,6 +374,9 @@ class Import
 
   function formatThemes($str)
   {
+    if ($str == "NULL") {
+      return;
+    }
     $str = str_replace("\"", "", $str);
     $str = str_replace("-", " ", $str);
     $str = strtolower($str);
@@ -276,7 +402,7 @@ class Import
     print($msg . "\n");
   }
 
-  function log_error($errorType, $book, $col = NULL, $oldValue = NULL, $newValue = NULL)
+  function logError($errorType, $book, $col = NULL, $oldValue = NULL, $newValue = NULL)
   {
     $msg = "\e[33m{$errorType} \e[0m";
 
@@ -296,4 +422,4 @@ class Import
 }
 
 
-run("private/books.csv");
+run(FILEPATH);
