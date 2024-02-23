@@ -1,6 +1,19 @@
 <?php
 
 // CLI command: php -r "require 'C:/xampp/htdocs/litlist/private/import.php';" 
+
+
+
+// DELETE FROM books;
+// DELETE FROM themes;
+// DELETE FROM books_themes;
+// DELETE FROM authors;
+// DELETE FROM books_authors;
+
+// ALTER TABLE books AUTO_INCREMENT = 1;
+// ALTER TABLE themes AUTO_INCREMENT = 1;
+// ALTER TABLE authors AUTO_INCREMENT = 1;
+
 define("FILEPATH", "private/books.csv");
 
 $_SERVER['SERVER_NAME'] = 'localhost';
