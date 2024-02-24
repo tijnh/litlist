@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2024 at 06:34 PM
+-- Generation Time: Feb 24, 2024 at 08:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 SET
@@ -37,7 +37,8 @@ CREATE TABLE `authors` (
   `author_id` int(11) NOT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `infix` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) NOT NULL
+  `last_name` varchar(50) NOT NULL,
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -86,7 +87,8 @@ CREATE TABLE `books_themes` (
 --
 CREATE TABLE `themes` (
   `theme_id` int(11) NOT NULL,
-  `theme` varchar(50) NOT NULL
+  `theme` varchar(50) NOT NULL,
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 --

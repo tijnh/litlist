@@ -21,7 +21,7 @@ else
 	define('DBPASS', 'll0Kbbgxnc');
 	define('DBDRIVER', '');
 	
-	define('ROOT', 'http://inf.segbroek.nl/~wae/public/');
+	define('ROOT', 'http://inf.segbroek.nl/~wae/public');
 }
 
 /** true means show errors **/
