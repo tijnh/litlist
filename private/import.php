@@ -15,12 +15,14 @@
 // ALTER TABLE authors AUTO_INCREMENT = 1;
 
 define("FILEPATH", "private/books.csv");
+define("LOGFILE", "private/importLog.log");
 
 $_SERVER['SERVER_NAME'] = 'localhost';
 
 require 'app/core/config.php';
 require 'app/core/Database.php';
 require 'app/core/functions.php';
+
 
 
 function run($filepath)
@@ -31,7 +33,7 @@ function run($filepath)
 
 class Import
 {
-
+  
   use Database;
 
   private $allColumns = [
@@ -99,7 +101,15 @@ class Import
   private $log = [];
 
   public function csvToDb($filepath)
+
   {
+    unlink(LOGFILE);
+    $this->logInfo("This is info");
+    $this->logWarning("This is warning");
+    $this->logError("This is error");
+    $this->logDebug("this is debug");
+    $this->logFailure("this is fail");
+    
     $file = fopen("$filepath", "r");
     $length = 0; // 0 = maximum line length unlimited
     $separator = ";";
@@ -125,6 +135,8 @@ class Import
         $this->log["bookErrors"][] = $this->logError("TitleNotFoundError", "row {$rowNum}");
         continue;
       }
+
+      echo "Working on {$book['title']}\n";
 
       // Set invalid values to NULL
       $book = $this->setInvalidValuesToNull($book);
@@ -250,7 +262,6 @@ class Import
         return "failed";
       }
     }
-
   }
   function addThemeToDatabase($theme)
   {
@@ -302,6 +313,32 @@ class Import
       $columnIndexes[$col] = array_search($col, $fileHeaders);
     }
     return $columnIndexes;
+  }
+
+  function writeToLog($msg, $infoType)
+  {
+    $curTime = date("h:i:sa");
+    $msg = $curTime . " " . $infoType . " " . $msg . "\n";
+
+    $log = fopen(LOGFILE, "a") or die("Unable to open log file!");
+    fwrite($log, $msg);
+    fclose($log);
+  }
+
+  function logDebug($msg) {
+    $this->writeToLog($msg, "DEBUG");
+  }
+  function logInfo($msg) {
+    $this->writeToLog($msg, "INFO");
+  }
+  function logWarning($msg) {
+    $this->writeToLog($msg, "WARNING");
+  }
+  function logFailure($msg) {
+    $this->writeToLog($msg, "FAILURE");
+  }
+  function logError($msg) {
+    $this->writeToLog($msg, "ERROR");
   }
 
   function getAuthorId($book)
@@ -419,7 +456,7 @@ class Import
     // If INT expected, but not given -> set value to NULL
     foreach ($this->intColumns as $col) {
       if (!filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== NULL) {
-        $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
+        // $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
         $book[$col] = NULL;
       }
     }
@@ -427,7 +464,7 @@ class Import
     // If STR expected, but INT given -> set value to NULL
     foreach ($this->strColumns as $col) {
       if (filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== NULL) {
-        $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
+        // $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
         $book[$col] = NULL;
       }
     }
@@ -485,41 +522,6 @@ class Import
     return $themesArray;
   }
 
-  function show_error($errorType, $book, $col = NULL, $oldValue = NULL, $newValue = NULL)
-  {
-    $msg = "\e[33m{$errorType} \e[0m";
-
-    if ($col) {
-      $msg .= "{$col} ";
-    }
-    if ($oldValue) {
-      $msg .= "\e[31m{$oldValue}\e[0m set to ";
-    }
-    if ($newValue) {
-      $msg .= "\e[32m{$newValue} \e[0m";
-    }
-
-    $msg .= "(\e[36m{$book}\e[0m)";
-    print($msg . "\n");
-  }
-
-  function logError($errorType, $book, $col = NULL, $oldValue = NULL, $newValue = NULL)
-  {
-    $msg = "\e[33m{$errorType} \e[0m";
-
-    if ($col) {
-      $msg .= "{$col} ";
-    }
-    if ($oldValue) {
-      $msg .= "\e[31m{$oldValue}\e[0m set to ";
-    }
-    if ($newValue) {
-      $msg .= "\e[32m{$newValue} \e[0m";
-    }
-
-    $msg .= "(\e[36m{$book}\e[0m)";
-    return $msg;
-  }
 }
 
 
