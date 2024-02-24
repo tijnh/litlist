@@ -149,6 +149,7 @@ class Import
       // Insert book into database
       try {
         $this->insertIntoBooksTable($book);
+        $this->logSuccess("Book [{$book['title']}]: Succesfully inserted.");
       } catch (PDOException $e) {
         $this->logFailure("Book [{$book['title']}]: " . $e->getMessage());
         continue;
@@ -158,42 +159,50 @@ class Import
       if (isset($book["themes"])) {
         foreach ($book["themes"] as $theme) {
 
+          if(empty($theme)) {
+            continue;
+          }
+
           // If theme not in database, insert
           if (!$this->getThemeId($theme)) {
             try {
               $this->insertIntoThemesTable($theme);
+              $this->logSuccess("Theme [{$theme}]: Succesfully inserted.");
             } catch (PDOException $e) {
               $this->logFailure("Theme [{$theme}]: " . $e->getMessage());
               continue;
             }
           }
-
+          
           // Connect theme to book in database
           try {
             $this->insertIntoBooksThemesTable($book, $theme);
+            $this->logSuccess("Book [{$book['title']}] & Theme [{$theme}]: Succesfully inserted.");
           } catch (PDOException $e) {
             $this->logFailure("Book [{$book['title']}] & Theme [{$theme}]: " . $e->getMessage());
           }
         }
       }
-
+      
       // Handle author
       $author["first_name"] = $book["first_name"];
       $author["infix"] = $book["infix"];
       $author["last_name"] = $book["last_name"];
-
+      
       // If author not in database, insert
       if (!$this->getAuthorId($author)) {
         try {
           $this->insertIntoAuthorsTable($author);
+          $this->logSuccess("Author [{$author['last_name']}]: Succesfully inserted.");
         } catch (PDOException $e) {
           $this->logFailure("Author [{$author['last_name']}]: " . $e->getMessage());
         }
       }
-
+      
       // Connect author to book in database
       try {
         $this->insertIntoBooksAuthorsTable($book, $author);
+        $this->logSuccess("Book [{$book['title']}] & Author [{$author['last_name']}]: Succesfully inserted.");
       } catch (PDOException $e) {
         $this->logFailure("Book [{$book['title']}] & Author [{$author['last_name']}]: " . $e->getMessage());
       }
@@ -455,6 +464,11 @@ class Import
   function logError($msg)
   {
     $this->writeToLog($msg, "ERROR");
+  }
+
+  function logSuccess($msg)
+  {
+    $this->writeToLog($msg, "SUCCESS");
   }
 
   function writeToLog($msg, $infoType)
