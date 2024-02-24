@@ -104,11 +104,6 @@ class Import
 
   {
     unlink(LOGFILE);
-    $this->logInfo("This is info");
-    $this->logWarning("This is warning");
-    $this->logError("This is error");
-    $this->logDebug("this is debug");
-    $this->logFailure("this is fail");
     
     $file = fopen("$filepath", "r");
     $length = 0; // 0 = maximum line length unlimited
@@ -118,25 +113,28 @@ class Import
     $colIndexes = $this->getColumnIndexes($this->allColumns, $fileHeaders);
 
 
-    $numBooks = 0;
-    $this->log = [];
+    $rowNum = 1;
 
     // loop over every row in csv. Each row is a book.
     while ($row = fgetcsv($file, $length, $separator)) {
-
-      $numBooks += 1;
+      
+      $rowNum += 1;
+      echo "Working on row $rowNum\n";
 
       // Create array with info for this book. 
       $book = $this->rowToArray($row, $colIndexes);
 
       // If no title, log error and stop this book
       if (empty($book["title"])) {
-        $rowNum = $numBooks + 1;
-        $this->log["bookErrors"][] = $this->logError("TitleNotFoundError", "row {$rowNum}");
+        $this->logFailure("Row $rowNum contains no book title. Aborted.");
         continue;
       }
 
-      echo "Working on {$book['title']}\n";
+      // If no author, log error and stop this book
+      if (empty($book["last_name"])) {
+        $this->logFailure("{$book['title']} has no author last name. Aborted.");
+        continue;
+      }
 
       // Set invalid values to NULL
       $book = $this->setInvalidValuesToNull($book);
@@ -161,10 +159,10 @@ class Import
         $this->addAndConnectThemes($book);
       }
 
-      // If at least author last name provided, add author to database and connect author to book
-      if (isset($book["last_name"])) {
-        $this->addAndConnectAuthor($book);
-      }
+      // add author to database and connect author to book
+      
+      $this->addAndConnectAuthor($book);
+      
     }
 
     fclose($file);
@@ -187,7 +185,6 @@ class Import
         var_dump($this->log["authorErrors"]);
       }
     }
-    echo $numBooks;
     // foreach ($bookErrors as $error) {
     //   echo $error . "\n";
     // }
@@ -318,7 +315,7 @@ class Import
   function writeToLog($msg, $infoType)
   {
     $curTime = date("h:i:sa");
-    $msg = $curTime . " " . $infoType . " " . $msg . "\n";
+    $msg = $curTime . " [" . $infoType . "] " . $msg . "\n";
 
     $log = fopen(LOGFILE, "a") or die("Unable to open log file!");
     fwrite($log, $msg);
@@ -448,15 +445,15 @@ class Import
     // Set empty values to NULL
     foreach ($book as $col => $value) {
       if ($book[$col] === "") {
-        // $this->show_error("EmptyField", $book["title"], $col, "EMPTY", NULL);
+        $this->logInfo("{$book['title']} ({$col}): EMPTY VALUE set to NULL.");
         $book[$col] = NULL;
       }
     }
-
+    
     // If INT expected, but not given -> set value to NULL
     foreach ($this->intColumns as $col) {
       if (!filter_var($book[$col], FILTER_VALIDATE_INT) && $book[$col] !== NULL) {
-        // $this->show_error("ValueError", $book["title"], $col, $book[$col], NULL);
+        $this->logError("{$book['title']} ({$col}): INVALID VALUE {$book[$col]} set to NULL.");
         $book[$col] = NULL;
       }
     }
