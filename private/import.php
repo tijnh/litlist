@@ -110,7 +110,7 @@ class Import
     // Find row index for every col e.g. title is the first column, so $colIndexes["title"] = 0
     // This is done in case a user changes the order of columns in the csv file
     $colIndexes = $this->getColumnIndexes($this->allColumns, $fileHeaders);
-    
+
     // loop over every row in csv. Each row is a book.
     $rowNum = 1;
 
@@ -158,23 +158,21 @@ class Import
       if (isset($book["themes"])) {
         foreach ($book["themes"] as $theme) {
 
-          // Check if theme already exists
+          // If theme not in database, insert
           if (!$this->getThemeId($theme)) {
-
-            // Insert theme into database
             try {
               $this->insertIntoThemesTable($theme);
             } catch (PDOException $e) {
               $this->logFailure("Theme [{$theme}]: " . $e->getMessage());
               continue;
             }
+          }
 
-            // Connect theme to book in database
-            try {
-              $this->insertIntoBooksThemesTable($book, $theme);
-            } catch (PDOException $e) {
-              $this->logFailure("Book [{$book['title']}] & Theme [{$theme}]: " . $e->getMessage());
-            }
+          // Connect theme to book in database
+          try {
+            $this->insertIntoBooksThemesTable($book, $theme);
+          } catch (PDOException $e) {
+            $this->logFailure("Book [{$book['title']}] & Theme [{$theme}]: " . $e->getMessage());
           }
         }
       }
@@ -184,24 +182,21 @@ class Import
       $author["infix"] = $book["infix"];
       $author["last_name"] = $book["last_name"];
 
-      // Check if author already exists
+      // If author not in database, insert
       if (!$this->getAuthorId($author)) {
-
-        // Insert author into database
         try {
           $this->insertIntoAuthorsTable($author);
         } catch (PDOException $e) {
           $this->logFailure("Author [{$author['last_name']}]: " . $e->getMessage());
         }
-
-        // Connect author to book in database
-        try {
-          $this->insertIntoBooksAuthorsTable($book, $author);
-        } catch (PDOException $e) {
-          $this->logFailure("Book [{$book['title']}] & Author [{$author['last_name']}]: " . $e->getMessage());
-        }
       }
 
+      // Connect author to book in database
+      try {
+        $this->insertIntoBooksAuthorsTable($book, $author);
+      } catch (PDOException $e) {
+        $this->logFailure("Book [{$book['title']}] & Author [{$author['last_name']}]: " . $e->getMessage());
+      }
     }
     fclose($file);
   }
