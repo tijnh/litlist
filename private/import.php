@@ -4,18 +4,9 @@
 
 
 
-// DELETE FROM books;
-// DELETE FROM themes;
-// DELETE FROM books_themes;
-// DELETE FROM authors;
-// DELETE FROM books_authors;
 
-// ALTER TABLE books AUTO_INCREMENT = 1;
-// ALTER TABLE themes AUTO_INCREMENT = 1;
-// ALTER TABLE authors AUTO_INCREMENT = 1;
 
 define("FILEPATH", "private/books.csv");
-define("LOGFILE", "private/importLog.log");
 
 $_SERVER['SERVER_NAME'] = 'localhost';
 
@@ -33,6 +24,10 @@ class Import
 {
 
   use Database;
+
+  private $numQueries = 0;
+  private $clearDatabase = true;
+  private $clearLog = false;
 
   private $allColumns = [
     "title",
@@ -98,10 +93,24 @@ class Import
 
   public function csvToDb($filepath)
   {
-    // Delete old log
-    unlink(LOGFILE);
+    $log = fopen("private/import.log", "a") or die("Unable to open log file!");
+    
+    $startTime = microtime(true);
+    $this->logInfo($log, "Script started");
+    
+    // Clear the database
+    if ($this->clearDatabase) {
+      $this->clearDatabase();
+      $this->logInfo($log, "Database cleared");
+    }
 
-    $file = fopen("$filepath", "r");
+    // Clear the log
+    if ($this->clearLog) {
+      unlink("private/import.log");
+    }
+
+
+    $file = fopen("$filepath", "r") or die("Unable to open csv file!");;
     $length = 0; // 0 = maximum line length unlimited
     $separator = ";";
 
@@ -123,7 +132,7 @@ class Import
       $book = $this->rowToArray($row, $colIndexes);
 
       // If any book columns have invalid values, stop. It will be logged in the function.
-      if ($this->hasInvalidValues($book, $rowNum)) {
+      if ($this->hasInvalidValues($log, $book, $rowNum)) {
         continue;
       }
 
@@ -142,24 +151,27 @@ class Import
 
       // If book already in database, stop.
       if ($this->getBookId($book)) {
-        $this->logFailure("Book [{$book['title']}]: Book already in database.");
+        $this->logFailure($log, "Book [{$book['title']}]: Book already in database.");
         continue;
       }
 
       // Insert book into database
       try {
         $this->insertIntoBooksTable($book);
-        $this->logSuccess("Book [{$book['title']}]: Succesfully inserted.");
+        // $this->logSuccess($log, "Book [{$book['title']}]: Succesfully inserted.");
       } catch (PDOException $e) {
-        $this->logFailure("Book [{$book['title']}]: " . $e->getMessage());
+        $this->logFailure($log, "Book [{$book['title']}]: " . $e->getMessage());
         continue;
       }
+
+      // Get book id
+      $bookId = $this->getBookId($book);
 
       // Handle book themes
       if (isset($book["themes"])) {
         foreach ($book["themes"] as $theme) {
 
-          if(empty($theme)) {
+          if (empty($theme)) {
             continue;
           }
 
@@ -167,69 +179,108 @@ class Import
           if (!$this->getThemeId($theme)) {
             try {
               $this->insertIntoThemesTable($theme);
-              $this->logSuccess("Theme [{$theme}]: Succesfully inserted.");
+              // $this->logSuccess($log, "Theme [{$theme}]: Succesfully inserted.");
             } catch (PDOException $e) {
-              $this->logFailure("Theme [{$theme}]: " . $e->getMessage());
+              $this->logFailure($log, "Theme [{$theme}]: " . $e->getMessage());
               continue;
             }
           }
-          
-          // Connect theme to book in database
-          try {
-            $this->insertIntoBooksThemesTable($book, $theme);
-            $this->logSuccess("Book [{$book['title']}] & Theme [{$theme}]: Succesfully inserted.");
-          } catch (PDOException $e) {
-            $this->logFailure("Book [{$book['title']}] & Theme [{$theme}]: " . $e->getMessage());
-          }
+
+          // Get theme id
+          $themeId = $this->getThemeId($theme);
+
+          // Prepare SQL value for books_themes table query
+          $sqlValues["books_themes"][] = "($bookId, $themeId)";
+        
         }
       }
-      
+
       // Handle author
       $author["first_name"] = $book["first_name"];
       $author["infix"] = $book["infix"];
       $author["last_name"] = $book["last_name"];
-      
+
       // If author not in database, insert
       if (!$this->getAuthorId($author)) {
         try {
           $this->insertIntoAuthorsTable($author);
-          $this->logSuccess("Author [{$author['last_name']}]: Succesfully inserted.");
+          // $this->logSuccess($log, "Author [{$author['last_name']}]: Succesfully inserted.");
         } catch (PDOException $e) {
-          $this->logFailure("Author [{$author['last_name']}]: " . $e->getMessage());
+          $this->logFailure($log, "Author [{$author['last_name']}]: " . $e->getMessage());
         }
       }
-      
-      // Connect author to book in database
-      try {
-        $this->insertIntoBooksAuthorsTable($book, $author);
-        $this->logSuccess("Book [{$book['title']}] & Author [{$author['last_name']}]: Succesfully inserted.");
-      } catch (PDOException $e) {
-        $this->logFailure("Book [{$book['title']}] & Author [{$author['last_name']}]: " . $e->getMessage());
-      }
+
+      // Get author id
+      $authorId = $this->getAuthorId($author);
+
+      // Prepare SQL value for books_themes table query
+      $sqlValues["books_authors"][] = "($bookId, $authorId)";
+
     }
+
+    // Connect themes to books in database
+    try {
+      $this->insertIntoBooksThemesTable($sqlValues["books_themes"]);
+    } catch (PDOException $e) {
+      $this->logFailure($log, "Failed to connect themes to books: " . $e->getMessage());
+    }
+
+    // Connect authors to books in database
+    try {
+      $this->insertIntoBooksAuthorsTable($sqlValues["books_authors"]);
+    } catch (PDOException $e) {
+      $this->logFailure($log, "Failed to connect authors to books: " . $e->getMessage());
+    }
+
     fclose($file);
+    
+    $endTime = microtime(true);
+    $this->logInfo($log, "Script finished");
+    
+    $runTime = ($endTime - $startTime) / 60;
+    $this->logInfo($log, "Run time in minutes: $runTime");
+   
+    $this->logInfo($log, "Number of queries run: {$this->numQueries}");
+
+    fclose($log);
   }
 
+  function clearDatabase()
+  {
+    $query = "
+    DELETE FROM books;
+    DELETE FROM themes;
+    DELETE FROM books_themes;
+    DELETE FROM authors;
+    DELETE FROM books_authors;
 
-  function hasInvalidValues($book, $rowNum)
+    ALTER TABLE books AUTO_INCREMENT = 1;
+    ALTER TABLE themes AUTO_INCREMENT = 1;
+    ALTER TABLE authors AUTO_INCREMENT = 1;
+    ";
+    $this->query($query);
+    $this->numQueries += 1;
+  }
+
+  function hasInvalidValues($log, $book, $rowNum)
   {
 
     // If book has no title, return true
     if (empty($book["title"])) {
-      $this->logFailure("Row $rowNum: Book has no title.");
+      $this->logFailure($log, "Row $rowNum: Book has no title.");
       return true;
     }
 
     // If book has no author last_name, return true
     if (empty($book["last_name"])) {
-      $this->logFailure("Book [{$book['title']}]: Book has no author last name.");
+      $this->logFailure($log, "Book [{$book['title']}]: Book has no author last name.");
       return true;
     }
 
     // If INT expected, but not given, return true 
     foreach ($this->intColumns as $col) {
       if (!filter_var($book[$col], FILTER_VALIDATE_INT) && !empty($book[$col])) {
-        $this->logFailure("Book [{$book['title']}]: INVALID VALUE {$book[$col]} found for [{$col}].");
+        $this->logFailure($log, "Book [{$book['title']}]: INVALID VALUE {$book[$col]} found for [{$col}].");
         return true;
       }
     }
@@ -237,7 +288,7 @@ class Import
     // If STR expected, but INT given, return true
     foreach ($this->strColumns as $col) {
       if (filter_var($book[$col], FILTER_VALIDATE_INT) && !empty($book[$col])) {
-        $this->logFailure("Book [{$book['title']}]: INVALID VALUE {$book[$col]} found for [{$col}].");
+        $this->logFailure($log, "Book [{$book['title']}]: INVALID VALUE {$book[$col]} found for [{$col}].");
         return true;
       }
     }
@@ -245,23 +296,21 @@ class Import
     return false;
   }
 
-  function insertIntoBooksAuthorsTable($book, $author)
+  function insertIntoBooksAuthorsTable(array $values)
   {
-    $bookId = $this->getBookId($book);
-    $authorId = $this->getAuthorId($author);
-
-    $query = "INSERT INTO books_authors (book_id, author_id) VALUES ({$bookId}, {$authorId});";
+    $values = implode(", ", $values);
+    $query = "INSERT INTO books_authors (book_id, author_id) VALUES $values;";
 
     $this->query($query);
+    $this->numQueries += 1;
   }
-  function insertIntoBooksThemesTable($book, $theme)
+  function insertIntoBooksThemesTable(array $values)
   {
-    $bookId = $this->getBookId($book);
-    $themeId = $this->getThemeId($theme);
-
-    $query = "INSERT INTO books_themes (book_id, theme_id) VALUES ({$bookId}, {$themeId});";
+    $values = implode(", ", $values);
+    $query = "INSERT INTO books_themes (book_id, theme_id) VALUES $values;";
 
     $this->query($query);
+    $this->numQueries += 1;
   }
 
   function rowToArray($row, $colIndexes)
@@ -299,6 +348,7 @@ class Import
     $query .= ";";
 
     $result = $this->query($query);
+    $this->numQueries += 1;
 
     if ($result) {
       return $result[0]["author_id"];
@@ -313,6 +363,7 @@ class Import
 
 
     $result = $this->query($query);
+    $this->numQueries += 1;
 
     if ($result) {
       return $result[0]["theme_id"];
@@ -340,6 +391,7 @@ class Import
     $query .= ";";
 
     $result = $this->query($query);
+    $this->numQueries += 1;
 
     if ($result) {
       return $result[0]["book_id"];
@@ -354,6 +406,7 @@ class Import
     $query = "INSERT INTO themes (theme) VALUES (\"$theme\");";
 
     $this->query($query);
+    $this->numQueries += 1;
   }
 
   function insertIntoAuthorsTable($book)
@@ -362,6 +415,7 @@ class Import
     $query = "INSERT INTO authors (first_name, infix, last_name) VALUES (\"{$book['first_name']}\", \"{$book['infix']}\", \"{$book['last_name']}\");";
 
     $this->query($query);
+    $this->numQueries += 1;
   }
 
   function insertIntoBooksTable($book)
@@ -379,6 +433,7 @@ class Import
     $query .= ");";
 
     $this->query($query);
+    $this->numQueries += 1;
   }
 
   function setEmptyValuesToNull($book)
@@ -441,44 +496,40 @@ class Import
     return $themesArray;
   }
 
-  function logDebug($msg)
+  function logDebug($log, $msg)
   {
-    $this->writeToLog($msg, "DEBUG");
+    $this->writeToLog($log, $msg, "DEBUG");
   }
 
-  function logInfo($msg)
+  function logInfo($log, $msg)
   {
-    $this->writeToLog($msg, "INFO");
+    $this->writeToLog($log, $msg, "INFO");
   }
 
-  function logWarning($msg)
+  function logWarning($log, $msg)
   {
-    $this->writeToLog($msg, "WARNING");
+    $this->writeToLog($log, $msg, "WARNING");
   }
 
-  function logFailure($msg)
+  function logFailure($log, $msg)
   {
-    $this->writeToLog($msg, "FAILURE");
+    $this->writeToLog($log, $msg, "FAILURE");
   }
 
-  function logError($msg)
+  function logError($log, $msg)
   {
-    $this->writeToLog($msg, "ERROR");
+    $this->writeToLog($log, $msg, "ERROR");
   }
 
-  function logSuccess($msg)
+  function logSuccess($log, $msg)
   {
-    $this->writeToLog($msg, "SUCCESS");
+    $this->writeToLog($log, $msg, "SUCCESS");
   }
 
-  function writeToLog($msg, $infoType)
+  function writeToLog($log, $msg, $infoType)
   {
-    $curTime = date("h:i");
-    $msg = $curTime . " " . $infoType . " " . $msg . "\n";
-
-    $log = fopen(LOGFILE, "a") or die("Unable to open log file!");
+    $msg = date("Y-m-d H:i:s") . " " . $infoType . " " . $msg . "\n";
     fwrite($log, $msg);
-    fclose($log);
   }
 }
 

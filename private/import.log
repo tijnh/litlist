@@ -1,0 +1,21 @@
+15:04 INFO Start time: 1708869861.109
+15:06 INFO End time: 1708869970.7563
+15:06 INFO Run time: 1.8274561325709
+15:10 INFO Script started
+15:12 INFO Script finished
+15:12 INFO Run time in minutes: 1.9234599471092
+15:12 INFO Number of queries run: 10053
+2024-02-25 15:21:33 INFO Script started
+2024-02-25 15:21:33 INFO Database cleared
+2024-02-25 15:22:20 INFO Script started
+2024-02-25 15:22:21 INFO Database cleared
+2024-02-25 15:22:32 INFO Script started
+2024-02-25 15:22:32 INFO Database cleared
+2024-02-25 15:24:19 INFO Script finished
+2024-02-25 15:24:19 INFO Run time in minutes: 1.7956034819285
+2024-02-25 15:24:19 INFO Number of queries run: 10053
+2024-02-25 15:35:14 INFO Script started
+2024-02-25 15:35:14 INFO Database cleared
+2024-02-25 15:36:16 INFO Script finished
+2024-02-25 15:36:16 INFO Run time in minutes: 1.04042861859
+2024-02-25 15:36:16 INFO Number of queries run: 6004
