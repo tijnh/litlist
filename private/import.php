@@ -27,7 +27,7 @@ class Import
 
   private $numQueries = 0;
   private $clearDatabase = true;
-  private $clearLog = true;
+  private $clearLog = false;
 
   private $allColumns = [
     "title",

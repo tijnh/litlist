@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2024 at 08:08 PM
+-- Generation Time: Feb 25, 2024 at 04:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 SET
@@ -52,7 +52,7 @@ CREATE TABLE `books` (
   `publication_year` smallint(4) DEFAULT NULL,
   `audiobook` varchar(25) DEFAULT NULL,
   `pages` smallint(6) DEFAULT NULL,
-  `blurb` varchar(255) DEFAULT NULL,
+  `blurb` text DEFAULT NULL,
   `summary` text DEFAULT NULL,
   `reading_level` tinyint(4) DEFAULT NULL,
   `recommendation_text` text DEFAULT NULL,
