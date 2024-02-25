@@ -93,6 +93,11 @@ class Import
 
   public function csvToDb($filepath)
   {
+    // Clear the log
+    if ($this->clearLog) {
+      unlink("private/import.log");
+    }
+
     $log = fopen("private/import.log", "a") or die("Unable to open log file!");
     
     $startTime = microtime(true);
@@ -104,10 +109,6 @@ class Import
       $this->logInfo($log, "Database cleared");
     }
 
-    // Clear the log
-    if ($this->clearLog) {
-      unlink("private/import.log");
-    }
 
 
     $file = fopen("$filepath", "r") or die("Unable to open csv file!");;

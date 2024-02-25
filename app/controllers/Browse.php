@@ -67,7 +67,7 @@ class Browse
         $cleanBookData[$book["book_id"]] = array(
           "bookId" => $book["book_id"],
           "title" => trim(ucfirst($book["title"])),
-          "blurb" => mb_strimwidth(trim(ucfirst($book["blurb"])), 0, BLURBLENGTH, "..."),
+          "blurb" => trim(ucfirst($book["blurb"])),
           "pages" => $book["pages"],
           "year" => $book["publication_year"],
           "readingLevel" => $book["reading_level"],
