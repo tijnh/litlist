@@ -27,7 +27,7 @@ class Import
 
   private $numQueries = 0;
   private $clearDatabase = true;
-  private $clearLog = false;
+  private $clearLog = true;
 
   private $allColumns = [
     "title",
@@ -332,25 +332,26 @@ class Import
 
   function getAuthorId($author)
   {
-    $query = "SELECT author_id FROM authors WHERE last_name = \"{$author['last_name']}\";";
+    
+    $query = "SELECT author_id FROM authors WHERE last_name = \"{$author['last_name']}\"";
 
     if ($author["first_name"] === NULL) {
       $query .= " AND first_name IS NULL";
     } else {
-      $query .= " AND first_name = {$author['first_name']}";
+      $query .= " AND first_name = \"{$author['first_name']}\"";
     }
 
     if ($author["infix"] === NULL) {
       $query .= " AND infix IS NULL";
     } else {
-      $query .= " AND infix = {$author['infix']}";
+      $query .= " AND infix = \"{$author['infix']}\"";
     }
 
     $query .= ";";
-
+    
     $result = $this->query($query);
     $this->numQueries += 1;
-
+    
     if ($result) {
       return $result[0]["author_id"];
     } else {
@@ -410,10 +411,25 @@ class Import
     $this->numQueries += 1;
   }
 
-  function insertIntoAuthorsTable($book)
+  function insertIntoAuthorsTable($author)
   {
 
-    $query = "INSERT INTO authors (first_name, infix, last_name) VALUES (\"{$book['first_name']}\", \"{$book['infix']}\", \"{$book['last_name']}\");";
+    $query = "INSERT INTO authors (first_name, infix, last_name) VALUES (";
+
+    if ($author["first_name"] === NULL) {
+      $query .= "NULL, ";
+    } else {
+      $query .= "\"{$author['first_name']}\", ";
+    }
+
+    if ($author["infix"] === NULL) {
+      $query .= "NULL, ";
+    } else {
+      $query .= "\"{$author['infix']}\", ";
+    }
+
+    $query .= "\"{$author['last_name']}\"";
+    $query .= ");";
 
     $this->query($query);
     $this->numQueries += 1;
