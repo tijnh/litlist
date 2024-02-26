@@ -114,7 +114,7 @@ class BookModel
         $parameters["level$paramNum"] = $lvl;
         $query .= " OR ";
       }
-      $query = trim($query, " OR ");
+      $query = rtrim($query, " OR ");
       $query .=  ")";
       $query .= " AND ";
     }
@@ -129,32 +129,36 @@ class BookModel
         $parameters["source$paramNum"] = $src;
         $query .= " OR ";
       }
-      $query = trim($query, " OR ");
+      $query = rtrim($query, " OR ");
       $query .=  ")";
       $query .= " AND ";
-
+      
     }
-
+    
     if (isset($filters["themes"])) {
+      $themeCount = count($filters["themes"]);
       $query .= "books.book_id IN (
-            SELECT DISTINCT book_id
+        SELECT book_id
             FROM books_themes
             JOIN themes ON books_themes.theme_id = themes.theme_id
-            WHERE ";
-
+            WHERE themes.theme IN (";
+            
       $paramNum = 0;
       foreach ($filters["themes"] as $src) {
         $paramNum += 1;
-        $query .= "themes.theme = :theme$paramNum";
+        $query .= ":theme$paramNum, ";
         $parameters["theme$paramNum"] = $src;
-        $query .= " OR ";
       }
-      $query = trim($query, " OR ");
+      $query = rtrim($query, ", ");
       $query .=  ")";
-      $query .= " AND ";
+      $query .= "
+      GROUP BY book_id
+      HAVING COUNT(DISTINCT themes.theme) = :themeCount
+      ) AND ";
+      $parameters["themeCount"] = $themeCount;
     }
 
-    $query = trim($query, " AND ");
+    $query = rtrim($query, " AND ");
 
     $query .= " ORDER BY $orderColumn $orderType LIMIT $this->limit OFFSET $this->offset";
     $result =  $this->query($query, $parameters);

@@ -129,7 +129,7 @@
             </h2>
             <div id="themes-filter-accordion" class="accordion-collapse collapse">
               <div class="accordion-body">
-
+                <b>Toon alleen boeken met al deze thema's:</b>
                 <!-- Checkboxes -->
                 <?php foreach ($filterMenu["themes"] as $theme) : ?>
                   <div class="form-check">
