@@ -7,7 +7,7 @@
       <?php foreach ($books as $book) : ?>
         <!-- Card -->
         <div class="col-12">
-          <div class="ll-card h-100 mx-auto px-2 pt-3 pb-2 border-top">
+          <div class="ll-card h-100 mx-auto pt-3 pb-2 border-top">
             <div class="row g-0">
 
               <!-- Left -->
@@ -43,8 +43,8 @@
   </div>
 
   <!-- Back to top button -->
-  <button type="button" class="ll-btn ll-btn-primary" id="btn-back-to-top">
-    <i class="bi bi-arrow-up"></i> Naar boven
+  <button type="button" class="ll-btn ll-btn-primary ll-btn-floating" id="btn-back-to-top">
+    <i class="bi bi-arrow-up"></i>
   </button>
 
   <script>
