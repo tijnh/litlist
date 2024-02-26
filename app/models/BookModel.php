@@ -20,6 +20,7 @@ class BookModel
       books.title,
       books.blurb,
       books.pages,
+      books.audiobook,
       books.reading_level,
       books.image_link,
       books.publication_year,
@@ -51,11 +52,12 @@ class BookModel
     $query = "SELECT
       books.book_id,
       books.title,
-      books.blurb,
-      books.pages,
-      books.reading_level,
       books.image_link,
       books.publication_year,
+      books.audiobook,
+      books.pages,
+      books.blurb,
+      books.reading_level,
       authors.first_name,
       authors.infix,
       authors.last_name,
@@ -104,13 +106,52 @@ class BookModel
     
     if (isset($filters["readingLevels"])) {
       $query .= "(";
+
+      $paramNum = 0;
       foreach ($filters["readingLevels"] as $lvl) {
-        $query .= "books.reading_level = :level$lvl";
-        $parameters["level$lvl"] = $lvl;
+        $paramNum += 1;
+        $query .= "books.reading_level = :level$paramNum";
+        $parameters["level$paramNum"] = $lvl;
         $query .= " OR ";
       }
       $query = trim($query, " OR ");
       $query .=  ")";
+      $query .= " AND ";
+    }
+    
+    if (isset($filters["audiobookSources"])) {
+      $query .= "(";
+
+      $paramNum = 0;
+      foreach ($filters["audiobookSources"] as $src) {
+        $paramNum += 1;
+        $query .= "books.audiobook = :source$paramNum";
+        $parameters["source$paramNum"] = $src;
+        $query .= " OR ";
+      }
+      $query = trim($query, " OR ");
+      $query .=  ")";
+      $query .= " AND ";
+
+    }
+
+    if (isset($filters["themes"])) {
+      $query .= "books.book_id IN (
+            SELECT DISTINCT book_id
+            FROM books_themes
+            JOIN themes ON books_themes.theme_id = themes.theme_id
+            WHERE ";
+
+      $paramNum = 0;
+      foreach ($filters["themes"] as $src) {
+        $paramNum += 1;
+        $query .= "themes.theme = :theme$paramNum";
+        $parameters["theme$paramNum"] = $src;
+        $query .= " OR ";
+      }
+      $query = trim($query, " OR ");
+      $query .=  ")";
+      $query .= " AND ";
     }
 
     $query = trim($query, " AND ");

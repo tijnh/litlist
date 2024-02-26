@@ -1,20 +1,6 @@
   <!-- Book list -->
   <div class="container-lg">
 
-    <!-- Filter button -->
-    <div class="row justify-content-center p-3 ">
-      <div class="col-12">
-        <button type="button" id="filter-button" class="ll-btn ll-btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?= count($books) ?> boeken</button>
-      </div>
-    </div>
-
-    <!-- Reset filter button -->
-    <div class="row justify-content-center text-center pb-3 ">
-      <div class="col-12">
-        <a class="btn btn-primary" href="<?= ROOT ?>/browse"> reset filters</a>
-      </div>
-    </div>
-
     <!-- Cards -->
     <div class="row row-cols-1 row-cols-md-2">
 
@@ -42,7 +28,9 @@
                 <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-calendar"></i> <?= esc($book["year"]) ?></div>
                 <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-book"></i> <?= esc($book["pages"]) ?></div>
                 <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-star"></i> <?= esc($book["readingLevel"]) ?></div>
-                <div class="ll-card-details mb-1 text-secondary"><span style="color:red"><i class="bi bi-headphones"></i> ?</span></div>
+                <?php if (!empty($book["audiobook"])) : ?>
+                  <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-headphones"></i> <?= esc($book["audiobook"]) ?></div>
+                <?php endif ?>
               </div>
 
             </div>

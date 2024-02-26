@@ -11,12 +11,12 @@
 
   <!-- Filter Menu -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="filterMenu" aria-labelledby="filterMenu">
-    
+
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="filterMenu">Zoek met filters</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    
+
 
     <div class="offcanvas-body">
       <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -100,7 +100,7 @@
           <div class="accordion-item border-0">
             <h2 class="accordion-header border-bottom">
               <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#audiobook-filter-accordion" aria-expanded="false" aria-controls="audiobook-filter-accordion">
-                <span style="color:red"><i class="bi bi-headphones filter-icon"></i> Audioboek</span>
+                <i class="bi bi-headphones filter-icon"></i> Audioboek
               </button>
             </h2>
             <div id="audiobook-filter-accordion" class="accordion-collapse collapse">
@@ -124,7 +124,7 @@
           <div class="accordion-item border-0">
             <h2 class="accordion-header border-bottom">
               <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#themes-filter-accordion" aria-expanded="false" aria-controls="themes-filter-accordion">
-                <span style="color:red"><i class="bi bi-card-text filter-icon"></i> Thema</span>
+                <i class="bi bi-chat-left-text filter-icon"></i> Thema
               </button>
             </h2>
             <div id="themes-filter-accordion" class="accordion-collapse collapse">
@@ -156,6 +156,20 @@
 
   </div>
 </form>
+
+<!-- Filter button -->
+<div class="row justify-content-center p-3 ">
+  <div class="col-12">
+    <button type="button" id="filter-button" class="ll-btn ll-btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?= count($books) ?> boeken</button>
+  </div>
+</div>
+
+<!-- Reset filter button -->
+<div class="row justify-content-center text-center pb-3 ">
+  <div class="col-12">
+    <a class="btn btn-primary" href="<?= ROOT ?>/browse"> Reset filters</a>
+  </div>
+</div>
 
 <?php require "browse/booklist.view.php" ?>
 <script src="<?= ROOT ?>/assets/js/filters.js"></script>

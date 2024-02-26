@@ -31,3 +31,13 @@ Script started
 2024-02-26 13:28:13 INFO Script finished
 2024-02-26 13:28:13 INFO Run time in minutes: 0.97776744763056
 2024-02-26 13:28:13 INFO Number of queries run: 6024
+2024-02-26 13:32:03 INFO --> SCRIPT STARTED <--
+2024-02-26 13:32:03 INFO Database cleared
+2024-02-26 13:32:25 INFO Script finished
+2024-02-26 13:32:25 INFO Run time in minutes: 0.35753690004349
+2024-02-26 13:32:25 INFO Number of queries run: 6024
+2024-02-26 14:16:49 INFO --> SCRIPT STARTED <--
+2024-02-26 14:16:49 INFO Database cleared
+2024-02-26 14:17:09 INFO Script finished
+2024-02-26 14:17:09 INFO Run time in minutes: 0.33228344917297
+2024-02-26 14:17:09 INFO Number of queries run: 6021
