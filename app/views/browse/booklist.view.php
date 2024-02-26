@@ -8,6 +8,13 @@
       </div>
     </div>
 
+    <!-- Reset filter button -->
+    <div class="row justify-content-center text-center pb-3 ">
+      <div class="col-12">
+        <a class="btn btn-primary" href="<?= ROOT ?>/browse"> reset filters</a>
+      </div>
+    </div>
+
     <!-- Cards -->
     <div class="row row-cols-1 row-cols-md-2">
 
