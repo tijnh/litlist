@@ -101,7 +101,7 @@ class Import
     $log = fopen("private/import.log", "a") or die("Unable to open log file!");
     
     $startTime = microtime(true);
-    $this->logInfo($log, "Script started");
+    $this->logInfo($log, "---\nScript started\n---");
     
     // Clear the database
     if ($this->clearDatabase) {

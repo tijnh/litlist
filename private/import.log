@@ -13,3 +13,14 @@
 2024-02-26 09:44:18 INFO Script finished
 2024-02-26 09:44:18 INFO Run time in minutes: 0.79779175122579
 2024-02-26 09:44:18 INFO Number of queries run: 6024
+2024-02-26 11:15:34 INFO Script started
+2024-02-26 11:15:34 INFO Database cleared
+2024-02-26 11:16:08 FAILURE Book [40]: INVALID VALUE 40 found for [audiobook].
+2024-02-26 11:16:35 INFO Script finished
+2024-02-26 11:16:35 INFO Run time in minutes: 1.0225679834684
+2024-02-26 11:16:35 INFO Number of queries run: 6018
+2024-02-26 11:25:16 INFO Script started
+2024-02-26 11:25:16 INFO Database cleared
+2024-02-26 11:26:11 INFO Script finished
+2024-02-26 11:26:11 INFO Run time in minutes: 0.91924401521683
+2024-02-26 11:26:11 INFO Number of queries run: 6024
