@@ -157,17 +157,19 @@
   </div>
 </form>
 
-<!-- Filter button -->
-<div class="row justify-content-center p-3 ">
-  <div class="col-12">
-    <button type="button" id="filter-button" class="ll-btn ll-btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?= count($books) ?> boeken</button>
+<div class="container-lg">
+  <!-- Filter button -->
+  <div class="row justify-content-center p-3 ">
+    <div class="col-12">
+      <button type="button" id="filter-button" class="ll-btn ll-btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?= count($books) ?> boeken</button>
+    </div>
   </div>
-</div>
 
-<!-- Reset filter button -->
-<div class="row justify-content-center text-center pb-3 ">
-  <div class="col-12">
-    <a class="btn btn-primary" href="<?= ROOT ?>/browse"> Reset filters</a>
+  <!-- Reset filter button -->
+  <div class="row justify-content-center text-center pb-3 ">
+    <div class="col-12">
+      <a class="ll-btn ll-btn-primary" href="<?= ROOT ?>/browse"> Reset filters</a>
+    </div>
   </div>
 </div>
 
