@@ -23,11 +23,11 @@
         <!-- Year filter -->
         <div class="accordion-item border-0">
           <h2 class="accordion-header border-bottom">
-            <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+            <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#year-filter-accordion" aria-expanded="false" aria-controls="year-filter-accordion">
               <i class="bi bi-calendar filter-icon"></i> Jaar van verschijnen
             </button>
           </h2>
-          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+          <div id="year-filter-accordion" class="accordion-collapse collapse">
             <div class="accordion-body">
 
               <div class="row g-1">
@@ -48,11 +48,11 @@
         <!-- Pages filter -->
         <div class="accordion-item border-0">
           <h2 class="accordion-header border-bottom">
-            <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pages-filter-accordion" aria-expanded="false" aria-controls="pages-filter-accordion">
               <i class="bi bi-book filter-icon"></i> Aantal pagina's
             </button>
           </h2>
-          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+          <div id="pages-filter-accordion" class="accordion-collapse collapse">
             <div class="accordion-body">
 
               <div class="row g-1">
@@ -74,11 +74,11 @@
           <!-- Reading Level filter -->
           <div class="accordion-item border-0">
             <h2 class="accordion-header border-bottom">
-              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reading-level-filter-accordion" aria-expanded="false" aria-controls="reading-level-filter-accordion">
                 <i class="bi bi-star filter-icon"></i> Niveau
               </button>
             </h2>
-            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+            <div id="reading-level-filter-accordion" class="accordion-collapse collapse">
               <div class="accordion-body">
 
                 <!-- Checkboxes -->
@@ -94,26 +94,48 @@
           </div>
         <?php endif ?>
 
-        <?php if (!empty($filterMenu["audiobook"])) : ?>
+        <?php if (!empty($filterMenu["audiobookSources"])) : ?>
           <!-- Audiobook filter -->
           <div class="accordion-item border-0">
             <h2 class="accordion-header border-bottom">
-              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#audiobook-filter-accordion" aria-expanded="false" aria-controls="audiobook-filter-accordion">
                 <span style="color:red"><i class="bi bi-headphones filter-icon"></i> Audioboek</span>
               </button>
             </h2>
-            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+            <div id="audiobook-filter-accordion" class="accordion-collapse collapse">
               <div class="accordion-body">
 
                 <!-- Checkboxes -->
-                <div class="form-check">
-                  <input type="checkbox" name="audiobook[]" id="checkboxAudiobookYes" class="form-check-input audiobook-checkbox" value="yes" disabled>
-                  <label class="form-check-label" for="checkboxAudiobookYes">Ja</label>
-                </div>
-                <div class="form-check">
-                  <input type="checkbox" name="audiobook[]" id="checkboxAudiobookNo" class="form-check-input audiobook-checkbox" value="no" disabled>
-                  <label class="form-check-label" for="checkboxAudiobookNo">Nee</label>
-                </div>
+                <?php foreach ($filterMenu["audiobookSources"] as $source) : ?>
+                  <div class="form-check">
+                    <input type="checkbox" name="audiobookSources[]" id="checkboxAudiobook<?= esc($source) ?>" class="form-check-input audiobook-checkbox" value="<?= esc($source) ?>" <?php if (isset($userFilters["audiobookSources"]) and in_array($source, $userFilters["audiobookSources"])) : ?> checked <?php endif ?>>
+                    <label class="form-check-label" for="checkboxAudiobook<?= esc($source) ?>"><?= esc($source) ?></label>
+                  </div>
+                <?php endforeach ?>
+
+              </div>
+            </div>
+          </div>
+        <?php endif ?>
+
+        <?php if (!empty($filterMenu["themes"])) : ?>
+          <!-- Audiobook filter -->
+          <div class="accordion-item border-0">
+            <h2 class="accordion-header border-bottom">
+              <button class="accordion-button bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#themes-filter-accordion" aria-expanded="false" aria-controls="themes-filter-accordion">
+                <span style="color:red"><i class="bi bi-card-text filter-icon"></i> Thema</span>
+              </button>
+            </h2>
+            <div id="themes-filter-accordion" class="accordion-collapse collapse">
+              <div class="accordion-body">
+
+                <!-- Checkboxes -->
+                <?php foreach ($filterMenu["themes"] as $theme) : ?>
+                  <div class="form-check">
+                    <input type="checkbox" name="themes[]" id="checkboxTheme<?= esc($theme) ?>" class="form-check-input theme-checkbox" value="<?= esc($theme) ?>" <?php if (isset($userFilters["themes"]) and in_array($theme, $userFilters["themes"])) : ?> checked <?php endif ?>>
+                    <label class="form-check-label" for="checkboxTheme<?= esc($theme) ?>"><?= esc($theme) ?></label>
+                  </div>
+                <?php endforeach ?>
 
               </div>
             </div>

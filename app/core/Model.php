@@ -52,7 +52,7 @@ trait Model
 		return false;
 	}
 
-	public function findDistinct($column, $orderType)
+	public function findDistinct($column, $orderType = "ASC")
 	{
 		$query = "SELECT DISTINCT $column FROM $this->table ORDER BY $column $orderType LIMIT $this->limit OFFSET $this->offset";
 		$results = $this->query($query);

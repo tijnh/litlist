@@ -11,6 +11,7 @@ class Browse
   {
     // $data['username'] = empty($_SESSION['USER']) ? 'User' : $_SESSION['USER']->email;
     $bookModel = new BookModel;
+    $themeModel = new ThemeModel;
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") 
     {
@@ -35,14 +36,16 @@ class Browse
 
     $data["pageTitle"] = "Zoeken";
     $data["books"] = $this->cleanBookData($books);
-    $data["filterMenu"] = $this->getFilterMenu($bookModel);
+    $data["filterMenu"] = $this->getFilterMenu($bookModel, $themeModel);
 
 
     $this->view('browse', $data);
   }
 
-  private function getFilterMenu($bookModel) {
-    $filterMenu["readingLevels"] = $bookModel->findDistinct("reading_level", "ASC");
+  private function getFilterMenu($bookModel, $themeModel) {
+    $filterMenu["readingLevels"] = $bookModel->findDistinct("reading_level");
+    $filterMenu["audiobookSources"] = $bookModel->findDistinct("audiobook");
+    $filterMenu["themes"] = $themeModel->findDistinct("theme");
     return $filterMenu;
   }
 
