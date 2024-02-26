@@ -41,3 +41,59 @@ Script started
 2024-02-26 14:17:09 INFO Script finished
 2024-02-26 14:17:09 INFO Run time in minutes: 0.33228344917297
 2024-02-26 14:17:09 INFO Number of queries run: 6021
+2024-02-26 14:23:08 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-26 14:23:08 INFO Database cleared
+2024-02-26 14:23:31 INFO Script finished
+2024-02-26 14:23:31 INFO Run time in minutes: 0.38894083499908
+2024-02-26 14:23:31 INFO Number of queries run: 6021
+2024-02-26 14:24:09 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-26 14:24:09 INFO Database cleared
+2024-02-26 14:24:09 FAILURE Book [De reis van de lege flessen]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Het huis van de moskee]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Spijkerschrift]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [De koningin van Paramaribo]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Een soort Engeland]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Noodzakelijk kwaad]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Confrontaties]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Perenbomen bloeien wit]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Lopen voor je leven]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [23 Seconden]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Oesters van Nam Kee]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Bruiloft aan zee]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Hersenschimmen]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Buiten is het maandag]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Lieve Céline]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Alles wat er was]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Efter]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Wat wij zagen]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Wij zijn licht]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [De Saamhorigheidsgroep]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Ze zonen van Bruce Lee]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Wij zijn van diamant]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Post voor mevrouw Bromley]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [De engelenmaker]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [st]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Eus]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Afslag 23]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Een onschuldig meisje]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Sneeuw]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:09 FAILURE Book [Welkom in het Rijk der Zieken]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Ivanov]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [De tolk van Java]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Erik of Het klein insectenboek]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Het gym]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Hajar en Daan]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Loverboy]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Montyn]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [De kapperszoon]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [De omweg]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Boven is het stil]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Paradiso]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [De langverwachte]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [Op slot]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:10 FAILURE Book [De onzichtbare jongen]: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'title' cannot be null
+2024-02-26 14:24:16 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-26 14:24:16 INFO Database cleared
+2024-02-26 14:24:41 INFO Script finished
+2024-02-26 14:24:41 INFO Run time in minutes: 0.42972575028737
+2024-02-26 14:24:41 INFO Number of queries run: 6021

@@ -443,7 +443,11 @@ class Import
     $query .= ") VALUES (";
 
     foreach ($this->tableColumns["books"] as $col) {
-      $values[] = "\"$book[$col]\"";
+      if($book[$col] === NULL) {
+        $values[] = "NULL";
+      } else {
+        $values[] = "\"$book[$col]\"";
+      }
     }
 
     $query .= implode(", ", $values);

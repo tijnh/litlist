@@ -54,7 +54,7 @@ trait Model
 
 	public function findDistinct($column, $orderType = "ASC")
 	{
-		$query = "SELECT DISTINCT $column FROM $this->table ORDER BY $column $orderType LIMIT $this->limit OFFSET $this->offset";
+		$query = "SELECT DISTINCT $column FROM $this->table WHERE $column IS NOT NULL ORDER BY $column $orderType LIMIT $this->limit OFFSET $this->offset";
 		$results = $this->query($query);
 
 		// Flatten the multidimensional array
