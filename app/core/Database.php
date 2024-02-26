@@ -5,7 +5,7 @@ Trait Database
 
 	private function connect()
 	{
-		$string = "mysql:host=" . DBHOST . ";dbname=" . DBNAME;
+		$string = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=UTF8";
 		try {
 			$con = new PDO($string, DBUSER, DBPASS);
 			$con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
