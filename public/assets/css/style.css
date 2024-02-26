@@ -1,22 +1,30 @@
 :root {
-  --sb-darkblue: #004C99;
-  --sb-blue: #0089C7;
-  --sb-lightblue: #80C7D9;
-  --sb-yellow: #FFCC00;
-  --sb-pink: #E2007A;
-  --sb-red: #C10E1A;
-  --sb-orange: #CF661C;
-  --sb-aqua: #0099A9;
-  --sb-white: #ffffff;
-  --sb-black: #000000;
-  --ll-btn-primary: #004C99;
-  --ll-btn-primary-hover: #0054a8;
-  --ll-btn-primary-active: #005ab5;
-  --ll-checkbox-unchecked: #949494;
+
+  --blue-1: #004C99;
+  --blue-2: #406CBE;
+  --blue-3: #698EE4;
+  --blue-4: #90B1FF;
+  --blue-5: #B7D6FF;
+
+  --pink-1: #91213D;
+  --pink-2: #BB475C;
+  --pink-3: #E06A7D;
+  --pink-4: #FF8FA0;
+  --pink-5: #FFB4C5;
+
+  --grey-1: #737687;
+  --grey-2: #8D90A1;
+  --grey-3: #A7AABC;
+  --grey-4: #C2C5D8;
+  --grey-5: #DEE1F5;
+
+  --white: #ffffff;
+  --black: #000000;
+
 }
 
 body {
-  background-color: var(--sb-white);
+  background-color: var(--white);
 }
 
 a {
@@ -25,7 +33,7 @@ a {
 }
 
 .navbar {
-  background-color: var(--sb-white);
+  background-color: var(--white);
 }
 
 .navbar-toggler {
@@ -33,7 +41,7 @@ a {
 }
 
 .search-container {
-  background-color: var(--sb-darkblue);
+  background-color: var(--blue-1);
   height: 80px;
 }
 
@@ -42,34 +50,77 @@ a {
   border-radius: 24px;
 }
 
-/* Buttons */
-.ll-btn {
-  padding: 8px;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: none !important;
+/* Override Bootstrap Buttons */
+.btn-primary {
+  background-color: var(--blue-1) !important;
+  border-color: var(--blue-1) !important;
+}
+.btn-primary:hover {
+  background-color: var(--blue-2) !important;
+  border-color: var(--blue-2) !important;
+}
+.btn-primary:active {
+  background-color: var(--blue-3) !important;
+  border-color: var(--blue-3) !important;
 }
 
-.ll-btn-primary {
-  background-color: var(--ll-btn-primary);
-  color: var(--sb-white);
+.btn-secondary {
+  background-color: var(--pink-1) !important;
+  border-color: var(--pink-1) !important;
+  color: var(--white) !important;
 }
 
-.ll-btn-primary:hover {
-  background-color: var(--ll-btn-primary-hover);
+.btn-secondary:hover {
+  background-color: var(--pink-2) !important;
+  border-color: var(--pink-2) !important;
+  color: var(--white) !important;
 }
 
-.ll-btn-primary:active {
-  background-color: var(--ll-btn-primary-active);
-  ;
+.btn-secondary:active {
+  background-color: var(--pink-3) !important;
+  border-color: var(--pink-3) !important;
+  color: var(--white) !important;
+}
+
+.btn-tertiary {
+  background-color: var(--grey-1) !important;
+  border-color: var(--grey-1) !important;
+  color: var(--white) !important;
+}
+.btn-tertiary:hover {
+  background-color: var(--grey-2) !important;
+  border-color: var(--grey-2) !important;
+  color: var(--white) !important;
+}
+.btn-tertiary:active {
+  background-color: var(--grey-3) !important;
+  border-color: var(--grey-3) !important;
+  color: var(--white) !important;
+}
+
+.ll-btn-floating {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
 }
 
 
+#btn-back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+}
 
 
 /* Card */
 .ll-card {
-  background-color: var(--sb-white);
+  background-color: var(--white);
 }
 
 .ll-card-img img {
@@ -132,28 +183,11 @@ input[type=number] {
 }
 
 .checkbox-unchecked {
-  color: var(--ll-checkbox-unchecked);
+  color: var(--grey-3);
 }
 
 .checkbox-checked {
-  color: var(--sb-darkblue);
+  color: var(--blue-1);
   font-weight: 600;
 }
 
-.ll-btn-floating {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-}
-
-#btn-back-to-top {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: none;
-}
