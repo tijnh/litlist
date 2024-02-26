@@ -148,7 +148,7 @@
       <!-- Submit button -->
       <div class="row py-4">
         <div class="col-12 text-center">
-          <button type="submit" class="ll-btn ll-btn-primary w-100">Zoeken</button>
+          <button type="submit" class="btn btn-primary w-100">Zoeken</button>
         </div>
       </div>
 
@@ -171,7 +171,7 @@
     <!-- Reset filter button -->
     <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
       <a href="<?= ROOT ?>/browse">
-        <button type="button" class="btn btn-tertiary w-100"> Reset filters</button>
+        <button type="button" class="btn btn-outline-tertiary w-100"> Reset filters</button>
       </a>
     </div>
   </div>
@@ -193,18 +193,18 @@
             <!-- Middle-->
             <div class="col-8 ll-card-middle">
               <a href="#" class="ll-card-title"><?= esc($book["title"]) ?></a>
-              <p class="ll-card-details text-secondary mb-2"><?= esc(implode(", ", $book["authors"])) ?></p>
+              <p class="ll-card-details text-grey-2 mb-2"><?= esc(implode(", ", $book["authors"])) ?></p>
               <p class="ll-card-blurb m-0 mb-3"><?= esc($book["blurb"]) ?></p>
-              <p class="ll-card-details text-secondary"><i><?= !empty($book["themes"]) ? esc(implode(", ", $book["themes"])) : "" ?></i></p>
+              <p class="ll-card-details text-grey-2"><i><?= !empty($book["themes"]) ? esc(implode(", ", $book["themes"])) : "" ?></i></p>
             </div>
 
             <!-- Right -->
             <div class="col-2">
-              <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-calendar"></i> <?= esc($book["year"]) ?></div>
-              <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-book"></i> <?= esc($book["pages"]) ?></div>
-              <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-star"></i> <?= esc($book["readingLevel"]) ?></div>
+              <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-calendar"></i> <?= esc($book["year"]) ?></div>
+              <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-book"></i> <?= esc($book["pages"]) ?></div>
+              <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-star"></i> <?= esc($book["readingLevel"]) ?></div>
               <?php if (!empty($book["audiobook"])) : ?>
-                <div class="ll-card-details mb-1 text-secondary"><i class="bi bi-headphones"></i> <?= esc($book["audiobook"]) ?></div>
+                <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-headphones"></i> <?= esc($book["audiobook"]) ?></div>
               <?php endif ?>
             </div>
 

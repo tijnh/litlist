@@ -14,7 +14,7 @@
 <body>
 
   <!-- Back to top button -->
-  <button type="button" class="btn btn-secondary ll-btn-floating" id="btn-back-to-top">
+  <button type="button" class="btn btn-primary btn-floating-action" id="btn-back-to-top">
     <i class="bi bi-arrow-up"></i>
   </button>
 

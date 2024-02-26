@@ -1,25 +1,25 @@
 :root {
 
-  --blue-1: #004C99;
-  --blue-2: #406CBE;
-  --blue-3: #698EE4;
-  --blue-4: #90B1FF;
-  --blue-5: #B7D6FF;
+  --blue-1: rgba(0, 76, 153, 1);
+  --blue-2: rgba(0, 76, 153, 0.9);
+  --blue-3: rgba(0, 76, 153, 0.8);
+  --blue-4: rgba(0, 76, 153, 0.7);
+  --blue-5: rgba(0, 76, 153, 0.6);
 
-  --pink-1: #91213D;
-  --pink-2: #BB475C;
-  --pink-3: #E06A7D;
-  --pink-4: #FF8FA0;
-  --pink-5: #FFB4C5;
+  --pink-1: rgba(145, 33, 61, 1);
+  --pink-2: rgba(145, 33, 61, 0.9);
+  --pink-3: rgba(145, 33, 61, 0.8);
+  --pink-4: rgba(145, 33, 61, 0.7);
+  --pink-5: rgba(145, 33, 61, 0.6);
 
-  --grey-1: #737687;
-  --grey-2: #8D90A1;
-  --grey-3: #A7AABC;
-  --grey-4: #C2C5D8;
-  --grey-5: #DEE1F5;
+  --grey-1: rgba(106, 106, 106, 1);
+  --grey-2: rgba(106, 106, 106, 0.9);
+  --grey-3: rgba(106, 106, 106, 0.8);
+  --grey-4: rgba(106, 106, 106, 0.7);
+  --grey-5: rgba(106, 106, 106, 0.6);
 
-  --white: #ffffff;
-  --black: #000000;
+  --white: rgb(255, 255, 255);
+  --black: rgb(0, 0, 0);
 
 }
 
@@ -50,6 +50,22 @@ a {
   border-radius: 24px;
 }
 
+/* Text */
+.text-grey-1 {
+  color: var(--grey-1);
+}
+.text-grey-2 {
+  color: var(--grey-2);
+}
+.text-grey-3 {
+  color: var(--grey-3);
+}
+.text-grey-4 {
+  color: var(--grey-4);
+}
+.text-grey-5 {
+  color: var(--grey-5);
+}
 /* Override Bootstrap Buttons */
 .btn-primary {
   background-color: var(--blue-1) !important;
@@ -98,7 +114,23 @@ a {
   color: var(--white) !important;
 }
 
-.ll-btn-floating {
+.btn-outline-tertiary {
+  background-color: var(--white) !important;
+  border-color: var(--grey-1) !important;
+  color: var(--grey-1) !important;
+}
+.btn-outline-tertiary:hover {
+  background-color: var(--grey-2) !important;
+  border-color: var(--grey-2) !important;
+  color: var(--white) !important;
+}
+.btn-outline-tertiary:active {
+  background-color: var(--grey-3) !important;
+  border-color: var(--grey-3) !important;
+  color: var(--white) !important;
+}
+
+.btn-floating-action {
   width: 50px;
   height: 50px;
   border-radius: 50%;
