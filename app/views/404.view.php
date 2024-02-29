@@ -15,9 +15,10 @@
   <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
       <h1 class="display-1 fw-bold">404</h1>
+      <img src="<?=ROOT?>/assets/img/govers.jpg">
       <p class="fs-3"> <span class="text-danger">Oeps!</span> Pagina niet gevonden.</p>
       <p class="lead">
-        De pagina die je zocht bestaat niet.
+        Meneer Govers is niet boos, maar wel teleurgesteld.
       </p>
       <a href="<?= ROOT ?>" class="btn btn-primary">Ga terug</a>
     </div>
