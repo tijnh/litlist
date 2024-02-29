@@ -21,7 +21,7 @@ function redirect($path)
 function abbreviate($string)
 {
 	// If single word, use first two letters as abbreviation
-	if (!str_contains($string, " ")) 
+	if (!strpos($string, " ")) 
 	{
 		$abbreviation = substr(strtoupper($string), 0, 2);
 	} 
