@@ -73,9 +73,9 @@ class Browse
           "blurb" => trim(ucfirst($book["blurb"])),
           "pages" => $book["pages"],
           "year" => $book["publication_year"],
-          "audiobook" => $book["audiobook"],
+          "audiobook" => trim($book["audiobook"]),
           "readingLevel" => $book["reading_level"],
-          "imageLink" => !empty($book["image_link"]) ? $book["image_link"] : PLACEHOLDERCOVER,
+          "imageLink" => !empty($book["image_link"]) ? trim($book["image_link"]) : PLACEHOLDERCOVER,
           "authors" => array(),
           "themes" => array()
         );

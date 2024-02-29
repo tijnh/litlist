@@ -200,11 +200,17 @@
 
             <!-- Right -->
             <div class="col-2">
+              <?php if (!empty($book["year"])) : ?>
               <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-calendar"></i> <?= esc($book["year"]) ?></div>
+              <?php endif ?>
+              <?php if (!empty($book["pages"])) : ?>
               <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-book"></i> <?= esc($book["pages"]) ?></div>
+              <?php endif ?>
+              <?php if (!empty($book["readingLevel"])) : ?>
               <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-star"></i> <?= esc($book["readingLevel"]) ?></div>
+              <?php endif ?>
               <?php if (!empty($book["audiobook"])) : ?>
-                <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-headphones"></i> <?= esc($book["audiobook"]) ?></div>
+                <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-headphones"></i> <?= esc(abbreviate($book["audiobook"])) ?></div>
               <?php endif ?>
             </div>
 
