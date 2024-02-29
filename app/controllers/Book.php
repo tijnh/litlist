@@ -10,8 +10,8 @@ class Book
   public function index()
   {
 
-    if(!isset($_GET["id"])) {
-      redirect('home');
+    if(!isset($_GET["id"]) || !filter_var($_GET["id"], FILTER_VALIDATE_INT)) {
+      redirect('404');
     }
     
     $bookModel = new BookModel;
