@@ -7,15 +7,7 @@ class BookModel
 
   protected $table = 'books';
 
-  // protected $allowedColumns = [
-
-  // 	'title',
-  // ];
-
-  public function findAll($orderColumn = "books.title", $orderType = "ASC")
-  {
-
-    $query = "SELECT
+  const PREVIEWCOLUMNS = "
       books.book_id,
       books.title,
       books.blurb,
@@ -34,8 +26,52 @@ class BookModel
       LEFT JOIN authors ON books_authors.author_id = authors.author_id
       LEFT JOIN books_themes ON books.book_id = books_themes.book_id
       LEFT JOIN themes ON books_themes.theme_id = themes.theme_id
-    ORDER BY
-			$orderColumn $orderType";
+      ";
+
+  const ALLCOLUMNS = "
+      books.book_id,
+      books.title,
+      books.image_link,
+      books.publication_year,
+      books.audiobook,
+      books.pages,
+      books.blurb,
+      books.summary,
+      books.reading_level,
+      books.recommendation_text,
+      books.review_text,
+      books.review_link,
+      books.secondary_literature_text,
+      books.secondary_literature_link,
+      authors.first_name,
+      authors.infix,
+      authors.last_name,
+      themes.theme
+    FROM
+      books
+      LEFT JOIN books_authors ON books.book_id = books_authors.book_id
+      LEFT JOIN authors ON books_authors.author_id = authors.author_id
+      LEFT JOIN books_themes ON books.book_id = books_themes.book_id
+      LEFT JOIN themes ON books_themes.theme_id = themes.theme_id
+      ";
+
+  public function findBookById($bookId) {
+
+    $query = "SELECT " . $this::ALLCOLUMNS . " WHERE books.book_id = :bookId ";
+    $parameters["bookId"] = $bookId;
+
+    $result =  $this->query($query, $parameters);
+
+    if ($result)
+      return $result;
+
+    return [];
+  }
+
+  public function findAll($orderColumn = "books.title", $orderType = "ASC")
+  {
+
+    $query = "SELECT " . $this::PREVIEWCOLUMNS . " ORDER BY $orderColumn $orderType";
 
     $result = $this->query($query);
     
@@ -49,26 +85,7 @@ class BookModel
   {
     $parameters = [];
 
-    $query = "SELECT
-      books.book_id,
-      books.title,
-      books.image_link,
-      books.publication_year,
-      books.audiobook,
-      books.pages,
-      books.blurb,
-      books.reading_level,
-      authors.first_name,
-      authors.infix,
-      authors.last_name,
-      themes.theme
-    FROM
-      books
-      LEFT JOIN books_authors ON books.book_id = books_authors.book_id
-      LEFT JOIN authors ON books_authors.author_id = authors.author_id
-      LEFT JOIN books_themes ON books.book_id = books_themes.book_id
-      LEFT JOIN themes ON books_themes.theme_id = themes.theme_id
-    WHERE ";
+    $query = "SELECT " . $this::PREVIEWCOLUMNS . " WHERE ";
 
     if (isset($filters["searchterm"])) {
       $query .= "
