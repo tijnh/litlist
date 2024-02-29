@@ -102,3 +102,48 @@ Script started
 2024-02-26 18:36:10 INFO Script finished
 2024-02-26 18:36:10 INFO Run time in minutes: 0.84669378201167
 2024-02-26 18:36:10 INFO Number of queries run: 6021
+2024-02-27 18:41:37 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 18:41:37 INFO Database cleared
+2024-02-27 18:42:27 FAILURE Row 431: Book has no title.
+2024-02-27 18:42:27 FAILURE Row 432: Book has no title.
+2024-02-27 18:42:27 FAILURE Failed to connect themes to books: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '5-122' for key 'theme_id'
+2024-02-27 18:42:27 INFO Script finished
+2024-02-27 18:42:27 INFO Run time in minutes: 0.8404412150383
+2024-02-27 18:42:27 INFO Number of queries run: 6060
+2024-02-27 18:48:28 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 18:48:28 INFO Database cleared
+2024-02-27 18:49:19 FAILURE Row 431: Book has no title.
+2024-02-27 18:49:19 FAILURE Row 432: Book has no title.
+2024-02-27 18:49:19 FAILURE Failed to connect themes to books: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '5-122' for key 'theme_id'
+2024-02-27 18:49:19 INFO Script finished
+2024-02-27 18:49:19 INFO Run time in minutes: 0.84621003468831
+2024-02-27 18:49:19 INFO Number of queries run: 6060
+2024-02-27 18:53:00 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 18:53:00 INFO Database cleared
+2024-02-27 18:53:01 INFO Script finished
+2024-02-27 18:53:01 INFO Run time in minutes: 0.020792599519094
+2024-02-27 18:53:01 INFO Number of queries run: 208
+2024-02-27 18:53:09 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 18:53:09 INFO Database cleared
+2024-02-27 18:53:11 INFO Script finished
+2024-02-27 18:53:11 INFO Run time in minutes: 0.037183082103729
+2024-02-27 18:53:11 INFO Number of queries run: 208
+2024-02-27 18:54:23 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 18:54:23 INFO Database cleared
+2024-02-27 18:55:04 FAILURE Failed to connect themes to books: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '5-122' for key 'theme_id'
+2024-02-27 18:55:04 INFO Script finished
+2024-02-27 18:55:04 INFO Run time in minutes: 0.69194808403651
+2024-02-27 18:55:04 INFO Number of queries run: 6060
+2024-02-27 18:56:28 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 18:56:28 INFO Database cleared
+2024-02-27 18:57:30 FAILURE Failed to connect themes to books: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '5-122' for key 'theme_id'
+2024-02-27 18:57:30 INFO Script finished
+2024-02-27 18:57:30 INFO Run time in minutes: 1.032798465093
+2024-02-27 18:57:30 INFO Number of queries run: 6060
+2024-02-27 19:01:30 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 19:01:30 INFO Database cleared
+2024-02-27 19:03:49 INFO -->-->-->--> SCRIPT STARTED <--<--<--<--
+2024-02-27 19:03:49 INFO Database cleared
+2024-02-27 19:04:48 INFO Script finished
+2024-02-27 19:04:48 INFO Run time in minutes: 0.98538378079732
+2024-02-27 19:04:48 INFO Number of queries run: 6059

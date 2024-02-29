@@ -91,6 +91,9 @@ class Browse
       if (!in_array($author, $cleanBookData[$book["book_id"]]["authors"])) {
         $cleanBookData[$book["book_id"]]["authors"][] = $author;
       }
+
+      sort($cleanBookData[$book["book_id"]]["themes"]);
+      sort($cleanBookData[$book["book_id"]]["authors"]);
     }
 
     return $cleanBookData;

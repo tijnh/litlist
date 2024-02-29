@@ -301,7 +301,7 @@ class Import
   {
     $values = implode(", ", $values);
     $query = "INSERT INTO books_authors (book_id, author_id) VALUES $values;";
-
+    
     $this->query($query);
     $this->numQueries += 1;
   }
