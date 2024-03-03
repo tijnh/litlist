@@ -35,7 +35,7 @@ class Browse
     }
 
     $data["pageTitle"] = "Zoeken";
-    $data["books"] = $this->cleanBookData($books);
+    $data["books"] = cleanBookData($books);
     $data["filterMenu"] = $this->getFilterMenu($bookModel, $themeModel);
 
 
@@ -59,43 +59,5 @@ class Browse
     }
     return $userFilters;
   }
-  private function cleanBookData(array $books)
-  {
-    $cleanBookData = array();
-
-    foreach ($books as $book) {
-      // Check if the book is already in the array
-      if (!isset($cleanBookData[$book["book_id"]])) {
-
-        $cleanBookData[$book["book_id"]] = array(
-          "bookId" => $book["book_id"],
-          "title" => trim(ucfirst($book["title"])),
-          "blurb" => trim(ucfirst($book["blurb"])),
-          "pages" => $book["pages"],
-          "year" => $book["publication_year"],
-          "audiobook" => trim($book["audiobook"]),
-          "readingLevel" => $book["reading_level"],
-          "imageLink" => !empty($book["image_link"]) ? trim($book["image_link"]) : PLACEHOLDERCOVER,
-          "authors" => array(),
-          "themes" => array()
-        );
-      }
-      // Add the theme to the themes array for the current book
-      if (!in_array($book["theme"], $cleanBookData[$book["book_id"]]["themes"])) {
-        $cleanBookData[$book["book_id"]]["themes"][] = strtolower(trim($book["theme"]));
-      }
-
-      // Add the authors to the authors array for the current book
-      $author = ucfirst($book["first_name"]) . " " . strtolower($book["infix"]) . " " . ucfirst($book["last_name"]);
-      $author = trim(str_replace("  ", " ", $author));
-      if (!in_array($author, $cleanBookData[$book["book_id"]]["authors"])) {
-        $cleanBookData[$book["book_id"]]["authors"][] = $author;
-      }
-
-      sort($cleanBookData[$book["book_id"]]["themes"]);
-      sort($cleanBookData[$book["book_id"]]["authors"]);
-    }
-
-    return $cleanBookData;
-  }
+ 
 }

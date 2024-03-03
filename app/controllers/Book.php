@@ -22,10 +22,11 @@ class Book
     }
 
     // TODO: clean book like in browse.php
-    
-    $data["pageTitle"] = $book[0]["title"];
+    $book = cleanBookData($book);
+    $book = $book[$_GET["id"]];
+    $data["pageTitle"] = $book["title"];
     $data["book"] = $book;
-
+    
     $this->view('book', $data);
   }
 }
