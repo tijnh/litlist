@@ -21,9 +21,13 @@ class Book
       redirect('404');
     }
 
-    // TODO: clean book like in browse.php
+    
     $book = cleanBookData($book);
+    
+    // CleanBookData returns an assoc array, indexed by book id. 
+    // Thus, we need this book's id to find index into the correct data
     $book = $book[$_GET["id"]];
+
     $data["pageTitle"] = $book["title"];
     $data["book"] = $book;
     
