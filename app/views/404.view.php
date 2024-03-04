@@ -15,10 +15,10 @@
   <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
       <h1 class="display-1 fw-bold">404</h1>
-      <img src="<?=ROOT?>/assets/img/govers.jpg">
       <p class="fs-3"> <span class="text-danger">Oeps!</span> Pagina niet gevonden.</p>
+      <img class="my-3" src="<?=ROOT?>/assets/img/boekendokters.jpg" height="300px">
       <p class="lead">
-        Meneer Govers is niet boos, maar wel teleurgesteld.
+        De weg kwijt? Daar hebben de boekendokters wel een medicijntje voor!
       </p>
       <a href="<?= ROOT ?>" class="btn btn-primary">Ga terug</a>
     </div>
