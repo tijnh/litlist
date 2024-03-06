@@ -14,6 +14,7 @@ class Home
 		$data["pageTitle"] = "Litlist";
 
 		$this->view('home',$data);
+		redirect('browse');
 	}
 
 }
