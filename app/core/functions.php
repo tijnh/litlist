@@ -77,7 +77,6 @@ function cleanBookData(array $books)
       }
 
       sort($cleanBookData[$book["book_id"]]["themes"]);
-      sort($cleanBookData[$book["book_id"]]["authors"]);
     }
 
     return $cleanBookData;

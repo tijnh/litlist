@@ -9,8 +9,8 @@
 
       function scrollFunction() {
         if (
-          document.body.scrollTop > 200 ||
-          document.documentElement.scrollTop > 200
+          document.body.scrollTop > 1000 ||
+          document.documentElement.scrollTop > 1000
         ) {
           backToTopBtn.style.display = "block";
         } else {
