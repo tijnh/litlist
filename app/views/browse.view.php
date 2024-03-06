@@ -161,7 +161,7 @@
 
 
 <!-- Book list -->
-<div class="container-fluid">
+<div class="container-lg">
 
   <div class="row justify-content-center py-3 ">
     <!-- Filter button -->

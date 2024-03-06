@@ -18,18 +18,29 @@
   --grey-4: rgba(106, 106, 106, 0.7);
   --grey-5: rgba(106, 106, 106, 0.6);
 
-  --white: rgb(255, 255, 255);
+  --white-1: rgba(255, 255, 255, 1);
+  --white-2: rgba(255, 255, 255, 0.9);
+  --white-3: rgba(255, 255, 255, 0.8);
+  --white-4: rgba(255, 255, 255, 0.7);
+  --white-5: rgba(255, 255, 255, 0.6);
+
+
+
   --black: rgb(0, 0, 0);
 
 }
 
 body {
-  background-color: var(--white);
+  background-color: var(--white-1);
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+a.inline-link {
+  color:var(--blue-1);
 }
 
 h1 {
@@ -62,7 +73,7 @@ h1,h2,h3,h4,h5,h6 {
 
 
 .navbar {
-  background-color: var(--white);
+  background-color: var(--white-1);
 }
 
 .navbar-toggler {
@@ -96,12 +107,13 @@ h1,h2,h3,h4,h5,h6 {
   color: var(--grey-5);
 }
 .text-white {
-  color: var(--white);
+  color: var(--white-1);
 }
-/* Override Bootstrap Buttons */
+/* Button */
 .btn-primary {
   background-color: var(--blue-1) !important;
   border-color: var(--blue-1) !important;
+  color: var(--white-1);
 }
 .btn-primary:hover {
   background-color: var(--blue-2) !important;
@@ -111,55 +123,70 @@ h1,h2,h3,h4,h5,h6 {
   background-color: var(--blue-3) !important;
   border-color: var(--blue-3) !important;
 }
+.btn-primary-reversed {
+  background-color: var(--white-1) !important;
+  border-color: var(--blue-1) !important;
+  color: var(--blue-1) !important;
+}
+.btn-primary-reversed:hover {
+  background-color: var(--white-2) !important;
+  border-color: var(--blue-1) !important;
+  color: var(--blue-1) !important;
+}
+.btn-primary-reversed:active {
+  background-color: var(--white-3) !important;
+  border-color: var(--blue-1) !important;
+  color: var(--blue-1) !important;
+}
 
 .btn-secondary {
   background-color: var(--pink-1) !important;
   border-color: var(--pink-1) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 
 .btn-secondary:hover {
   background-color: var(--pink-2) !important;
   border-color: var(--pink-2) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 
 .btn-secondary:active {
   background-color: var(--pink-3) !important;
   border-color: var(--pink-3) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 
 .btn-tertiary {
   background-color: var(--grey-1) !important;
   border-color: var(--grey-1) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 .btn-tertiary:hover {
   background-color: var(--grey-2) !important;
   border-color: var(--grey-2) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 .btn-tertiary:active {
   background-color: var(--grey-3) !important;
   border-color: var(--grey-3) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 
 .btn-outline-tertiary {
-  background-color: var(--white) !important;
+  background-color: var(--white-1) !important;
   border-color: var(--grey-1) !important;
   color: var(--grey-1) !important;
 }
 .btn-outline-tertiary:hover {
   background-color: var(--grey-2) !important;
   border-color: var(--grey-2) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 .btn-outline-tertiary:active {
   background-color: var(--grey-3) !important;
   border-color: var(--grey-3) !important;
-  color: var(--white) !important;
+  color: var(--white-1) !important;
 }
 
 .btn-floating-action {
@@ -184,7 +211,7 @@ h1,h2,h3,h4,h5,h6 {
 
 /* Card */
 .ll-card {
-  background-color: var(--white);
+  background-color: var(--white-1);
 }
 
 .ll-card-img img {
@@ -258,5 +285,15 @@ input[type=number] {
 /* Book page */
 .book-img {
   height: 300px;
+  max-height: 300px;
   max-width: 100%;
+}
+
+.info-header {
+  /* border-bottom: 1px solid var(--blue-5); */
+  text-transform: uppercase;
+  color: var(--blue-1);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  padding-top: 0.5rem;
 }

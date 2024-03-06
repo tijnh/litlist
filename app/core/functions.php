@@ -57,9 +57,9 @@ function cleanBookData(array $books)
           "readingLevel" => isset($book["reading_level"]) ? $book["reading_level"] : NULL,
           "recommendationText" => isset($book["recommendation_text"]) ? trim(ucfirst($book["recommendation_text"])) : NULL,
           "reviewText" => isset($book["review_text"]) ? trim(ucfirst($book["review_text"])) : NULL,
-          "reviewLink" => isset($book["review_link"]) ? trim($book["review_link"]) : PLACEHOLDERCOVER,
+          "reviewLink" => isset($book["review_link"]) ? trim($book["review_link"]) : NULL,
           "secondaryLiteratureText" => isset($book["secondary_literature_text"]) ? trim(ucfirst($book["secondary_literature_text"])) : NULL,
-          "secondaryLiteratureLink" => isset($book["secondary_literature_link"]) ? trim($book["secondary_literature_link"]) : PLACEHOLDERCOVER,
+          "secondaryLiteratureLink" => isset($book["secondary_literature_link"]) ? trim($book["secondary_literature_link"]) : NULL,
           "authors" => array(),
           "themes" => array()
         );
