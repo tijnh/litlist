@@ -25,9 +25,10 @@ class Import
 
   use Database;
 
-  private $numQueries = 0;
   private $clearDatabase = true;
   private $clearLog = false;
+  private $numQueries = 0;
+  private $themeIds = [];
 
   private $allColumns = [
     "title",
@@ -176,8 +177,7 @@ class Import
             continue;
           }
 
-          // If theme not in database, insert
-          if (!$this->getThemeId($theme)) {
+          if(!isset($this->themeIds[$theme])) {
             try {
               $this->insertIntoThemesTable($theme);
               // $this->logSuccess($log, "Theme [{$theme}]: Succesfully inserted.");
@@ -185,10 +185,17 @@ class Import
               $this->logFailure($log, "Theme [{$theme}]: " . $e->getMessage());
               continue;
             }
-          }
 
-          // Get theme id
-          $themeId = $this->getThemeId($theme);
+            // Get theme id from database
+            $themeId = $this->getThemeId($theme);
+
+            // Add themeId to list of themeIds
+            $this->themeIds[$theme] = $themeId;
+          }
+          else {
+            // Get themeId from list of themeIds
+            $themeId = $this->themeIds[$theme];
+          }
 
           // Prepare SQL value for books_themes table query
           $sqlValues["books_themes"][] = "($bookId, $themeId)";
