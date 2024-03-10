@@ -26,7 +26,7 @@ class Import
   use Database;
 
   private $clearDatabase = true;
-  private $clearLog = true;
+  private $clearLog = false;
   private $numQueries = 0;
   private $themeIds = [];
   private $authorIds = [];
@@ -250,13 +250,14 @@ class Import
 
     fclose($file);
 
+    
     $endTime = microtime(true);
     $this->logInfo($log, "Script finished");
-
-    $runTime = ($endTime - $startTime) / 60;
-    $this->logInfo($log, "Run time in minutes: $runTime");
-
     $this->logInfo($log, "Number of queries run: {$this->numQueries}");
+
+    $runTime = ($endTime - $startTime);
+    $this->logInfo($log, "Run time in seconds: $runTime");
+
 
     fclose($log);
   }
