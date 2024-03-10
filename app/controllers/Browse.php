@@ -15,22 +15,13 @@ class Browse
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") 
     {
-
-      $userFilters = $this->getUserFilters();
-
-      if (!empty($userFilters)) 
-      {
-        $books = $bookModel->findWhere($userFilters);
-        $data["userFilters"] = $userFilters;
-      } 
-      else 
-      {
-        $books = $bookModel->findAll();
-      }
+      $_SESSION["userFilters"] = $this->getUserFilters();
     } 
 
-    else 
-    {
+    if (!empty($_SESSION["userFilters"])) {
+      $books = $bookModel->findWhere($_SESSION["userFilters"]);
+      $data["userFilters"] = $_SESSION["userFilters"];
+    } else {
       $books = $bookModel->findAll();
     }
 
@@ -38,11 +29,11 @@ class Browse
     $data["books"] = cleanBookData($books);
     $data["filterMenu"] = $this->getFilterMenu($bookModel, $themeModel);
 
-
     $this->view('browse', $data);
   }
 
-  private function getFilterMenu($bookModel, $themeModel) {
+  private function getFilterMenu($bookModel, $themeModel)
+  {
     $filterMenu["readingLevels"] = $bookModel->findDistinct("reading_level");
     $filterMenu["audiobookSources"] = $bookModel->findDistinct("audiobook");
     $filterMenu["themes"] = $themeModel->findDistinct("theme");
@@ -59,5 +50,4 @@ class Browse
     }
     return $userFilters;
   }
- 
 }

@@ -170,9 +170,9 @@
     </div>
     <!-- Reset filter button -->
     <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
-      <a href="<?= ROOT ?>/browse">
-        <button type="button" class="btn btn-outline-tertiary w-100"> Reset filters</button>
-      </a>
+      <form method="post">
+        <button type="submit" class="btn btn-outline-tertiary w-100"> Reset filters</button>
+      </form>
     </div>
   </div>
 
