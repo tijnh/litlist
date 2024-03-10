@@ -26,9 +26,10 @@ class Import
   use Database;
 
   private $clearDatabase = true;
-  private $clearLog = false;
+  private $clearLog = true;
   private $numQueries = 0;
   private $themeIds = [];
+  private $authorIds = [];
 
   private $allColumns = [
     "title",
@@ -100,10 +101,10 @@ class Import
     }
 
     $log = fopen("private/import.log", "a") or die("Unable to open log file!");
-    
+
     $startTime = microtime(true);
     $this->logInfo($log, "SCRIPT STARTED");
-    
+
     // Clear the database
     if ($this->clearDatabase) {
       $this->clearDatabase();
@@ -177,7 +178,7 @@ class Import
             continue;
           }
 
-          if(!isset($this->themeIds[$theme])) {
+          if (!isset($this->themeIds[$theme])) {
             try {
               $this->insertIntoThemesTable($theme);
               // $this->logSuccess($log, "Theme [{$theme}]: Succesfully inserted.");
@@ -189,17 +190,16 @@ class Import
             // Get theme id from database
             $themeId = $this->getThemeId($theme);
 
+
             // Add themeId to list of themeIds
             $this->themeIds[$theme] = $themeId;
-          }
-          else {
+          } else {
             // Get themeId from list of themeIds
             $themeId = $this->themeIds[$theme];
           }
 
           // Prepare SQL value for books_themes table query
           $sqlValues["books_themes"][] = "($bookId, $themeId)";
-        
         }
       }
 
@@ -208,22 +208,30 @@ class Import
       $author["infix"] = $book["infix"];
       $author["last_name"] = $book["last_name"];
 
-      // If author not in database, insert
-      if (!$this->getAuthorId($author)) {
+      $fullname = ucfirst($author["first_name"]) . " " . strtolower($author["infix"]) . " " . ucfirst($author["last_name"]);
+      $fullname = trim(str_replace("  ", " ", $fullname));
+
+      if (!isset($this->authorIds[$fullname])) {
+
         try {
           $this->insertIntoAuthorsTable($author);
           // $this->logSuccess($log, "Author [{$author['last_name']}]: Succesfully inserted.");
         } catch (PDOException $e) {
           $this->logFailure($log, "Author [{$author['last_name']}]: " . $e->getMessage());
         }
-      }
 
-      // Get author id
-      $authorId = $this->getAuthorId($author);
+        // Get author id from database
+        $authorId = $this->getAuthorId($author);
+        
+        // add author id to list of authorIds
+        $this->authorIds[$fullname] = $authorId;
+        
+      } else {
+        $authorId = $this->authorIds[$fullname];
+      }
 
       // Prepare SQL value for books_themes table query
       $sqlValues["books_authors"][] = "($bookId, $authorId)";
-
     }
 
     // Connect themes to books in database
@@ -241,13 +249,13 @@ class Import
     }
 
     fclose($file);
-    
+
     $endTime = microtime(true);
     $this->logInfo($log, "Script finished");
-    
+
     $runTime = ($endTime - $startTime) / 60;
     $this->logInfo($log, "Run time in minutes: $runTime");
-   
+
     $this->logInfo($log, "Number of queries run: {$this->numQueries}");
 
     fclose($log);
@@ -308,7 +316,7 @@ class Import
   {
     $values = implode(", ", $values);
     $query = "INSERT INTO books_authors (book_id, author_id) VALUES $values;";
-    
+
     $this->query($query);
     $this->numQueries += 1;
   }
@@ -339,7 +347,7 @@ class Import
 
   function getAuthorId($author)
   {
-    
+
     $query = "SELECT author_id FROM authors WHERE last_name = \"{$author['last_name']}\"";
 
     if ($author["first_name"] === NULL) {
@@ -355,10 +363,10 @@ class Import
     }
 
     $query .= ";";
-    
+
     $result = $this->query($query);
     $this->numQueries += 1;
-    
+
     if ($result) {
       return $result[0]["author_id"];
     } else {
@@ -450,7 +458,7 @@ class Import
     $query .= ") VALUES (";
 
     foreach ($this->tableColumns["books"] as $col) {
-      if($book[$col] === NULL) {
+      if ($book[$col] === NULL) {
         $values[] = "NULL";
       } else {
         $values[] = "\"$book[$col]\"";
