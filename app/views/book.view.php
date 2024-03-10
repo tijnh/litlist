@@ -19,7 +19,7 @@
     </div>
 
     <!-- Right -->
-    <div class="col-12 col-md-7 col-lg-8 text-center text-md-start">
+    <div class="col-12 col-md-7 col-lg-8 text-justify text-md-start">
 
       <div class="row justify-content-center">
 
@@ -42,7 +42,7 @@
             <p><?= esc($book["summary"]) ?></p>
           <?php endif ?>
 
-          <?php if (!empty($book["themes"])) : ?>
+          <?php if (!empty($book["themes"][0])) : ?>
             <div class="info-header">Thema's</div>
             <ul>
               <?php foreach ($book["themes"] as $theme) : ?>
@@ -52,7 +52,7 @@
           <?php endif ?>
 
           <?php if (!empty($book["recommendationText"])) : ?>
-            <div class="info-header">Segbroek docent over dit boek</div>
+            <div class="info-header">Docent Segbroek over dit boek</div>
             <p><?= esc($book["recommendationText"]) ?></p>
           <?php endif ?>
 

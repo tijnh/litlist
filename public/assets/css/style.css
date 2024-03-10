@@ -80,6 +80,11 @@ ul {
   list-style-type: none;
 }
 
+
+.text-justify {
+  text-align: justify;
+}
+
 .navbar {
   background-color: var(--white-1);
 }
