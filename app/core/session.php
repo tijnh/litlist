@@ -2,6 +2,8 @@
 
 ini_set("session.use_only_cookies", 1);
 ini_set("session.use_strict_mode", 1);
+
+// This lines enable user to go back to previous page with POST request without errors
 ini_set('session.cache_limiter', 'public');
 session_cache_limiter(false);
 
