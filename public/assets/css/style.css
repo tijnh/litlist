@@ -39,11 +39,11 @@ body {
   background-image: url("../img/library.jpg");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: auto;
-  height: calc(100vh - 56px); /*navbar is 56px */
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: calc(100vh - 56px);
 }
 
 a {

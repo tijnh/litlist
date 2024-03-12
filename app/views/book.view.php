@@ -2,7 +2,7 @@
 
 <!-- Back button -->
 <div class="container-fluid search-container d-flex align-items-center">
-  <a href="<?= ROOT ?>/browse" class="btn btn-primary-reversed"><i class="bi bi-arrow-left"></i> Zoek een boek</a>
+  <a href="<?= ROOT ?>/browse" class="btn btn-primary-reversed btn-lg"><i class="bi bi-arrow-left"></i> Zoek een boek</a>
 </div>
 
 <div class="container-sm mt-3">
