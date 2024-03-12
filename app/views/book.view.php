@@ -96,19 +96,4 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-</div>
-</div>
-</div>
-
-
 <?php require "common/footer.view.php" ?>

@@ -171,7 +171,7 @@
     <!-- Reset filter button -->
     <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
       <form method="post">
-        <button type="submit" class="btn btn-outline-tertiary w-100"> Reset filters</button>
+        <button type="submit" class="btn btn-outline-secondary w-100"> Reset filters</button>
       </form>
     </div>
   </div>

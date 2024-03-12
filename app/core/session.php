@@ -2,6 +2,8 @@
 
 ini_set("session.use_only_cookies", 1);
 ini_set("session.use_strict_mode", 1);
+ini_set('session.cache_limiter', 'public');
+session_cache_limiter(false);
 
 set_session_cookie_params();
 

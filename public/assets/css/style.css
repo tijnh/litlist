@@ -24,6 +24,8 @@
   --white-4: rgba(255, 255, 255, 0.7);
   --white-5: rgba(255, 255, 255, 0.6);
 
+  --sb-lightblue: #80C7D9;
+
 
 
   --black: rgb(0, 0, 0);
@@ -33,8 +35,16 @@
 body {
   background-color: var(--white-1);
 }
-
-
+.home-container {
+  background-image: url("../img/library.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  height: calc(100vh - 56px); /*navbar is 56px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 a {
   text-decoration: none;
@@ -92,6 +102,7 @@ ul {
 .navbar-toggler {
   border: none;
 }
+
 
 .search-container {
   background-color: var(--blue-1);
@@ -170,33 +181,33 @@ ul {
   color: var(--white-1) !important;
 }
 
-.btn-tertiary {
+.btn-secondary {
   background-color: var(--grey-1) !important;
   border-color: var(--grey-1) !important;
   color: var(--white-1) !important;
 }
-.btn-tertiary:hover {
+.btn-secondary:hover {
   background-color: var(--grey-2) !important;
   border-color: var(--grey-2) !important;
   color: var(--white-1) !important;
 }
-.btn-tertiary:active {
+.btn-secondary:active {
   background-color: var(--grey-3) !important;
   border-color: var(--grey-3) !important;
   color: var(--white-1) !important;
 }
 
-.btn-outline-tertiary {
+.btn-outline-secondary {
   background-color: var(--white-1) !important;
   border-color: var(--grey-1) !important;
   color: var(--grey-1) !important;
 }
-.btn-outline-tertiary:hover {
+.btn-outline-secondary:hover {
   background-color: var(--grey-2) !important;
   border-color: var(--grey-2) !important;
   color: var(--white-1) !important;
 }
-.btn-outline-tertiary:active {
+.btn-outline-secondary:active {
   background-color: var(--grey-3) !important;
   border-color: var(--grey-3) !important;
   color: var(--white-1) !important;
