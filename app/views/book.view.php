@@ -21,7 +21,7 @@
     </div>
 
     <!-- Right -->
-    <div class="col-12 col-md-7 col-lg-8 text-justify text-md-start">
+    <div class="col-12 col-md-7 col-lg-8 text-md-start">
 
       <div class="row justify-content-center">
 
@@ -44,14 +44,6 @@
             <p><?= esc($book["summary"]) ?></p>
           <?php endif ?>
 
-          <?php if (!empty($book["themes"][0])) : ?>
-            <div class="info-header">Thema's</div>
-            <ul>
-              <?php foreach ($book["themes"] as $theme) : ?>
-                <li><?= esc(ucfirst($theme)) ?></li>
-              <?php endforeach ?>
-            </ul>
-          <?php endif ?>
 
           <?php if (!empty($book["recommendationText"])) : ?>
             <div class="info-header">Docent Segbroek over dit boek</div>
@@ -84,10 +76,27 @@
 
           <?php endif ?>
 
+          <?php if (!empty($book["themes"][0])) : ?>
+            <p class="ll-card-details text-grey-2"><i class="bi bi-chat-left-text"></i><i> <?= esc(implode(", ", $book["themes"])) ?></i></p>
+          <?php endif ?>
+
+          <?php if (!empty($book["year"])) : ?>
+            <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-calendar"></i> <?= esc($book["year"]) ?></div>
+          <?php endif ?>
+          <?php if (!empty($book["pages"])) : ?>
+            <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-book"></i> <?= esc($book["pages"]) ?></div>
+          <?php endif ?>
+          <?php if (!empty($book["readingLevel"])) : ?>
+            <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-star"></i> <?= esc($book["readingLevel"]) ?></div>
+          <?php endif ?>
+          <?php if (!empty($book["audiobook"])) : ?>
+            <div class="ll-card-details mb-1 text-grey-2"><i class="bi bi-headphones"></i> <?= esc($book["audiobook"]) ?></div>
+          <?php endif ?>
+
+
 
 
         </div>
-
       </div>
     </div>
 

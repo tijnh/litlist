@@ -164,6 +164,7 @@
 <div class="container-lg">
 
   <div class="row justify-content-center py-3 ">
+
     <!-- Filter button -->
     <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
       <button type="button" id="filter-button" class="btn btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#filterMenu" aria-controls="filterMenu">Filter <?= count($books) ?> boeken</button>
@@ -175,7 +176,15 @@
         <button type="submit" class="btn btn-outline-secondary w-100"> Reset filters</button>
       </form>
     </div>
+
   </div>
+
+  <!-- Error message no books found -->
+  <?php if (count($books) == 0) : ?>
+    <div class="alert alert-warning text-center" role="alert">
+      Geen boeken gevonden.
+    </div>
+  <?php endif ?>
 
   <!-- Cards -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
