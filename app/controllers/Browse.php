@@ -13,11 +13,18 @@ class Browse
     $bookModel = new BookModel;
     $themeModel = new ThemeModel;
 
-    if ($_SERVER["REQUEST_METHOD"] === "POST") 
-    {
-      $_SESSION["userFilters"] = $this->getUserFilters();
+    // Delete user filters if reset filter button clicked
+    if (isset($_POST["resetUserFilters"])) {
+      unset($_SESSION["userFilters"]);
+      unset($_POST["resetUserFilters"]);
     } 
+    
+    // If user used search/filter form, get chosen filters
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+      $_SESSION["userFilters"] = $this->getUserFilters();
+    }
 
+    // If any filters chosen, apply them to the search query, else show all books
     if (!empty($_SESSION["userFilters"])) {
       $books = $bookModel->findWhere($_SESSION["userFilters"]);
       $data["userFilters"] = $_SESSION["userFilters"];
