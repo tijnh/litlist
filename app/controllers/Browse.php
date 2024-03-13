@@ -12,15 +12,16 @@ class Browse
     // $data['username'] = empty($_SESSION['USER']) ? 'User' : $_SESSION['USER']->email;
     $bookModel = new BookModel;
     $themeModel = new ThemeModel;
-
+    
     // Delete user filters if reset filter button clicked
     if (isset($_POST["resetUserFilters"])) {
       unset($_SESSION["userFilters"]);
       unset($_POST["resetUserFilters"]);
     } 
     
-    // If user used search/filter form, get chosen filters
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // If user used search form, get chosen filters
+    if (isset($_POST["searchForm"])) {
+      unset($_POST["searchForm"]);
       $_SESSION["userFilters"] = $this->getUserFilters();
     }
 

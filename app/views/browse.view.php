@@ -148,6 +148,7 @@
       <!-- Submit button -->
       <div class="row py-4">
         <div class="col-12 text-center">
+          <input type="hidden" name="searchForm">
           <button type="submit" class="btn btn-primary w-100">Zoeken</button>
         </div>
       </div>
@@ -172,8 +173,8 @@
     <!-- Reset filter button -->
     <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
       <form method="post">
-        <input type="hidden" name="resetUserfilters">
-        <button type="submit" class="btn btn-outline-secondary w-100"> Reset filters</button>
+        <input type="hidden" name="resetUserFilters">
+        <button type="submit" class="btn btn-outline-secondary w-100">Reset filters</button>
       </form>
     </div>
 
