@@ -11,6 +11,7 @@ class Home
 	{
 
 		// $data['username'] = empty($_SESSION['USER']) ? 'User':$_SESSION['USER']->email;
+		unset($_SESSION["userFilters"]);
 		$data["pageTitle"] = "Litlist";
 
 		$this->view('home',$data);

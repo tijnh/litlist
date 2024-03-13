@@ -9,6 +9,7 @@ class Book
 
   public function index()
   {
+ 
     
     if(!isset($_GET["id"]) || !filter_var($_GET["id"], FILTER_VALIDATE_INT)) {
       redirect('404');
@@ -30,7 +31,8 @@ class Book
 
     $data["pageTitle"] = $book["title"];
     $data["book"] = $book;
-    
+
+
     $this->view('book', $data);
   }
 }
