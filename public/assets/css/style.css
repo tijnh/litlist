@@ -1,6 +1,6 @@
 :root {
 
-  --blue-1: rgba(0, 76, 153, 1);
+  --blue-1: hwb(210 0% 40%);
   --blue-2: rgba(0, 76, 153, 0.9);
   --blue-3: rgba(0, 76, 153, 0.8);
   --blue-4: rgba(0, 76, 153, 0.7);
@@ -19,10 +19,10 @@
   --grey-5: rgba(106, 106, 106, 0.6);
 
   --white-1: rgba(255, 255, 255, 1);
-  --white-2: rgba(255, 255, 255, 0.9);
-  --white-3: rgba(255, 255, 255, 0.8);
-  --white-4: rgba(255, 255, 255, 0.7);
-  --white-5: rgba(255, 255, 255, 0.6);
+  --white-2: rgba(255, 255, 255, 0.95);
+  --white-3: rgba(255, 255, 255, 0.9);
+  --white-4: rgba(255, 255, 255, 0.85);
+  --white-5: rgba(255, 255, 255, 0.8);
 
   --sb-lightblue: #80C7D9;
 
@@ -153,12 +153,12 @@ ul {
   color: var(--blue-1) !important;
 }
 .btn-primary-reversed:hover {
-  background-color: var(--white-1) !important;
+  background-color: var(--white-2) !important;
   border-color: var(--blue-1) !important;
   color: var(--blue-1) !important;
 }
 .btn-primary-reversed:active {
-  background-color: var(--white-1) !important;
+  background-color: var(--white-3) !important;
   border-color: var(--blue-1) !important;
   color: var(--blue-1) !important;
 }
