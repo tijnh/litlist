@@ -13,12 +13,10 @@ class Browse
     $bookModel = new BookModel;
     $themeModel = new ThemeModel;
    
-    
     // Delete user filters if reset filter button clicked
     if (isset($_POST["resetUserFilters"])) {
-      unset($_SESSION["userFilters"]);
       unset($_POST["resetUserFilters"]);
-      
+      unset($_SESSION["userFilters"]);
     } 
     
     // If user used search form, get chosen filters

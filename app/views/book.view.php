@@ -17,7 +17,7 @@
 
     <!-- Image -->
     <div class="col-12 col-md-3 col-lg-2 text-center">
-      <a href="<?= esc($book["imageLink"]) ?>"><img class="book-img" src="<?= esc($book["imageLink"]) ?>" alt="<?= esc($book["title"]) ?>"></a>
+      <a href="<?= esc($book["imageLink"]) ?>"><img class="shadow book-img" src="<?= esc($book["imageLink"]) ?>" alt="<?= esc($book["title"]) ?>"></a>
     </div>
 
     <!-- Right -->
